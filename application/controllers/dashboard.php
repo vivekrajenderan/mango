@@ -1,0 +1,22 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->library('session');
+        if ($this->session->userdata('log_id') == "") {
+            redirect(base_url() . 'login/', 'refresh');
+        }
+    }
+
+    public function index() {
+        $this->load->view('includes/header');
+        $this->load->view('dashboard');
+        $this->load->view('includes/footer');
+    }
+
+}
