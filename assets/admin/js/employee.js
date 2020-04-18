@@ -53,7 +53,7 @@ $(document).ready(function () {
                 required: "Please enter the phone no"
             },
             empl_address: {
-                required: "Please enter the phone no"
+                required: "Please enter the address"
             }
         },
         errorPlacement: function (error, element) {

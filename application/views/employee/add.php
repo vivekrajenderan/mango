@@ -55,9 +55,9 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">D.O.B <span class="required">*</span>
                                             </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group date ui-datepicker elVal">
-                                                    <input id="empl_dob" name="empl_dob" class="form-control" type="text" data-required="true" readonly value="<?php echo (isset($list->empl_dob)) ? $list->empl_dob : ""; ?>">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <div class="input-group date ui-datepicker">
+                                                    <input id="empl_dob" name="empl_dob" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->empl_dob)) ? $list->empl_dob : ""; ?>">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
@@ -104,7 +104,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Phone No <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Mobile No <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="empl_phone" name="empl_phone" class="form-control col-md-7 col-xs-12" maxlength="10" minlength="10" value="<?php echo (isset($list->empl_phone)) ? $list->empl_phone : ""; ?>">
