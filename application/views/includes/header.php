@@ -20,6 +20,9 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/custom.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/mango-admin.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/datepicker.css">
+        <script>
+            var baseurl = '<?php echo base_url(); ?>';
+        </script> 
     </head>
 
     <body>
@@ -135,6 +138,6 @@
         </div> <!-- /.mainbar -->
 
 
-        
+
 
 

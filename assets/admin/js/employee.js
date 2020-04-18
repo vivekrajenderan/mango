@@ -16,6 +16,10 @@ $(document).ready(function () {
             empl_dob: {
                 required: true
             },
+            empl_salary: {
+                required: false,
+                salarycheck: true
+            },
             fk_employeestatus_id: {
                 required: true
             },
@@ -23,7 +27,10 @@ $(document).ready(function () {
                 required: true,
                 minlength: 10,
                 maxlength: 10,
-                Exist_Channel: true
+            },
+            empl_email: {
+                required: false,
+                email: true
             },
             empl_address: {
                 required: true,
@@ -54,6 +61,9 @@ $(document).ready(function () {
             },
             empl_address: {
                 required: "Please enter the address"
+            },
+            empl_pic: {
+                required: "Please choose the profile picture"
             }
         },
         errorPlacement: function (error, element) {
@@ -61,8 +71,8 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var formData = new FormData($('#employee-form')[0]);
-            formData.append('channel_logo', $('input[type=file]')[0].files[0]);
-            var $form = $("#category-form");
+            formData.append('empl_pic', $('input[type=file]')[0].files[0]);
+            var $form = $("#employee-form");
             $.ajax({
                 type: $form.attr('method'),
                 url: $form.attr('action'),
@@ -76,14 +86,11 @@ $(document).ready(function () {
 
                 if (response.status == "1")
                 {
-                    //window.location = "<?php echo base_url(); ?>admin/category/channel_list";
+                    openSuccess(response.msg);
+                    window.location = baseurl + 'employees';
                 } else
                 {
-                    $('.alert-danger').show();
-                    $('.alert-danger').html(response.msg);
-                    setTimeout(function () {
-                        $('.alert-danger').hide('slow');
-                    }, 4000);
+                    openDanger(response.msg);
                 }
             });
             return false; // required to block normal submit since you used ajax
@@ -98,6 +105,15 @@ $(document).ready(function () {
             return true;
         }
     }, "Please choose format type .jpg, .jpeg, .png, .gif, .bmp");
+    $.validator.addMethod("salarycheck", function (value, element) {
+        var valid = /^\d{0,4}(\.\d{0,2})?$/.test(value);
+        if (valid) {
+            return false;
+        } else
+        {
+            return true;
+        }
+    }, "Please enter valid amount");
 });
 $(document).on('click', '#close-preview', function () {
     $('.image-preview').popover('hide');
@@ -157,3 +173,9 @@ $(function () {
         reader.readAsDataURL(file);
     });
 });
+
+function RemoveImage()
+{
+    $("#profile_image").hide();
+    $("#profile_image_content").show();
+}
