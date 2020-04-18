@@ -41,40 +41,39 @@
                                     <thead>
                                         <tr>                                            
                                             <th data-filterable="true" data-sortable="true" data-direction="desc">Empl. No.</th>
-                                            <th data-direction="asc" data-filterable="true" data-sortable="true">Name</th>
-                                            <!--<th data-filterable="true" data-sortable="true">Position</th>-->                                           
-                                            <!--<th data-filterable="true" data-sortable="true">Gender</th>-->                                           
-                                            <!--<th data-filterable="true" data-sortable="true">DoB</th>-->                                           
-                                            <!--<th data-filterable="true" data-sortable="true">Address</th>-->                                           
-                                            <th data-filterable="true" data-sortable="true">Phone No</th>                                           
-<!--                                            <th data-filterable="true" data-sortable="true">Email</th>                                           -->
+                                            <th data-direction="asc" data-filterable="true" data-sortable="true">Name</th>                                                                                     
+                                            <th data-filterable="true" data-sortable="true">Phone No</th> 
                                             <th data-filterable="true" data-sortable="true">In</th>                                           
                                             <th data-filterable="true" data-sortable="true">Out</th>                                           
                                             <th data-filterable="true" data-sortable="true">Status</th>                                           
+                                            <th data-filterable="true" data-sortable="true">Action</th>                                           
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($list as $key => $value) { ?>
                                             <tr>                                           
-                                                <td><?php echo (isset($value['empl_no'])) ? $value['empl_no'] : ""; ?></td>
-                                                <td><?php echo (isset($value['empl_name'])) ? $value['empl_name'] : ""; ?></td>
-    <!--                                                <td><?php echo (isset($value['empl_position'])) ? $value['empl_position'] : ""; ?></td>
-                                                <td><?php echo (isset($value['empl_dob'])) ? date("d.m.Y", $value['empl_dob']) : ""; ?></td>                                                                                            
-                                                <td><?php echo (isset($value['empl_address'])) ? $value['empl_address'] : ""; ?></td>-->
-                                                <td><?php echo (isset($value['empl_phone'])) ? $value['empl_phone'] : ""; ?></td>
-    <!--                                                <td><?php echo (isset($value['empl_email'])) ? $value['empl_email'] : ""; ?></td>-->
-                                                <td><?php echo (isset($value['empl_in'])) ? date("d.m.Y", $value['empl_in']) : ""; ?></td>                                                                                            
-                                                <td><?php echo (isset($value['empl_out']) && !empty($value['empl_out'])) ? date("d.m.Y", $value['empl_out']) : ""; ?></td>                                                                                            
-                                                <td><?php
-                                                    if (isset($value['empl_out']) && !empty($value['empl_out'])) {
-                                                        if ($value['empl_out'] > time()) {
+                                                <td><?php echo (isset($value->empl_no)) ? $value->empl_no : ""; ?></td>
+                                                <td><?php echo (isset($value->empl_name)) ? $value->empl_name : ""; ?></td>    
+                                                <td><?php echo (isset($value->empl_phone)) ? $value->empl_phone : ""; ?></td>
+                                                <td><?php echo (isset($value->empl_in)) ? cdatedbton($value->empl_in) : ""; ?></td>                                                                                            
+                                                <td><?php echo (isset($value->empl_out) && !empty($value->empl_out)) ? date("d.m.Y", $value->empl_out) : ""; ?></td>                                                                                            
+                                                <td>
+                                                    <?php
+                                                    if (isset($value->empl_out) && !empty($value->empl_out)) {
+                                                        if ($value->empl_out > time()) {
                                                             echo 'Current';
-                                                        } else if ($value['empl_out'] < time()) {
+                                                        } else if ($value->empl_out < time()) {
                                                             echo 'Former';
                                                         }
                                                     }
-                                                    ?></td>                                                                                            
-                                                }
+                                                    ?>
+                                                </td> 
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-default btn-sm"><i class="fa fa-eye"></i></a>
+                                                        <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                                                        <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>                                                        
+                                                    </div>
                                             </tr>                                             
                                         <?php } ?>
                                     </tbody>

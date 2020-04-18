@@ -267,4 +267,56 @@ function importCsv($rn, $storeFolder = "uploads") {
     return false;
 }
 
+function do_upload_image($field_name, $uploadpath) {
+    $CI = & get_instance();
+    $msg = array();
+    $file_name = "";
+    $message = "";
+    $image_new_name = time() . "-" . $field_name;
+    $config['upload_path'] = './' . $uploadpath;
+    $config['upload_url'] = base_url() . $uploadpath;
+    $config['allowed_types'] = "gif|jpg|png|jpeg";
+    $config['file_name'] = $image_new_name;
+    $CI->load->library('upload', $config);
+    $CI->upload->initialize($config);
+    if (!$CI->upload->do_upload($field_name)) {
+        $error = array('error' => $CI->upload->display_errors());
+        $message = $error['error'];
+    } else {
+        $data = array('upload_data' => $CI->upload->data());
+        $file_name = $data['upload_data']['orig_name'];
+        $message = "success";
+    }
+    $msg = array("image_message" => $message, "image_file_name" => $file_name);
+    return $msg;
+}
+
+function getRefId($condition = array()) {
+    $CI = & get_instance();
+    $CI->load->database();
+    $CI->db->select('prefix,current');
+    $CI->db->where($condition);
+    $result = $CI->db->get('docprefix')->row_array();
+    if (count($result) > 0) {
+        $CI->db->where($condition)->update('docprefix', array('current' => ($result['current'] + 1), 'mdate' => time()));
+        if (isset($condition['doctype']) && $condition['doctype'] == 'order') {
+            $result['prefix'] .= date('ymd');
+        }
+        return $result['prefix'] . $result['current'];
+    } else {
+        $documenttypearr = array('employee' => 'EMP', 'customer' => 'CUST');
+        $temdoc = isset($documenttypearr[$condition['doctype']]) ? $documenttypearr[$condition['doctype']] : $condition['doctype'];
+        $condition['prefix'] = str_replace('_', '', strtoupper($temdoc));
+        $condition['start'] = 10000;
+        $condition['current'] = $condition['start'] + 2;
+        $condition['cdate'] = $condition['mdate'] = time();
+        $CI->db->insert('docprefix', $condition);
+
+        if (isset($condition['doctype']) && $condition['doctype'] == 'employee') {
+            $condition['prefix'] .= date('ymd');
+        }
+        return $condition['prefix'] . ($condition['start'] + 1);
+    }
+}
+
 ?>

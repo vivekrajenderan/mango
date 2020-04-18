@@ -32,3 +32,5 @@ $config['settingshortname'] = array(
     'SET_CSI' => '17', //Customer Search by ID
     'SET_F4F' => '18', //Use Fixed Deposits for Fine
 );
+
+$config['gender']=array('male'=>'Male','female'=>'Female','others'=>'Others');

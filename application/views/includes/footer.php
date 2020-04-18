@@ -19,6 +19,27 @@
     </div> <!-- /.container -->
 
 </footer>
+<ul class="howl" style="display: none;" id="dangermsg">
+    <li class="howl-slot howl-has-icon" style="display: list-item;">
+        <div class="howl-message howl-danger">
+            <button class="close howl-close">×</button>
+            <div class="howl-message-inner">
+                <p id="error-text"></p>
+            </div><i class="howl-icon fa fa-ban"></i>
+        </div>
+    </li>
+</ul>
+<ul class="howl" style="display: none;" id="successmsg">
+    <li class="howl-slot howl-has-icon" style="display: list-item;">
+        <div class="howl-message howl-success">
+            <button class="close howl-close">×</button>
+            <div class="howl-message-inner">
+                <p id="success-text"></p>
+            </div><i class="howl-icon fa fa-check-square-o"></i>
+        </div>
+    </li>
+</ul>
+
 <script src="<?php echo base_url(); ?>assets/admin/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery-1.10.1.min.js"></script>
@@ -33,6 +54,7 @@
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery.validate.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/custom.js"></script>
+
 <?php
 if (isset($jsfile) && count($jsfile)) {
     foreach ($jsfile as $key => $value) {
@@ -40,5 +62,6 @@ if (isset($jsfile) && count($jsfile)) {
     }
 }
 ?>
+
 </body>
 </html>
