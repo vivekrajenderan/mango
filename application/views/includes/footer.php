@@ -19,7 +19,8 @@
     </div> <!-- /.container -->
 
 </footer>
-
+<script src="<?php echo base_url(); ?>assets/admin/js/jquery.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery-1.10.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery-ui-1.9.2.custom.min.js"></script>
 <!-- App JS -->
@@ -29,7 +30,6 @@
 <script src="<?php echo base_url(); ?>assets/admin/js/datatable/DT_bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/datepicker/bootstrap-datepicker.js"></script>
 
-<script src="<?php echo base_url(); ?>assets/admin/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery.validate.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/custom.js"></script>
