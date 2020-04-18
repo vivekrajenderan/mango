@@ -26,8 +26,10 @@
 <!-- App JS -->
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/target-admin.js"></script>
 
+<script src="<?php echo base_url(); ?>assets/admin/js/datatable/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/js/datatable/DT_bootstrap.js"></script>
+
 <script src="<?php echo base_url(); ?>assets/lib/jquery.validate.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/custom.js"></script>
-<script src="<?php echo base_url(); ?>assets/admin/js/demos/calculatetable.js"></script>
 </body>
 </html>

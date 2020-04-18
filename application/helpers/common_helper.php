@@ -212,6 +212,10 @@ function gettimediffdameday($ftime, $ttime) {
     return $since_start->invert;
 }
 
+function convertDays($days) {
+    return $seconds = $days * 86400;
+}
+
 function importCsv($rn, $storeFolder = "uploads") {
     if (!is_dir($storeFolder)) {
         mkdir($storeFolder, 0777, TRUE);
