@@ -21,8 +21,25 @@ class Employees extends CI_Controller {
         $this->load->view('employee/list', $data);
         $this->load->view('includes/footer');
     }
-    public function add() {
-        $data['maritalstatus']= Getdropdowns('employeestatus', 'statusname');        
+
+    public function add($id=NULL) {
+        $data['list'] = new stdClass();
+        if (!empty($id)) {
+            $condition_array['md5(id)'] = $id;
+            $data['list'] = $this->dbmodel->getAll('employee', $condition_array);
+            if (count($data_list) > 0) {
+                $data['list'] = $data_list[0];
+            } else {
+                
+            }
+        }
+        $data['maritalstatus'] = Getdropdowns('employeestatus', 'statusname');
+        $this->load->view('includes/header');
+        $this->load->view('employee/add', $data);
+        $this->load->view('includes/footer', array('jsfile' => array('employee.js')));
+    }
+
+    public function save() {
         $this->load->view('includes/header');
         $this->load->view('employee/add', $data);
         $this->load->view('includes/footer');
