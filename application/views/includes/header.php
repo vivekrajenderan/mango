@@ -107,7 +107,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>">
+                            <a href="<?php echo base_url('employees'); ?>">
                                 <i class="fa fa-users"></i>
                                 Employees
                             </a>

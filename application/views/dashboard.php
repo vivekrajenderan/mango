@@ -3,133 +3,124 @@
     <div class="content">
 
         <div class="content-container">
-            <div class="content-header">
-                <h2 class="content-header-title">Tables Basic</h2>
+            <div class="content-header">                
                 <ol class="breadcrumb">
-                    <li><a href="<?php echo base_url();?>">Home</a></li>
-                    <li><a href="javascript:;">Data Elements</a></li>
-                    <li class="active">Tables Basic</li>
+                    <li><a href="<?php echo base_url(); ?>">Home</a></li>                    
+                    <li class="active">Dashboard</li>
                 </ol>
             </div>
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-12">
 
-                    <h4 class="heading">
-                        Overdue Subscription Fees
-                    </h4>
+                    <div class="portlet">
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Larry</td>
-                                <td>Smith</td>
-                                <td>@lsmith</td>
-                                <td>
-                                    <span class="label label-primary">Approved</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Mark</td>
-                                <td>Williams</td>
-                                <td>@mwills</td>
-                                <td>
-                                    <span class="label label-secondary">Pending</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Jeremy</td>
-                                <td>Jones</td>
-                                <td>@jj</td>
-                                <td>
-                                    <span class="label label-success">Success</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Carlos</td>
-                                <td>Martin</td>
-                                <td>@cmar</td>
-                                <td>
-                                    <span class="label label-default">Suspended</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <div class="portlet-header">
+
+                            <h3>
+                                <i class="fa fa-table"></i>
+                                Overdue Subscription Fees
+                            </h3>
+
+                        </div> <!-- /.portlet-header -->
+
+                        <div class="portlet-content">           
+
+                            <div class="table-responsive">
+
+                                <table 
+                                    class="table table-striped table-bordered table-hover table-highlight table-checkable" 
+                                    data-provide="datatable" 
+                                    data-display-rows="10"
+                                    data-info="true"
+                                    data-search="true"
+                                    data-length-change="true"
+                                    data-paginate="true"
+                                    >
+                                    <thead>
+                                        <tr>                                            
+                                            <th data-filterable="true" data-sortable="true" data-direction="desc">Cust. No.</th>
+                                            <th data-direction="asc" data-filterable="true" data-sortable="true">Customer Name</th>
+                                            <th data-filterable="true" data-sortable="true">Last Paid</th>                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($customeroverdue as $key => $value) { ?>
+                                            <tr>                                           
+                                                <td><?php echo (isset($value['cust_no'])) ? $value['cust_no'] : ""; ?></td>
+                                                <td><?php echo (isset($value['cust_name'])) ? $value['cust_name'] : ""; ?></td>
+                                                <td><?php echo (isset($value['cust_lastsub'])) ? date("d.m.Y", $value['cust_lastsub']) : ""; ?></td>                                                                                            
+                                            </tr>                                             
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.table-responsive -->
+
+
+                        </div> <!-- /.portlet-content -->
+
+                    </div> <!-- /.portlet -->
+
+
+
+                </div> <!-- /.col -->
+                <div class="col-md-12">
+
+                    <div class="portlet">
+
+                        <div class="portlet-header">
+
+                            <h3>
+                                <i class="fa fa-table"></i>
+                                Defaulted Loan Instalments
+                            </h3>
+
+                        </div> <!-- /.portlet-header -->
+
+                        <div class="portlet-content">           
+
+                            <div class="table-responsive">
+
+                                <table 
+                                    class="table table-striped table-bordered table-hover table-highlight table-checkable" 
+                                    data-provide="datatable" 
+                                    data-display-rows="10"
+                                    data-info="true"
+                                    data-search="true"
+                                    data-length-change="true"
+                                    data-paginate="true"
+                                    >
+                                    <thead>
+                                        <tr>                                            
+                                            <th data-filterable="true" data-sortable="true" data-direction="desc">Loan No.</th>
+                                            <th data-direction="asc" data-filterable="true" data-sortable="true">Customer Name</th>
+                                            <th data-filterable="true" data-sortable="true">Due Date</th>
+                                            <th data-filterable="true" data-sortable="true" class="hidden-xs hidden-sm">Amount Due</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($customertransoverdue as $key => $value) { ?>
+                                            <tr>                                           
+                                                <td><?php echo (isset($value['loan_no'])) ? $value['loan_no'] : ""; ?></td>
+                                                <td><?php echo (isset($value['cust_name'])) ? $value['cust_name'] : ""; ?></td>
+                                                <td><?php echo (isset($value['ltrans_due'])) ? date("d.m.Y", $value['ltrans_due']) : ""; ?></td>                                                                                            
+                                                <td><?php echo (isset($value['ltrans_principaldue']) && isset($value['ltrans_interestdue'])) ? number_format($value['ltrans_principaldue'] + $value['ltrans_interestdue']) . ' ' . $set_cur : ""; ?></td>                                                                                            
+                                            </tr>                                             
+                                        <?php } ?>                                        
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.table-responsive -->
+
+
+                        </div> <!-- /.portlet-content -->
+
+                    </div> <!-- /.portlet -->
+
+
 
                 </div> <!-- /.col -->
 
-                <div class="col-md-6">
-
-                    <h4 class="heading">
-                        Defaulted Loan Instalments
-                    </h4>
-
-                    <table class="table table-bordered table-highlight">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Larry</td>
-                                <td>Smith</td>
-                                <td>@lsmith</td>
-                                <td>
-                                    <span class="label label-primary">Approved</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Mark</td>
-                                <td>Williams</td>
-                                <td>@mwills</td>
-                                <td>
-                                    <span class="label label-secondary">Pending</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Jeremy</td>
-                                <td>Jones</td>
-                                <td>@jj</td>
-                                <td>
-                                    <span class="label label-success">Success</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Carlos</td>
-                                <td>Martin</td>
-                                <td>@cmar</td>
-                                <td>
-                                    <span class="label label-default">Suspended</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>              
-
-                </div> <!-- /.col -->
-
-            </div>
+            </div> <!-- /.row -->
 
 
         </div> <!-- /.content-container -->
