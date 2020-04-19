@@ -39,7 +39,29 @@
         </div>
     </li>
 </ul>
-
+<?php if ($this->session->flashdata('ErrorMessages') != '') { ?>
+    <ul class="howl" id="flasherror">
+        <li class="howl-slot howl-has-icon" style="display: list-item;">
+            <div class="howl-message howl-danger">
+                <button class="close howl-close">×</button>
+                <div class="howl-message-inner">
+                    <p><?php echo $this->session->flashdata('ErrorMessages'); ?></p>
+                </div><i class="howl-icon fa fa-ban"></i>
+            </div>
+        </li>
+    </ul>
+<?php } if ($this->session->flashdata('SucMessage') != '') { ?>
+    <ul class="howl" id="flashsuccess">
+        <li class="howl-slot howl-has-icon" style="display: list-item;">
+            <div class="howl-message howl-success">
+                <button class="close howl-close">×</button>
+                <div class="howl-message-inner">
+                    <p><?php echo $this->session->flashdata('SucMessage'); ?></p>
+                </div><i class="howl-icon fa fa-check-square-o"></i>
+            </div>
+        </li>
+    </ul>
+<?php } ?>
 <script src="<?php echo base_url(); ?>assets/admin/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/jquery-1.10.1.min.js"></script>
@@ -49,9 +71,9 @@
 <script src="<?php echo base_url(); ?>assets/admin/js/lib/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/custom.js"></script>
 <?php
-if (isset($jsfile) && count($jsfile)) {    
+if (isset($jsfile) && count($jsfile)) {
     foreach ($jsfile as $key => $value) {
-        echo "<script src='" . base_url($value)."'></script>";
+        echo "<script src='" . base_url($value) . "'></script>";
     }
 }
 ?>

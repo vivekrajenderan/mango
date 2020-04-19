@@ -1,4 +1,4 @@
-function openSuccess(successMsg) {    
+function openSuccess(successMsg) {
     var alert = document.getElementById('successmsg');
     alert.style.display = "block";
     document.getElementById('success-text').innerHTML = successMsg;
@@ -15,3 +15,12 @@ function openDanger(errorMsg) {
         alerterror.style.display = "none";
     }, 3000);
 }
+setTimeout(function () {
+    $("#flashsuccess").hide();
+    $("#flasherror").hide();
+}, 3000);
+
+$(document).on("click", ".howl-close", function () {
+    $("#flashsuccess").hide();
+    $("#flasherror").hide();
+});
