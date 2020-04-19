@@ -38,4 +38,5 @@ $config['jsfile'] = array(
     'datatable' => array('assets/admin/js/datatable/jquery.dataTables.min.js', 'assets/admin/js/datatable/DT_bootstrap.js'),
     'datepicker' => array('assets/admin/js/datepicker/bootstrap-datepicker.js'),
     'validation' => array('assets/admin/js/lib/jquery.validate.js'),
+    'usergroups' => array('assets/admin/js/usergroups.js'),
     'employee' => array('assets/admin/js/employee.js'));
