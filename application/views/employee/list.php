@@ -27,8 +27,7 @@
 
                         <div class="portlet-content">           
 
-                            <div class="table-responsive">
-
+                            <div class="table-responsive">                                
                                 <table 
                                     class="table table-striped table-bordered table-hover table-highlight table-checkable" 
                                     data-provide="datatable" 
@@ -58,21 +57,15 @@
                                                 <td><?php echo (isset($value->empl_in)) ? cdatedbton($value->empl_in) : ""; ?></td>                                                                                            
                                                 <td><?php echo (isset($value->empl_out) && !empty($value->empl_out)) ? date("d.m.Y", $value->empl_out) : ""; ?></td>                                                                                            
                                                 <td>
-                                                    <?php
-                                                    if (isset($value->empl_out) && !empty($value->empl_out)) {
-                                                        if ($value->empl_out > time()) {
-                                                            echo 'Current';
-                                                        } else if ($value->empl_out < time()) {
-                                                            echo 'Former';
-                                                        }
-                                                    }
-                                                    ?>
+                                                    <label class="label-switch switch-success">
+                                                        <input type="checkbox" class="switch-square switch-bootstrap switchstatus" name="status" id="status_<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-status="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'checked' : ''; ?> >
+                                                        <span class="lable"></span></label>
                                                 </td> 
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-default btn-sm"><i class="fa fa-eye"></i></a>
+                                                        <a href="javascript:void(0);" class="btn btn-default btn-sm employeeview" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>"><i class="fa fa-eye"></i></a>
                                                         <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                                        <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>                                                        
+                                                        <a href="<?php echo base_url('employees/delete/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm" onClick="return confirm('Do u really want to delete Employee?');"><i class="fa fa-times"></i></a>                                                        
                                                     </div>
                                             </tr>                                             
                                         <?php } ?>
@@ -97,3 +90,5 @@
     </div> <!-- /.content -->
 
 </div> <!-- /.container -->
+
+<div id="popupshow"></div>

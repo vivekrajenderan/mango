@@ -16,10 +16,6 @@ $(document).ready(function () {
             empl_dob: {
                 required: true
             },
-            empl_salary: {
-                required: false,
-                salarycheck: true
-            },
             fk_employeestatus_id: {
                 required: true
             },
@@ -84,7 +80,7 @@ $(document).ready(function () {
                 dataType: 'json'
             }).done(function (response) {
 
-                if (response.status == "1")
+                if (response.status)
                 {
                     openSuccess(response.msg);
                     window.location = baseurl + 'employees';
@@ -105,15 +101,6 @@ $(document).ready(function () {
             return true;
         }
     }, "Please choose format type .jpg, .jpeg, .png, .gif, .bmp");
-    $.validator.addMethod("salarycheck", function (value, element) {
-        var valid = /^\d{0,4}(\.\d{0,2})?$/.test(value);
-        if (valid) {
-            return false;
-        } else
-        {
-            return true;
-        }
-    }, "Please enter valid amount");
 });
 $(document).on('click', '#close-preview', function () {
     $('.image-preview').popover('hide');
@@ -179,3 +166,87 @@ function RemoveImage()
     $("#profile_image").hide();
     $("#profile_image_content").show();
 }
+
+$(document).on('click', '.employeeview', function () {
+    var empid = $(this).attr('data-id');
+    if (empid)
+    {
+        $.ajax({
+            url: baseurl + 'employees/view',
+            type: 'POST',
+            data: {empid: empid},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $('#loading-image').css('display', 'block');
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('#loading-image').css('display', 'none');
+                $("body").removeClass("loading");
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    $("#popupshow").html(response.viewhtml);
+                    $("#employeeviewModal").css({"display": "block"});
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    }
+});
+
+$(document).on("click", ".close, .closebtn", function () {
+    $("#employeeviewModal").css({"display": "none"});
+});
+
+$(document).on("keypress keyup blur", ".allownumericwithdecimal", function (event) {
+    $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+});
+
+$(document).on('click', '.switchstatus', function () {
+    var empid = $(this).attr('data-id');
+    var status = $(this).attr('data-status');
+    if (empid)
+    {
+        $.ajax({
+            url: baseurl + 'employees/changestatus',
+            type: 'POST',
+            data: {empid: empid, status: status},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $("#status_" + empid).addClass('switchdisable');
+            },
+            complete: function () {
+                $("#status_" + empid).removeClass('switchdisable');
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    if (status == 1)
+                    {
+                        $("#status_" + empid).attr('data-status', 0);
+                        $("#status_" + empid).prop('checked', false);
+
+                    } else
+                    {
+                        $("#status_" + empid).attr('data-status', 1);
+                        $("#status_" + empid).prop('checked', true);
+
+                    }
+                    openSuccess(response.msg);
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    }
+});

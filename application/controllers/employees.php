@@ -19,7 +19,7 @@ class Employees extends CI_Controller {
         $data['list'] = $this->dbmodel->getGridAll('employee', $params);
         $this->load->view('includes/header');
         $this->load->view('employee/list', $data);
-        $this->load->view('includes/footer');
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['employee'])));
     }
 
     public function add($id = NULL) {
@@ -28,18 +28,17 @@ class Employees extends CI_Controller {
             $condition_array['md5(id)'] = $id;
             $data_list = $this->dbmodel->getAll('employee', $condition_array);
             if (count($data_list) > 0) {
-                $data_list[0]->empl_dob=cdatedbton($data_list[0]->empl_dob);
-                $data['list'] = $data_list[0];                
-                
+                $data_list[0]->empl_dob = cdatedbton($data_list[0]->empl_dob);
+                $data['list'] = $data_list[0];
             } else {
                 
             }
         }
-        $data['genderlist']= $this->config->item('gender');        
+        $data['genderlist'] = $this->config->item('gender');
         $data['maritalstatus'] = Getdropdowns('employeestatus', 'statusname');
         $this->load->view('includes/header');
         $this->load->view('employee/add', $data);
-        $this->load->view('includes/footer', array('jsfile' => array('employee.js')));
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['employee'])));
     }
 
     public function save() {
@@ -87,7 +86,7 @@ class Employees extends CI_Controller {
                     'empl_pic' => trim($file_name),
                     'fk_users_id' => $this->session->userdata('log_id')
                 );
-                $saved = "";                
+                $saved = "";
                 if (isset($_POST['emp_id']) && !empty($_POST['emp_id'])) {
                     $saved = $this->dbmodel->update('employee', $setdata, array('id' => $_POST['emp_id']));
                 } else {
@@ -96,9 +95,9 @@ class Employees extends CI_Controller {
                     $saved = $this->dbmodel->insert('employee', $setdata);
                 }
                 if ($saved) {
-                    echo json_encode(array('status' => 1, 'msg' => ucfirst($this->input->post('empl_name')) . ' Employee saved Successfully'));
+                    echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empl_name')) . ' Employee saved Successfully'));
                 } else {
-                    echo json_encode(array('status' => 0, 'msg' => 'Employee Saved Not Successfully'));
+                    echo json_encode(array('status' => false, 'msg' => 'Employee Saved Not Successfully'));
                 }
             }
         }
@@ -111,6 +110,48 @@ class Employees extends CI_Controller {
         if (isset($_POST['emp_id']))
             $not_condition["id"] = array('id' => $_POST['emp_id']);
         return !$this->dbmodel->rowCheck('employee', $condition_arr, $not_condition);
+    }
+
+    public function view() {
+        $loadhtml = "";
+        if (isset($_POST['empid']) && !empty($_POST['empid'])) {
+            $condition_array['md5(id)'] = $_POST['empid'];
+            $data_list = $this->dbmodel->getAll('employee', $condition_array);
+            if (count($data_list) > 0) {
+                $data_list[0]->employeestatus = getFeild('statusname', 'employeestatus', 'id', $data_list[0]->fk_employeestatus_id);
+                $data_list[0]->empl_dob = cdatedbton($data_list[0]->empl_dob);
+                $data['list'] = $data_list[0];
+                $loadhtml = $this->load->view('employee/view', $data, true);
+            }
+        }
+        echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
+    }
+
+    public function delete($id) {
+        if (!empty($id)) {
+            $condition_array['md5(id)'] = $id;
+            $data_list = $this->dbmodel->getAll('employee', $condition_array);
+            if (count($data_list) > 0) {
+                $this->dbmodel->update('employee', array('dels' => '1'), array('id' => $data_list[0]->id));
+                $this->session->set_flashdata('SucMessage', 'Employee has been deleted successfully!!!');
+            } else {
+                $this->session->set_flashdata('ErrorMessages', 'Employee has not been deleted successfully!!!');
+            }
+        }
+        redirect(base_url() . 'employees');
+    }
+
+    public function changestatus() {
+        if (isset($_POST['empid']) && !empty($_POST['empid'])) {
+            $condition_array['md5(id)'] = $_POST['empid'];
+            $data_list = $this->dbmodel->getAll('employee', $condition_array);
+            if (count($data_list) > 0) {
+                $this->dbmodel->update('employee', array('status' => (isset($_POST['status']) && !empty($_POST['status'])) ? '0' : '1'), array('id' => $data_list[0]->id));
+                echo json_encode(array('status' => true, 'msg' => (isset($_POST['status']) && !empty($_POST['status'])) ? 'Employee Inactive Successfully' : 'Employee Active Successfully'));
+            } else {
+                echo json_encode(array('status' => false, 'msg' => (isset($_POST['status']) && !empty($_POST['status'])) ? 'Employee Inactive not Successfully' : 'Employee Active not Successfully'));
+            }
+        }
     }
 
 }

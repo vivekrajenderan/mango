@@ -88,7 +88,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Position <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Position
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" id="empl_position" name="empl_position" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->empl_position)) ? $list->empl_position : ""; ?>">
@@ -96,11 +96,11 @@
                                         </div> 
                                     </div> 
                                     <div class="col-sm-6">
-                                        <div class="form-group elVal">
+                                        <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Monthly Salary<span class="required">*</span>
                                             </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="empl_salary" name="empl_salary" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->empl_salary)) ? $list->empl_salary : ""; ?>">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="text" id="empl_salary" name="empl_salary" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="30" minlength="3" value="<?php echo (isset($list->empl_salary) && !empty($list->empl_salary)) ? number_format($list->empl_salary, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div>
                                     </div> 
@@ -117,7 +117,7 @@
                                     </div> 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">E-Mail<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">E-Mail
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" id="empl_email" name="empl_email" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->empl_email)) ? $list->empl_email : ""; ?>">
@@ -146,14 +146,14 @@
                                                 $display = "";
                                                 if (isset($list->empl_pic) && !empty($list->empl_pic)) {
                                                     $display = "none";
-                                                    if (file_exists("./assets/upload/profile/" . $list->empl_pic)) {
-                                                        $image_name = $list->empl_pic;
+                                                    if (file_exists(UPLOADPATH . "profile/" . $list->empl_pic)) {
+                                                        $image_name = base_url() . UPLOADPATH . 'profile/' . $list->empl_pic;
                                                     } else {
-                                                        $image_name = "no_image.png";
+                                                        $image_name = base_url() . "assets/admin/img/no_image.png";
                                                     }
                                                     ?>
                                                     <div class="control-group file-select-main" id='profile_image'> 
-                                                        <img class="img-thumbnail" src="<?php echo base_url() . 'assets/upload/profile/' . $image_name; ?>" alt="" width="100" height="100"/></a>
+                                                        <img class="img-thumbnail" src="<?php echo $image_name; ?>" alt="" width="100" height="100"/></a>
                                                         &nbsp;&nbsp;<a href="javascript:void(0);" onclick="RemoveImage();" class="btn btn-dark" title="Delete Logo">Remove</a>
 
                                                     </div>   
