@@ -95,6 +95,7 @@ class Employees extends CI_Controller {
                     $saved = $this->dbmodel->insert('employee', $setdata);
                 }
                 if ($saved) {
+                    $this->session->set_flashdata('SucMessage', ucfirst($this->input->post('empl_name')) . ' Employee saved Successfully');
                     echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empl_name')) . ' Employee saved Successfully'));
                 } else {
                     echo json_encode(array('status' => false, 'msg' => 'Employee Saved Not Successfully'));
@@ -152,6 +153,19 @@ class Employees extends CI_Controller {
                 echo json_encode(array('status' => false, 'msg' => (isset($_POST['status']) && !empty($_POST['status'])) ? 'Employee Inactive not Successfully' : 'Employee Active not Successfully'));
             }
         }
+    }
+
+    public function deletepopup() {
+        $loadhtml = "";
+        if (isset($_POST['empid']) && !empty($_POST['empid'])) {
+            $condition_array['md5(id)'] = $_POST['empid'];
+            $data_list = $this->dbmodel->getAll('employee', $condition_array);
+            if (count($data_list) > 0) {
+                $data['list'] = $data_list[0];
+                $loadhtml = $this->load->view('employee/delete', $data, true);
+            }
+        }
+        echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
 }

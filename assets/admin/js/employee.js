@@ -82,7 +82,6 @@ $(document).ready(function () {
 
                 if (response.status)
                 {
-                    openSuccess(response.msg);
                     window.location = baseurl + 'employees';
                 } else
                 {
@@ -201,6 +200,7 @@ $(document).on('click', '.employeeview', function () {
 
 $(document).on("click", ".close, .closebtn", function () {
     $("#employeeviewModal").css({"display": "none"});
+    $("#deleteEmployemodal").css({"display": "none"});
 });
 
 $(document).on("keypress keyup blur", ".allownumericwithdecimal", function (event) {
@@ -242,6 +242,38 @@ $(document).on('click', '.switchstatus', function () {
 
                     }
                     openSuccess(response.msg);
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    }
+});
+
+$(document).on('click', '.employeedelete', function () {
+    var empid = $(this).attr('data-id');
+    if (empid)
+    {
+        $.ajax({
+            url: baseurl + 'employees/deletepopup',
+            type: 'POST',
+            data: {empid: empid},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $('#loading-image').css('display', 'block');
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('#loading-image').css('display', 'none');
+                $("body").removeClass("loading");
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    $("#popupshow").html(response.viewhtml);
+                    $("#deleteEmployemodal").css({"display": "block"});
                 } else
                 {
                     openDanger(response.msg);

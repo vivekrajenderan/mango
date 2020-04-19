@@ -65,7 +65,8 @@
                                                     <div class="btn-group">
                                                         <a href="javascript:void(0);" class="btn btn-default btn-sm employeeview" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>"><i class="fa fa-eye"></i></a>
                                                         <a href="<?php echo base_url('employees/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                                        <a href="<?php echo base_url('employees/delete/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm" onClick="return confirm('Do u really want to delete Employee?');"><i class="fa fa-times"></i></a>                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm employeedelete" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>"><i class="fa fa-times"></i></a>
+                                                            <!--<a href="<?php echo base_url('employees/delete/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm" onClick="return confirm('Do u really want to delete Employee?');"><i class="fa fa-times"></i></a>-->                                                        
                                                     </div>
                                             </tr>                                             
                                         <?php } ?>
