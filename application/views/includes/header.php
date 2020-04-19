@@ -122,12 +122,30 @@
                                 Reports
                             </a>
                         </li>
-                        <li>
-                            <a href="<?php echo base_url(); ?>">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 <i class="fa fa-cogs"></i>
                                 Settings
+                                <span class="caret"></span>
                             </a>
-                        </li>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <i class="fa fa-user nav-icon"></i> 
+                                        &nbsp;&nbsp;Users
+                                    </a>
+                                </li>     
+
+                                <li>
+                                    <a href="<?php echo base_url('usergroups'); ?>">
+                                        <i class="fa fa-group"></i> 
+                                        &nbsp;&nbsp;User Group
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>                      
 
                     </ul> 
 
