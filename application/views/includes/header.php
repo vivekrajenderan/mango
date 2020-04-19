@@ -4,7 +4,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <title>mangoO | Microfinance Management</title>
+        <title>Kurinji Finance Management</title>
 
         <meta charset="utf-8">
         <meta name="description" content="">

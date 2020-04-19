@@ -10,7 +10,7 @@
 
                 <hr>    
 
-                <p>&copy; <?php echo date('Y'); ?> mangoO | Microfinance Management.</p>
+                <p>&copy; <?php echo date('Y'); ?> Kurinji Finance Management.</p>
 
             </div> <!-- /.col -->
 
