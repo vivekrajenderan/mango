@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js"> 
     <head>
-        <title>mangoO | Microfinance Management</title>
+        <title>Kurinji Finance Management</title>
 
         <meta charset="utf-8">
         <meta name="description" content="">
@@ -32,7 +32,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="<?php echo base_url(); ?>assets/admin//ico/mangoo_l.png">
+                    <img style="padding:25px 0;" src="<?php echo base_url(); ?>assets/admin//ico/mangoo_l.png">
                 </div>
 
                 <div class="col-md-4">
