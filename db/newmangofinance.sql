@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2020 at 02:14 PM
+-- Generation Time: Apr 19, 2020 at 01:46 PM
 -- Server version: 5.7.29-0ubuntu0.16.04.1
 -- PHP Version: 7.2.11-4+ubuntu16.04.1+deb.sury.org+1
 
@@ -160,32 +160,68 @@ INSERT INTO `prefix_customer` (`id`, `cust_no`, `cust_name`, `cust_dob`, `custse
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prefix_docprefix`
+--
+
+CREATE TABLE `prefix_docprefix` (
+  `id` int(11) NOT NULL,
+  `doctype` enum('employee','customer') NOT NULL DEFAULT 'employee',
+  `prefix` varchar(15) NOT NULL,
+  `start` int(255) NOT NULL DEFAULT '1000',
+  `current` int(255) NOT NULL DEFAULT '1000',
+  `status` enum('0','1') NOT NULL DEFAULT '1',
+  `fk_users_id` int(11) NOT NULL,
+  `dels` enum('1','0') NOT NULL DEFAULT '0',
+  `cdate` int(15) NOT NULL,
+  `mdate` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `prefix_docprefix`
+--
+
+INSERT INTO `prefix_docprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES
+(1, 'customer', 'CUSTOMER', 1000, 1000, '1', 0, '0', 1554959938, 1580129126),
+(2, 'employee', 'EMPLOYEE', 1000, 1006, '1', 0, '0', 1554959938, 1587278903);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prefix_employee`
 --
 
 CREATE TABLE `prefix_employee` (
   `id` int(11) NOT NULL,
   `fk_users_id` int(11) NOT NULL,
-  `empl_no` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `empl_no` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `empl_name` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_dob` int(11) DEFAULT NULL,
+  `empl_dob` date DEFAULT NULL,
   `emplsex` enum('male','female','others') COLLATE utf8_bin NOT NULL DEFAULT 'male',
   `fk_employeestatus_id` int(11) NOT NULL,
   `empl_position` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_salary` int(11) DEFAULT NULL,
+  `empl_salary` decimal(10,5) DEFAULT NULL,
   `empl_address` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `empl_phone` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `empl_email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_in` int(11) DEFAULT NULL,
+  `empl_in` datetime DEFAULT NULL,
   `empl_out` int(11) DEFAULT NULL,
   `empl_lastupd` int(11) DEFAULT NULL,
   `empl_active` int(1) NOT NULL DEFAULT '0',
   `empl_pic` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `status` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '1',
-  `dels` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '1',
+  `dels` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '0',
   `cdate` int(15) NOT NULL,
   `mdate` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `prefix_employee`
+--
+
+INSERT INTO `prefix_employee` (`id`, `fk_users_id`, `empl_no`, `empl_name`, `empl_dob`, `emplsex`, `fk_employeestatus_id`, `empl_position`, `empl_salary`, `empl_address`, `empl_phone`, `empl_email`, `empl_in`, `empl_out`, `empl_lastupd`, `empl_active`, `empl_pic`, `status`, `dels`, `cdate`, `mdate`) VALUES
+(1, 1, 'EMPLOYEE1003', 'vvjfjfq', '2020-01-04', 'male', 1, '', '43454.58000', 'jhg jkggk k g', '9999999999', '', '2020-04-18 22:41:39', NULL, NULL, 0, '1587229899-empl_pic.jpg', '0', '0', 0, 0),
+(2, 1, 'EMPLOYEE1004', 'Prabha', '2010-07-07', 'male', 1, 'Head Manager', '59000.00000', '19th, cross street, Main road, Madurai', '9436363636', 'prabha@gmail.com', '2020-04-19 11:39:19', NULL, NULL, 0, '1587278386-empl_pic.jpg', '1', '1', 0, 0),
+(3, 1, 'EMPLOYEE1005', 'Pandikumar', '0000-00-00', 'male', 1, '', '887.00000', 'jhgfjk fk fj hgd fd', '9999999998', '', '2020-04-19 12:18:23', NULL, NULL, 0, '1587278940-empl_pic.jpg', '1', '0', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -546,6 +582,12 @@ ALTER TABLE `prefix_customer`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `prefix_docprefix`
+--
+ALTER TABLE `prefix_docprefix`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `prefix_employee`
 --
 ALTER TABLE `prefix_employee`
@@ -604,10 +646,15 @@ ALTER TABLE `prefix_users`
 ALTER TABLE `prefix_customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 --
+-- AUTO_INCREMENT for table `prefix_docprefix`
+--
+ALTER TABLE `prefix_docprefix`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `prefix_employee`
 --
 ALTER TABLE `prefix_employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `prefix_employeestatus`
 --

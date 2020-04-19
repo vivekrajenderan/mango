@@ -33,4 +33,9 @@ $config['settingshortname'] = array(
     'SET_F4F' => '18', //Use Fixed Deposits for Fine
 );
 
-$config['gender']=array('male'=>'Male','female'=>'Female','others'=>'Others');
+$config['gender'] = array('male' => 'Male', 'female' => 'Female', 'others' => 'Others');
+$config['jsfile'] = array(
+    'datatable' => array('assets/admin/js/datatable/jquery.dataTables.min.js', 'assets/admin/js/datatable/DT_bootstrap.js'),
+    'datepicker' => array('assets/admin/js/datepicker/bootstrap-datepicker.js'),
+    'validation' => array('assets/admin/js/lib/jquery.validate.js'),
+    'employee' => array('assets/admin/js/employee.js'));

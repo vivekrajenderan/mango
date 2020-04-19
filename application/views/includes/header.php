@@ -50,7 +50,7 @@
 
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">                                
-                                <span class="navbar-profile-label"><?php echo $this->session->userdata('log_user'); ?> &nbsp;</span>
+                                <span class="navbar-profile-label"><?php echo ucfirst($this->session->userdata('log_user')); ?> &nbsp;</span>
                                 <i class="fa fa-caret-down"></i>
                             </a>
 

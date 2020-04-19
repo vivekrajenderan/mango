@@ -17,10 +17,9 @@ class Dashboard extends CI_Controller {
         $data['set_cur']=getFeild('set_value','settings','id',$this->config->item('settingshortname')['SET_CUR']);       
         $data['customeroverdue']= $this->customer_model->getCustomerOverdue();        
         $data['customertransoverdue']= $this->customer_model->getLtransOverdue();  
-//         pre($data);
         $this->load->view('includes/header');
         $this->load->view('dashboard',$data);
-        $this->load->view('includes/footer');
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'])));
     }
 
 }
