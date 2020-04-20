@@ -1,0 +1,9 @@
+1. ALTER TABLE `prefix_users` CHANGE `fk_employees_id` `fk_employee_id` INT(11) NOT NULL; 
+2. ALTER TABLE `prefix_employee` CHANGE `empname` `empname` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL; 
+
+3. ALTER TABLE `prefix_employee` CHANGE `empno` `empno` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL, CHANGE `dob` `dob` DATE NULL DEFAULT NULL, CHANGE `position` `position` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL, CHANGE `salary` `salary` DECIMAL(10,5) NULL DEFAULT NULL, CHANGE `address` `address` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL, CHANGE `phone` `phone` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL, CHANGE `email` `email` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL, CHANGE `empin` `empin` DATETIME NULL DEFAULT NULL, CHANGE `empout` `empout` INT(11) NULL DEFAULT NULL; 
+
+4. ALTER TABLE `prefix_employee` DROP `emplastupd`, DROP `empl_active`; 
+5. ALTER TABLE `prefix_employee` CHANGE `profileimage` `profileimage` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL; 
+
+6. ALTER TABLE `prefix_usergroups` CHANGE `padmin` `padmin` INT(11) NOT NULL DEFAULT '0', CHANGE `pdelete` `pdelete` INT(11) NOT NULL DEFAULT '0', CHANGE `preport` `preport` INT(11) NOT NULL DEFAULT '0'; 

@@ -14,7 +14,7 @@ class Login_auth extends CI_Model {
     function login_verify($username, $password) {
         $row = array();
 
-        $this->db->select('u.*,ug.groupname,ug.permission_admin,ug.permission_delete,ug.permission_report');
+        $this->db->select('u.*,ug.groupname,ug.padmin,ug.pdelete,ug.preport');
         $this->db->from('users as u');
         $this->db->join('usergroups ug', 'ug.id = u.fk_usergroups_id');
         $this->db->where('username', $username);
@@ -27,9 +27,9 @@ class Login_auth extends CI_Model {
                 'log_id' => $row[0]['id'],
                 'log_user' => $row[0]['username'],
                 'log_ugroup' => $row[0]['groupname'],
-                'log_admin' => $row[0]['permission_admin'],
-                'log_delete' => $row[0]['permission_delete'],
-                'log_report' => $row[0]['permission_report'],
+                'log_admin' => $row[0]['padmin'],
+                'log_delete' => $row[0]['pdelete'],
+                'log_report' => $row[0]['preport'],
                 'log_time' => time()
             );
             $this->session->set_userdata($session_data);

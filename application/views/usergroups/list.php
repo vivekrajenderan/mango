@@ -51,9 +51,9 @@
                                         <?php foreach ($list as $key => $value) { ?>
                                             <tr>                                           
                                                 <td class="text-center"><?php echo (isset($value->groupname)) ? $value->groupname : ""; ?></td>
-                                                <td class="text-center"><?php echo (isset($value->permission_admin) && !empty($value->permission_admin)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
-                                                <td class="text-center"><?php echo (isset($value->permission_delete) && !empty($value->permission_delete)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
-                                                <td class="text-center"><?php echo (isset($value->permission_report) && !empty($value->permission_report)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
+                                                <td class="text-center"><?php echo (isset($value->padmin) && !empty($value->padmin)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
+                                                <td class="text-center"><?php echo (isset($value->pdelete) && !empty($value->pdelete)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
+                                                <td class="text-center"><?php echo (isset($value->preport) && !empty($value->preport)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
                                                 <td>
                                                     <label class="label-switch switch-success">
                                                         <input type="checkbox" class="switch-square switch-bootstrap switchstatus" name="status" id="status_<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-status="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'checked' : ''; ?> >

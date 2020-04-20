@@ -42,16 +42,16 @@
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input type="checkbox" id="permission_admin" name="permission_admin" value="1" <?php echo (isset($list->permission_admin) && !empty($list->permission_admin)) ? 'checked' : ''; ?>>
-                                                    <label for="permission_admin"> Administrator </label>
+                                                    <input type="checkbox" id="padmin" name="padmin" value="1" <?php echo (isset($list->padmin) && !empty($list->padmin)) ? 'checked' : ''; ?>>
+                                                    <label for="padmin"> Administrator </label>
                                                 </div>
                                                 <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input type="checkbox" id="permission_delete" name="permission_delete" value="1" <?php echo (isset($list->permission_delete) && !empty($list->permission_delete)) ? 'checked' : ''; ?>>
-                                                    <label for="permission_delete"> Deleting </label>
+                                                    <input type="checkbox" id="pdelete" name="pdelete" value="1" <?php echo (isset($list->pdelete) && !empty($list->pdelete)) ? 'checked' : ''; ?>>
+                                                    <label for="pdelete"> Deleting </label>
                                                 </div>
                                                 <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input type="checkbox" id="permission_report" name="permission_report" value="1" <?php echo (isset($list->permission_report) && !empty($list->permission_report)) ? 'checked' : ''; ?>>
-                                                    <label for="permission_report"> Reports </label>
+                                                    <input type="checkbox" id="preport" name="preport" value="1" <?php echo (isset($list->preport) && !empty($list->preport)) ? 'checked' : ''; ?>>
+                                                    <label for="preport"> Reports </label>
                                                 </div>
                                             </div>
                                         </div> 

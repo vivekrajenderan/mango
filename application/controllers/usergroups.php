@@ -14,8 +14,8 @@ class Usergroups extends CI_Controller {
     }
 
     public function index() {
-        //$params['filtercustom']["empl_out > " . time() . " OR empl_out IS NULL"] = '';
-        $params['select'] = array('id', 'status', 'groupname', 'permission_admin', 'permission_delete', 'permission_report');
+        //$params['filtercustom']["empout > " . time() . " OR empout IS NULL"] = '';
+        $params['select'] = array('id', 'status', 'groupname', 'padmin', 'pdelete', 'preport');
         $data['list'] = $this->dbmodel->getGridAll('usergroups', $params);
         $this->load->view('includes/header');
         $this->load->view('usergroups/list', $data);
@@ -46,9 +46,9 @@ class Usergroups extends CI_Controller {
                 return false;
             } else {
                 $setdata = array('groupname' => (isset($_POST['groupname']) && !empty($_POST['groupname'])) ? trim($_POST['groupname']) : "",
-                    'permission_admin' => (isset($_POST['permission_admin']) && !empty($_POST['permission_admin'])) ? $_POST['permission_admin'] : "",
-                    'permission_delete' => (isset($_POST['permission_delete']) && !empty($_POST['permission_delete'])) ? $_POST['permission_delete'] : "",
-                    'permission_report' => (isset($_POST['permission_report']) && !empty($_POST['permission_report'])) ? $_POST['permission_report'] : "",
+                    'padmin' => (isset($_POST['padmin']) && !empty($_POST['padmin'])) ? $_POST['padmin'] : "",
+                    'pdelete' => (isset($_POST['pdelete']) && !empty($_POST['pdelete'])) ? $_POST['pdelete'] : "",
+                    'preport' => (isset($_POST['preport']) && !empty($_POST['preport'])) ? $_POST['preport'] : "",
                     'fk_users_id' => $this->session->userdata('log_id')
                 );
                 $saved = "";
@@ -58,8 +58,8 @@ class Usergroups extends CI_Controller {
                     $saved = $this->dbmodel->insert('usergroups', $setdata);
                 }
                 if ($saved) {
-                    $this->session->set_flashdata('SucMessage', ucfirst($this->input->post('empl_name')) . ' User Groups saved Successfully');
-                    echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empl_name')) . ' User Groups saved Successfully'));
+                    $this->session->set_flashdata('SucMessage', ucfirst($this->input->post('empname')) . ' User Groups saved Successfully');
+                    echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empname')) . ' User Groups saved Successfully'));
                 } else {
                     echo json_encode(array('status' => false, 'msg' => 'User Groups Saved Not Successfully'));
                 }

@@ -131,7 +131,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="javascript:void(0);">
+                                    <a href="<?php echo base_url('users'); ?>">
                                         <i class="fa fa-user nav-icon"></i> 
                                         &nbsp;&nbsp;Users
                                     </a>
