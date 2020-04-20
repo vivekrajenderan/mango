@@ -38,7 +38,7 @@ class Login extends CI_Controller {
         }
         $data = array('post_set' => $post_set, 'msg' => $msg);
 
-        $this->load->view('user/login', $data);
+        $this->load->view('login', $data);
     }
 
 }

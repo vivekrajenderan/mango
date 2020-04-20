@@ -193,21 +193,21 @@ INSERT INTO `prefix_docprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `
 CREATE TABLE `prefix_employee` (
   `id` int(11) NOT NULL,
   `fk_users_id` int(11) NOT NULL,
-  `empl_no` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_name` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_dob` date DEFAULT NULL,
+  `empno` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `empname` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `dob` date DEFAULT NULL,
   `emplsex` enum('male','female','others') COLLATE utf8_bin NOT NULL DEFAULT 'male',
   `fk_employeestatus_id` int(11) NOT NULL,
-  `empl_position` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_salary` decimal(10,5) DEFAULT NULL,
-  `empl_address` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_phone` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `empl_email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `empl_in` datetime DEFAULT NULL,
-  `empl_out` int(11) DEFAULT NULL,
+  `position` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `salary` decimal(10,5) DEFAULT NULL,
+  `address` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `phone` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `empin` datetime DEFAULT NULL,
+  `empout` int(11) DEFAULT NULL,
   `empl_lastupd` int(11) DEFAULT NULL,
   `empl_active` int(1) NOT NULL DEFAULT '0',
-  `empl_pic` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `profileimage` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `status` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '1',
   `dels` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '0',
   `cdate` int(15) NOT NULL,
@@ -218,10 +218,10 @@ CREATE TABLE `prefix_employee` (
 -- Dumping data for table `prefix_employee`
 --
 
-INSERT INTO `prefix_employee` (`id`, `fk_users_id`, `empl_no`, `empl_name`, `empl_dob`, `emplsex`, `fk_employeestatus_id`, `empl_position`, `empl_salary`, `empl_address`, `empl_phone`, `empl_email`, `empl_in`, `empl_out`, `empl_lastupd`, `empl_active`, `empl_pic`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 1, 'EMPLOYEE1003', 'vvjfjfq', '2020-01-04', 'male', 1, '', '43454.58000', 'jhg jkggk k g', '9999999999', '', '2020-04-18 22:41:39', NULL, NULL, 0, '1587229899-empl_pic.jpg', '0', '0', 0, 0),
-(2, 1, 'EMPLOYEE1004', 'Prabha', '2010-07-07', 'male', 1, 'Head Manager', '59000.00000', '19th, cross street, Main road, Madurai', '9436363636', 'prabha@gmail.com', '2020-04-19 11:39:19', NULL, NULL, 0, '1587278386-empl_pic.jpg', '1', '1', 0, 0),
-(3, 1, 'EMPLOYEE1005', 'Pandikumar', '0000-00-00', 'male', 1, '', '887.00000', 'jhgfjk fk fj hgd fd', '9999999998', '', '2020-04-19 12:18:23', NULL, NULL, 0, '1587278940-empl_pic.jpg', '1', '0', 0, 0);
+INSERT INTO `prefix_employee` (`id`, `fk_users_id`, `empno`, `empname`, `dob`, `emplsex`, `fk_employeestatus_id`, `position`, `salary`, `address`, `phone`, `email`, `empin`, `empout`, `empl_lastupd`, `empl_active`, `profileimage`, `status`, `dels`, `cdate`, `mdate`) VALUES
+(1, 1, 'EMPLOYEE1003', 'vvjfjfq', '2020-01-04', 'male', 1, '', '43454.58000', 'jhg jkggk k g', '9999999999', '', '2020-04-18 22:41:39', NULL, NULL, 0, '1587229899-profileimage.jpg', '0', '0', 0, 0),
+(2, 1, 'EMPLOYEE1004', 'Prabha', '2010-07-07', 'male', 1, 'Head Manager', '59000.00000', '19th, cross street, Main road, Madurai', '9436363636', 'prabha@gmail.com', '2020-04-19 11:39:19', NULL, NULL, 0, '1587278386-profileimage.jpg', '1', '1', 0, 0),
+(3, 1, 'EMPLOYEE1005', 'Pandikumar', '0000-00-00', 'male', 1, '', '887.00000', 'jhgfjk fk fj hgd fd', '9999999998', '', '2020-04-19 12:18:23', NULL, NULL, 0, '1587278940-profileimage.jpg', '1', '0', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -523,9 +523,9 @@ INSERT INTO `prefix_settings` (`id`, `set_name`, `set_short`, `set_value`) VALUE
 CREATE TABLE `prefix_usergroups` (
   `id` int(11) NOT NULL,
   `groupname` varchar(50) DEFAULT NULL,
-  `permission_admin` int(11) NOT NULL DEFAULT '0',
-  `permission_delete` int(11) NOT NULL DEFAULT '0',
-  `permission_report` int(11) NOT NULL DEFAULT '0',
+  `padmin` int(11) NOT NULL DEFAULT '0',
+  `pdelete` int(11) NOT NULL DEFAULT '0',
+  `preport` int(11) NOT NULL DEFAULT '0',
   `status` enum('0','1') NOT NULL DEFAULT '1',
   `fk_users_id` int(11) NOT NULL,
   `dels` enum('1','0') NOT NULL DEFAULT '0',
@@ -537,7 +537,7 @@ CREATE TABLE `prefix_usergroups` (
 -- Dumping data for table `prefix_usergroups`
 --
 
-INSERT INTO `prefix_usergroups` (`id`, `groupname`, `permission_admin`, `permission_delete`, `permission_report`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES
+INSERT INTO `prefix_usergroups` (`id`, `groupname`, `padmin`, `pdelete`, `preport`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES
 (1, 'admin', 1, 1, 1, '1', 0, '0', 0, 0),
 (2, 'Management', 0, 0, 0, '0', 0, '0', 0, 0),
 (3, 'Employee', 0, 0, 0, '0', 0, '0', 0, 0),
