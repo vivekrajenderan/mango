@@ -21,5 +21,11 @@ class Dashboard extends CI_Controller {
         $this->load->view('dashboard',$data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'])));
     }
+    
+    public function DeleteDown($Getfoleder = FALSE, $GetModuleName = FALSE) {
+        if (file_exists('export/' . $GetModuleName)) {
+            unlink('export/' . $GetModuleName);            
+        }
+    }
 
 }

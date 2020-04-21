@@ -282,3 +282,31 @@ $(document).on('click', '.employeedelete', function () {
         });
     }
 });
+
+$(document).on('click', '.downloadexport', function () {
+    $.ajax({
+        url: baseurl + 'employees/downloadexcel',
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        beforeSend: function () {
+            $('#loading-image').css('display', 'block');
+            $('body').addClass('loading');
+        },
+        complete: function () {
+            $('#loading-image').css('display', 'none');
+            $("body").removeClass("loading");
+        },
+        success: function (response) {
+            if (response.status)
+            {
+                window.location = response.filename;
+                deleteexportfile(response.filename);
+            } else
+            {
+                openDanger(response.msg);
+            }
+        }
+    });
+
+});

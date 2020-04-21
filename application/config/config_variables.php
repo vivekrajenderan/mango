@@ -39,4 +39,5 @@ $config['jsfile'] = array(
     'datepicker' => array('assets/admin/js/datepicker/bootstrap-datepicker.js'),
     'validation' => array('assets/admin/js/lib/jquery.validate.js'),
     'usergroups' => array('assets/admin/js/usergroups.js'),
+    'users' => array('assets/admin/js/users.js'),
     'employee' => array('assets/admin/js/employee.js'));

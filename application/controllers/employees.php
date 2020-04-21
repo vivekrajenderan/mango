@@ -168,4 +168,18 @@ class Employees extends CI_Controller {
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
+    public function downloadexcel() {
+        $this->load->library('excel');
+        $returnArr = array();
+        $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'position', 'salary', 'address', 'phone', 'email', 'empin', 'empout', 'fk_employeestatus_id', 'fk_employeestatus_statusname');
+        $employeelist = $this->dbmodel->getGridAll('employee', $params);
+        $returnArr['list'] = $employeelist;
+        $returnArr['headingname'] = array('empno' => 'Employee No', "empname" => 'Employee Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender', 'position' => 'Position','salary'=>'Salary','address'=>'Address','phone'=>'Phone','email'=>'Email','empin'=>'Employee IN','empout'=>'Employee Out','fk_employeestatus_statusname'=>'Marital Status');
+        $filenametext = 'Employee_Report_';
+        $data['filename'] = $filenametext . date('d-m-y') . '.xls';
+        $this->excel->streamCustom($data['filename'], $returnArr);
+        $data['filename'] = 'export/' . $data['filename'];
+        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+    }
+
 }
