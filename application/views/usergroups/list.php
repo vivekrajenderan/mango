@@ -55,16 +55,20 @@
                                                 <td class="text-center"><?php echo (isset($value->pdelete) && !empty($value->pdelete)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
                                                 <td class="text-center"><?php echo (isset($value->preport) && !empty($value->preport)) ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>'; ?></td>    
                                                 <td>
-                                                    <label class="label-switch switch-success">
-                                                        <input type="checkbox" class="switch-square switch-bootstrap switchstatus" name="status" id="status_<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-status="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'checked' : ''; ?> >
-                                                        <span class="lable"></span></label>
+                                                    <?php if ($value->id != 1) { ?>
+                                                        <label class="label-switch switch-success">
+                                                            <input type="checkbox" class="switch-square switch-bootstrap switchstatus" name="status" id="status_<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-status="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'checked' : ''; ?> >
+                                                            <span class="lable"></span></label>
+                                                    <?php } ?>
                                                 </td> 
                                                 <td>
-                                                    <div class="btn-group">
-                                                        
-                                                        <a href="<?php echo base_url('usergroups/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm usergroupsdelete" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>"><i class="fa fa-times"></i></a>                                                           
-                                                    </div>
+                                                    <?php if ($value->id != 1) { ?>
+                                                        <div class="btn-group">
+
+                                                            <a href="<?php echo base_url('usergroups/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm usergroupsdelete" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>"><i class="fa fa-times"></i></a>                                                           
+                                                        </div>
+                                                    <?php } ?>
                                             </tr>                                             
                                         <?php } ?>
                                     </tbody>

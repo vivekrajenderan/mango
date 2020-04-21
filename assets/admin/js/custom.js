@@ -24,3 +24,17 @@ $(document).on("click", ".howl-close", function () {
     $("#flashsuccess").hide();
     $("#flasherror").hide();
 });
+
+function deleteexportfile(filename)
+{
+    if (filename)
+    {
+        $.ajax({
+            url: baseurl + 'dashboard/DeleteDown/' + filename,
+            type: 'GET',            
+            success: function (response) {
+
+            }
+        });
+    }
+}

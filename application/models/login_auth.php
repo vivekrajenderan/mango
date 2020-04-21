@@ -18,7 +18,7 @@ class Login_auth extends CI_Model {
         $this->db->from('users as u');
         $this->db->join('usergroups ug', 'ug.id = u.fk_usergroups_id');
         $this->db->where('username', $username);
-        $this->db->where('password', md5($password));
+        $this->db->where('password', AES_Encode($password));
         $query = $this->db->get();
 
         if ($query->num_rows > 0) {

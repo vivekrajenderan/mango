@@ -1,4 +1,4 @@
-<div id="deleteEmployemodal" class="modal modal-styled fade in" aria-hidden="false">
+<div id="usersdeletemodal" class="modal modal-styled fade in" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info closebtn">Cancel</button>
-                <a href="<?php echo base_url('employees/delete/' . md5($list->id)); ?>" class="btn btn-danger">Delete</a>
+                <a href="<?php echo base_url('users/delete/' . md5($list->id)); ?>" class="btn btn-danger">Delete</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

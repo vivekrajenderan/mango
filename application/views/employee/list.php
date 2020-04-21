@@ -21,6 +21,7 @@
                                 <i class="fa fa-table"></i>
                                 Current Employee List
                             </h3>
+                            <a href="javascript:void(0);" class="btn btn-warning pull-right downloadexport" style="margin:0px 5px;"><i class="fa fa-cloud-download"></i></a>                            
                             <a href="<?php echo base_url('employees/add'); ?>" class="btn btn-secondary pull-right">Add Employee</a>
 
                         </div> <!-- /.portlet-header -->

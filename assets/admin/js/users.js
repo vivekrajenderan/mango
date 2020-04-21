@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#employee-form").validate({
+    $("#users-form").validate({
         highlight: function (element) {
             $(element).closest('.elVal').addClass("form-field text-error");
         },
@@ -7,82 +7,59 @@ $(document).ready(function () {
             $(element).closest('.elVal').removeClass("form-field text-error");
         }, errorElement: 'span',
         rules: {
-            empname: {
+            fullname: {
                 required: true
             },
-            emplsex: {
-                required: true
-            },
-            dob: {
-                required: true
-            },
-            fk_employeestatus_id: {
-                required: true
-            },
-            phone: {
+            username: {
                 required: true,
-                minlength: 10,
-                maxlength: 10,
+                noSpace: true
             },
-            email: {
-                required: false,
-                email: true
-            },
-            address: {
+            password: {
                 required: true,
-                minlength: 10,
-                maxlength: 300
+                minlength: 5
             },
-            profileimage: {
+            confirmpassword: {
                 required: true,
-                imagefilecheck: true
-            }
+                minlength: 5,
+                equalTo: "#password"
+            },
+            fk_usergroups_id: {
+                required: true
+            },
 
         },
         messages: {
-            empname: {
-                required: "Please enter employee name"
+            fullname: {
+                required: "Please enter the full name"
             },
-            emplsex: {
-                required: "Please choose gender"
+            username: {
+                required: "Please enter the user name"
             },
-            dob: {
-                required: "Please choose D.O.B"
+            password: {
+                required: "Please enter the password"
             },
-            fk_employeestatus_id: {
-                required: "Please choose Marital Status"
+            confirmpassword: {
+                required: "Please enter the confirm password",
+                equalTo: "Enter Confirm Password Same as Password"
             },
-            phone: {
-                required: "Please enter the phone no"
+            fk_usergroups_id: {
+                required: "Please choose the user group"
             },
-            address: {
-                required: "Please enter the address"
-            },
-            profileimage: {
-                required: "Please choose the profile picture"
-            }
         },
         errorPlacement: function (error, element) {
             error.appendTo(element.closest(".elVal"));
         },
         submitHandler: function (form) {
-            var formData = new FormData($('#employee-form')[0]);
-            formData.append('profileimage', $('input[type=file]')[0].files[0]);
-            var $form = $("#employee-form");
+            var $form = $("#users-form");
             $.ajax({
                 type: $form.attr('method'),
                 url: $form.attr('action'),
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
+                data: $form.serialize(),
                 dataType: 'json'
             }).done(function (response) {
-
                 if (response.status)
                 {
-                    window.location = baseurl + 'employees';
+                    window.location = baseurl + 'users';
                 } else
                 {
                     openDanger(response.msg);
@@ -91,89 +68,19 @@ $(document).ready(function () {
             return false; // required to block normal submit since you used ajax
         }
     });
-    $.validator.addMethod("imagefilecheck", function (value, element) {
-        var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
-        if ($.inArray(value.split('.').pop().toLowerCase(), fileExtension) == -1) {
-            return false;
-        } else
-        {
-            return true;
-        }
-    }, "Please choose format type .jpg, .jpeg, .png, .gif, .bmp");
-});
-$(document).on('click', '#close-preview', function () {
-    $('.image-preview').popover('hide');
-    // Hover befor close the preview
-    $('.image-preview').hover(
-            function () {
-                $('.image-preview').popover('show');
-            },
-            function () {
-                $('.image-preview').popover('hide');
-            }
-    );
+    $.validator.addMethod("noSpace", function (value, element) {
+        return value.indexOf(" ") < 0 && value != "";
+    }, "No space please and don't leave it empty");
 });
 
-$(function () {
-    // Create the close button
-    var closebtn = $('<button/>', {
-        type: "button",
-        text: 'x',
-        id: 'close-preview',
-        style: 'font-size: initial;',
-    });
-    closebtn.attr("class", "close pull-right");
-    // Set the popover default content
-    $('.image-preview').popover({
-        trigger: 'manual',
-        html: true,
-        title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
-        content: "There's no image",
-        placement: 'bottom'
-    });
-    // Clear event
-    $('.image-preview-clear').click(function () {
-        $('.image-preview').attr("data-content", "").popover('hide');
-        $('.image-preview-filename').val("");
-        $('.image-preview-clear').hide();
-        $('.image-preview-input input:file').val("");
-        $(".image-preview-input-title").text("Browse");
-    });
-    // Create the preview image
-    $(".image-preview-input input:file").change(function () {
-        var img = $('<img/>', {
-            id: 'dynamic',
-            width: 250,
-            height: 200
-        });
-        var file = this.files[0];
-        var reader = new FileReader();
-        // Set preview image into the popover data-content
-        reader.onload = function (e) {
-            $(".image-preview-input-title").text("Change");
-            $(".image-preview-clear").show();
-            $(".image-preview-filename").val(file.name);
-            img.attr('src', e.target.result);
-            $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
-        }
-        reader.readAsDataURL(file);
-    });
-});
-
-function RemoveImage()
-{
-    $("#profile_image").hide();
-    $("#profile_image_content").show();
-}
-
-$(document).on('click', '.employeeview', function () {
-    var empid = $(this).attr('data-id');
-    if (empid)
+$(document).on('click', '.usersview', function () {
+    var userid = $(this).attr('data-id');
+    if (userid)
     {
         $.ajax({
-            url: baseurl + 'employees/view',
+            url: baseurl + 'users/view',
             type: 'POST',
-            data: {empid: empid},
+            data: {userid: userid},
             dataType: 'json',
             async: false,
             beforeSend: function () {
@@ -188,7 +95,7 @@ $(document).on('click', '.employeeview', function () {
                 if (response.status)
                 {
                     $("#popupshow").html(response.viewhtml);
-                    $("#employeeviewModal").css({"display": "block"});
+                    $("#usersviewModal").css({"display": "block"});
                 } else
                 {
                     openDanger(response.msg);
@@ -199,8 +106,8 @@ $(document).on('click', '.employeeview', function () {
 });
 
 $(document).on("click", ".close, .closebtn", function () {
-    $("#employeeviewModal").css({"display": "none"});
-    $("#deleteEmployemodal").css({"display": "none"});
+    $("#usersviewModal").css({"display": "none"});
+    $("#usersdeletemodal").css({"display": "none"});
 });
 
 $(document).on("keypress keyup blur", ".allownumericwithdecimal", function (event) {
@@ -211,34 +118,34 @@ $(document).on("keypress keyup blur", ".allownumericwithdecimal", function (even
 });
 
 $(document).on('click', '.switchstatus', function () {
-    var empid = $(this).attr('data-id');
+    var userid = $(this).attr('data-id');
     var status = $(this).attr('data-status');
-    if (empid)
+    if (userid)
     {
         $.ajax({
-            url: baseurl + 'employees/changestatus',
+            url: baseurl + 'users/changestatus',
             type: 'POST',
-            data: {empid: empid, status: status},
+            data: {userid: userid, status: status},
             dataType: 'json',
             async: false,
             beforeSend: function () {
-                $("#status_" + empid).addClass('switchdisable');
+                $("#status_" + userid).addClass('switchdisable');
             },
             complete: function () {
-                $("#status_" + empid).removeClass('switchdisable');
+                $("#status_" + userid).removeClass('switchdisable');
             },
             success: function (response) {
                 if (response.status)
                 {
                     if (status == 1)
                     {
-                        $("#status_" + empid).attr('data-status', 0);
-                        $("#status_" + empid).prop('checked', false);
+                        $("#status_" + userid).attr('data-status', 0);
+                        $("#status_" + userid).prop('checked', false);
 
                     } else
                     {
-                        $("#status_" + empid).attr('data-status', 1);
-                        $("#status_" + empid).prop('checked', true);
+                        $("#status_" + userid).attr('data-status', 1);
+                        $("#status_" + userid).prop('checked', true);
 
                     }
                     openSuccess(response.msg);
@@ -251,14 +158,14 @@ $(document).on('click', '.switchstatus', function () {
     }
 });
 
-$(document).on('click', '.employeedelete', function () {
-    var empid = $(this).attr('data-id');
-    if (empid)
+$(document).on('click', '.usersdelete', function () {
+    var userid = $(this).attr('data-id');
+    if (userid)
     {
         $.ajax({
-            url: baseurl + 'employees/deletepopup',
+            url: baseurl + 'users/deletepopup',
             type: 'POST',
-            data: {empid: empid},
+            data: {userid: userid},
             dataType: 'json',
             async: false,
             beforeSend: function () {
@@ -273,7 +180,7 @@ $(document).on('click', '.employeedelete', function () {
                 if (response.status)
                 {
                     $("#popupshow").html(response.viewhtml);
-                    $("#deleteEmployemodal").css({"display": "block"});
+                    $("#usersdeletemodal").css({"display": "block"});
                 } else
                 {
                     openDanger(response.msg);
@@ -281,4 +188,32 @@ $(document).on('click', '.employeedelete', function () {
             }
         });
     }
+});
+
+$(document).on('click', '.downloadexport', function () {
+    $.ajax({
+        url: baseurl + 'users/downloadexcel',
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        beforeSend: function () {
+            $('#loading-image').css('display', 'block');
+            $('body').addClass('loading');
+        },
+        complete: function () {
+            $('#loading-image').css('display', 'none');
+            $("body").removeClass("loading");
+        },
+        success: function (response) {
+            if (response.status)
+            {
+                window.location = response.filename;
+                deleteexportfile(response.filename);
+            } else
+            {
+                openDanger(response.msg);
+            }
+        }
+    });
+
 });
