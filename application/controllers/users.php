@@ -16,7 +16,7 @@ class Users extends CI_Controller {
     }
 
     public function index() {
-        $params['filtercustom']["prefix_users.id != 1"] = '';
+        $params['filtercustom']["financeusers.id != 1"] = '';
         $params['select'] = array('id', 'status', 'fullname', 'username', 'fk_employee_id', 'fk_employee_empname', 'fk_usergroups_id', 'fk_usergroups_groupname');
         $data['list'] = $this->dbmodel->getGridAll('users', $params);
         $this->load->view('includes/header');
@@ -159,7 +159,7 @@ class Users extends CI_Controller {
     public function downloadexcel() {
         $this->load->library('excel');
         $returnArr = array();
-        $params['filtercustom']["prefix_users.id != 1"] = '';
+        $params['filtercustom']["financeusers.id != 1"] = '';
         $params['select'] = array('id', 'status', 'fullname', 'username', 'fk_employee_id', 'fk_employee_empname', 'fk_usergroups_id', 'fk_usergroups_groupname');
         $userlist = $this->dbmodel->getGridAll('users', $params);
         $returnArr['list'] = $userlist;        
