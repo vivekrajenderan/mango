@@ -7,10 +7,10 @@ class Customer_model extends CI_Model {
         $last_subscr = time() - convertDays(365);
         $this->db->select('c.*');
         $this->db->from('customer c');
-        $this->db->where('c.cust_active', 1);
-        $where = "c.cust_lastsub < " . $last_subscr;
+        $this->db->where('c.status', 1);
+        $where = "c.updatedate < " . $last_subscr;
         $this->db->where($where);
-        $this->db->order_by('c.cust_lastsub, c.id');
+        $this->db->order_by('c.updatedate, c.id');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             $result = $query->result_array();
