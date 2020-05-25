@@ -46,7 +46,7 @@ class Tax extends CI_Controller {
             $this->form_validation->set_rules('empname', 'Employee Name', 'trim|required');
             $this->form_validation->set_rules('emplsex', 'Gender', 'trim|required');
             $this->form_validation->set_rules('dob', 'D.O.B', 'trim|required');
-            $this->form_validation->set_rules('fk_employeestatus_id', 'Marital Status', 'trim|required');
+            $this->form_validation->set_rules('fk_maritalstatus_id', 'Marital Status', 'trim|required');
             $this->form_validation->set_rules('address', 'Address', 'trim|required');
             $this->form_validation->set_rules('phone', 'Mobile No', 'trim|required|min_length[10]|max_length[10]|xss_clean|callback_uniquemobileno');
             if ($this->form_validation->run() == FALSE) {
@@ -77,7 +77,7 @@ class Tax extends CI_Controller {
                 $setdata = array('empname' => (isset($_POST['empname']) && !empty($_POST['empname'])) ? trim($_POST['empname']) : "",
                     'emplsex' => (isset($_POST['emplsex']) && !empty($_POST['emplsex'])) ? trim($_POST['emplsex']) : "",
                     'dob' => (isset($_POST['dob']) && !empty($_POST['dob'])) ? cdatentodb($_POST['dob']) : "",
-                    'fk_employeestatus_id' => (isset($_POST['fk_employeestatus_id']) && !empty($_POST['fk_employeestatus_id'])) ? trim($_POST['fk_employeestatus_id']) : "",
+                    'fk_maritalstatus_id' => (isset($_POST['fk_maritalstatus_id']) && !empty($_POST['fk_maritalstatus_id'])) ? trim($_POST['fk_maritalstatus_id']) : "",
                     'position' => (isset($_POST['position']) && !empty($_POST['position'])) ? trim($_POST['position']) : "",
                     'salary' => (isset($_POST['salary']) && !empty($_POST['salary'])) ? trim($_POST['salary']) : "",
                     'phone' => (isset($_POST['phone']) && !empty($_POST['phone'])) ? trim($_POST['phone']) : "",
@@ -119,7 +119,7 @@ class Tax extends CI_Controller {
             $condition_array['md5(id)'] = $_POST['empid'];
             $data_list = $this->dbmodel->getAll('employee', $condition_array);
             if (count($data_list) > 0) {
-                $data_list[0]->employeestatus = getFeild('statusname', 'employeestatus', 'id', $data_list[0]->fk_employeestatus_id);
+                $data_list[0]->maritalstatus = getFeild('statusname', 'maritalstatus', 'id', $data_list[0]->fk_maritalstatus_id);
                 $data_list[0]->dob = cdatedbton($data_list[0]->dob);
                 $data['list'] = $data_list[0];
                 $loadhtml = $this->load->view('employee/view', $data, true);
@@ -171,10 +171,10 @@ class Tax extends CI_Controller {
     public function downloadexcel() {
         $this->load->library('excel');
         $returnArr = array();
-        $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'position', 'salary', 'address', 'phone', 'email', 'empin', 'empout', 'fk_employeestatus_id', 'fk_employeestatus_statusname');
+        $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'position', 'salary', 'address', 'phone', 'email', 'empin', 'empout', 'fk_maritalstatus_id', 'fk_maritalstatus_statusname');
         $employeelist = $this->dbmodel->getGridAll('employee', $params);
         $returnArr['list'] = $employeelist;
-        $returnArr['headingname'] = array('empno' => 'Employee No', "empname" => 'Employee Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender', 'position' => 'Position', 'salary' => 'Salary', 'address' => 'Address', 'phone' => 'Phone', 'email' => 'Email', 'empin' => 'Employee IN', 'empout' => 'Employee Out', 'fk_employeestatus_statusname' => 'Marital Status');
+        $returnArr['headingname'] = array('empno' => 'Employee No', "empname" => 'Employee Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender', 'position' => 'Position', 'salary' => 'Salary', 'address' => 'Address', 'phone' => 'Phone', 'email' => 'Email', 'empin' => 'Employee IN', 'empout' => 'Employee Out', 'fk_maritalstatus_statusname' => 'Marital Status');
         $filenametext = 'Employee_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
         $this->excel->streamCustom($data['filename'], $returnArr);
