@@ -34,6 +34,7 @@ $config['settingshortname'] = array(
 );
 
 $config['gender'] = array('male' => 'Male', 'female' => 'Female', 'others' => 'Others');
+$config['acctype'] = array('income' => 'Income', 'expense' => 'Expense');
 $config['jsfile'] = array(
     'datatable' => array('assets/admin/js/datatable/jquery.dataTables.min.js', 'assets/admin/js/datatable/DT_bootstrap.js'),
     'datepicker' => array('assets/admin/js/datepicker/bootstrap-datepicker.js'),
@@ -42,4 +43,5 @@ $config['jsfile'] = array(
     'users' => array('assets/admin/js/users.js'),
     'tax' => array('assets/admin/js/tax.js'),
     'customer' => array('assets/admin/js/customer.js'),
+    'accounting' => array('assets/admin/js/accounting.js'),
     'employee' => array('assets/admin/js/employee.js'));
