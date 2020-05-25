@@ -105,7 +105,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>">
+                            <a href="<?php echo base_url('accounting'); ?>">
                                 <i class="fa fa-building-o"></i>
                                 Accounting
                             </a>
