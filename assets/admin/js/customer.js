@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#employee-form").validate({
+    $("#customer-form").validate({
         highlight: function (element) {
             $(element).closest('.elVal').addClass("form-field text-error");
         },
@@ -7,68 +7,78 @@ $(document).ready(function () {
             $(element).closest('.elVal').removeClass("form-field text-error");
         }, errorElement: 'span',
         rules: {
-            empname: {
+            cusname: {
                 required: true
             },
-            emplsex: {
+            cussex: {
                 required: true
             },
-            dob: {
+            cusdob: {
                 required: true
             },
-            fk_maritalstatus_id: {
+            pan: {
                 required: true
             },
-            phone: {
+            cusmobileno: {
                 required: true,
                 minlength: 10,
                 maxlength: 10,
+                digits: true,
             },
-            email: {
+            accountno: {
+                required: true,
+                minlength: 5,
+                maxlength: 30,
+                digits: true,
+            },
+            cusemail: {
                 required: false,
                 email: true
             },
-            address: {
+            cusaddress: {
                 required: true,
                 minlength: 10,
                 maxlength: 300
             },
-            profileimage: {
+            aadhardocument: {
                 required: true,
                 imagefilecheck: true
             }
 
         },
         messages: {
-            empname: {
-                required: "Please enter employee name"
+            cusname: {
+                required: "Please enter customer name"
             },
-            emplsex: {
+            cussex: {
                 required: "Please choose gender"
             },
-            dob: {
+            cusdob: {
                 required: "Please choose D.O.B"
             },
-            fk_maritalstatus_id: {
-                required: "Please choose Marital Status"
+            pan: {
+                required: "Please enter the PAN No"
             },
-            phone: {
-                required: "Please enter the phone no"
+            cusmobileno: {
+                required: "Please enter the mobile no"
             },
-            address: {
+            accountno: {
+                required: "Please enter the Account No"
+            },
+            cusaddress: {
                 required: "Please enter the address"
             },
-            profileimage: {
-                required: "Please choose the profile picture"
+            aadhardocument: {
+                required: "Please choose the aadhar document"
             }
         },
         errorPlacement: function (error, element) {
             error.appendTo(element.closest(".elVal"));
         },
         submitHandler: function (form) {
-            var formData = new FormData($('#employee-form')[0]);
-            formData.append('profileimage', $('input[type=file]')[0].files[0]);
-            var $form = $("#employee-form");
+            var formData = new FormData($('#customer-form')[0]);
+            formData.append('aadhardocument', $('input[type=file]')[0].files[0]);
+            var $form = $("#customer-form");
             $.ajax({
                 type: $form.attr('method'),
                 url: $form.attr('action'),
@@ -82,7 +92,7 @@ $(document).ready(function () {
 
                 if (response.status)
                 {
-                    window.location = baseurl + 'employees';
+                    window.location = baseurl + 'customers';
                 } else
                 {
                     openDanger(response.msg);
@@ -162,18 +172,18 @@ $(function () {
 
 function RemoveImage()
 {
-    $("#profile_image").hide();
-    $("#profile_image_content").show();
+    $("#document_image").hide();
+    $("#document_image_content").show();
 }
 
-$(document).on('click', '.employeeview', function () {
-    var empid = $(this).attr('data-id');
-    if (empid)
+$(document).on('click', '.customerview', function () {
+    var custid = $(this).attr('data-id');
+    if (custid)
     {
         $.ajax({
-            url: baseurl + 'employees/view',
+            url: baseurl + 'customers/view',
             type: 'POST',
-            data: {empid: empid},
+            data: {custid: custid},
             dataType: 'json',
             async: false,
             beforeSend: function () {
@@ -188,7 +198,7 @@ $(document).on('click', '.employeeview', function () {
                 if (response.status)
                 {
                     $("#popupshow").html(response.viewhtml);
-                    $("#employeeviewModal").css({"display": "block"});
+                    $("#customerviewModal").css({"display": "block"});
                 } else
                 {
                     openDanger(response.msg);
@@ -199,7 +209,7 @@ $(document).on('click', '.employeeview', function () {
 });
 
 $(document).on("click", ".close, .closebtn", function () {
-    $("#employeeviewModal").css({"display": "none"});
+    $("#customerviewModal").css({"display": "none"});
     $("#deleteEmployemodal").css({"display": "none"});
 });
 
@@ -211,34 +221,34 @@ $(document).on("keypress keyup blur", ".allownumericwithdecimal", function (even
 });
 
 $(document).on('click', '.switchstatus', function () {
-    var empid = $(this).attr('data-id');
+    var custid = $(this).attr('data-id');
     var status = $(this).attr('data-status');
-    if (empid)
+    if (custid)
     {
         $.ajax({
-            url: baseurl + 'employees/changestatus',
+            url: baseurl + 'customers/changestatus',
             type: 'POST',
-            data: {empid: empid, status: status},
+            data: {custid: custid, status: status},
             dataType: 'json',
             async: false,
             beforeSend: function () {
-                $("#status_" + empid).addClass('switchdisable');
+                $("#status_" + custid).addClass('switchdisable');
             },
             complete: function () {
-                $("#status_" + empid).removeClass('switchdisable');
+                $("#status_" + custid).removeClass('switchdisable');
             },
             success: function (response) {
                 if (response.status)
                 {
                     if (status == 1)
                     {
-                        $("#status_" + empid).attr('data-status', 0);
-                        $("#status_" + empid).prop('checked', false);
+                        $("#status_" + custid).attr('data-status', 0);
+                        $("#status_" + custid).prop('checked', false);
 
                     } else
                     {
-                        $("#status_" + empid).attr('data-status', 1);
-                        $("#status_" + empid).prop('checked', true);
+                        $("#status_" + custid).attr('data-status', 1);
+                        $("#status_" + custid).prop('checked', true);
 
                     }
                     openSuccess(response.msg);
@@ -251,14 +261,14 @@ $(document).on('click', '.switchstatus', function () {
     }
 });
 
-$(document).on('click', '.employeedelete', function () {
-    var empid = $(this).attr('data-id');
-    if (empid)
+$(document).on('click', '.customerdelete', function () {
+    var custid = $(this).attr('data-id');
+    if (custid)
     {
         $.ajax({
-            url: baseurl + 'employees/deletepopup',
+            url: baseurl + 'customers/deletepopup',
             type: 'POST',
-            data: {empid: empid},
+            data: {custid: custid},
             dataType: 'json',
             async: false,
             beforeSend: function () {
@@ -285,7 +295,7 @@ $(document).on('click', '.employeedelete', function () {
 
 $(document).on('click', '.downloadexport', function () {
     $.ajax({
-        url: baseurl + 'employees/downloadexcel',
+        url: baseurl + 'customers/downloadexcel',
         type: 'POST',
         dataType: 'json',
         async: false,
@@ -301,7 +311,10 @@ $(document).on('click', '.downloadexport', function () {
             if (response.status)
             {
                 window.location = response.filename;
-                deleteexportfile(response.filename);
+                setTimeout(function () {
+                    deleteexportfile(response.filename);
+                }, 3000);
+
             } else
             {
                 openDanger(response.msg);

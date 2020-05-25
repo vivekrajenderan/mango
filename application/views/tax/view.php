@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <label class="col-md-7">Marital Status</label>
                             <div class="col-md-5">
-                                <?php echo (isset($list->employeestatus) && !empty($list->employeestatus)) ? $list->employeestatus : ""; ?>
+                                <?php echo (isset($list->maritalstatus) && !empty($list->maritalstatus)) ? $list->maritalstatus : ""; ?>
                             </div> 
                         </div>
                     </div>
