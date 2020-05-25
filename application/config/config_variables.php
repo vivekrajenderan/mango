@@ -40,4 +40,5 @@ $config['jsfile'] = array(
     'validation' => array('assets/admin/js/lib/jquery.validate.js'),
     'usergroups' => array('assets/admin/js/usergroups.js'),
     'users' => array('assets/admin/js/users.js'),
+    'tax' => array('assets/admin/js/tax.js'),
     'employee' => array('assets/admin/js/employee.js'));
