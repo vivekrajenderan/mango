@@ -143,6 +143,12 @@
                                         &nbsp;&nbsp;User Group
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="<?php echo base_url('tax'); ?>">
+                                        <i class="fa fa-group"></i> 
+                                        &nbsp;&nbsp;Tax
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>                      
