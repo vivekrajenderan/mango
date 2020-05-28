@@ -44,4 +44,5 @@ $config['jsfile'] = array(
     'tax' => array('assets/admin/js/tax.js'),
     'customer' => array('assets/admin/js/customer.js'),
     'accounting' => array('assets/admin/js/accounting.js'),
+    'report' => array('assets/admin/js/report.js'),
     'employee' => array('assets/admin/js/employee.js'));
