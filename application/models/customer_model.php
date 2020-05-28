@@ -8,9 +8,9 @@ class Customer_model extends CI_Model {
         $this->db->select('c.*');
         $this->db->from('customer c');
         $this->db->where('c.status', 1);
-        $where = "c.updatedate < " . $last_subscr;
+        $where = "c.mdate < " . $last_subscr;
         $this->db->where($where);
-        $this->db->order_by('c.updatedate, c.id');
+        $this->db->order_by('c.mdate, c.id');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             $result = $query->result_array();

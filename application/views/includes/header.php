@@ -116,11 +116,35 @@
                                 Employees
                             </a>
                         </li>
-                        <li>
-                            <a href="<?php echo base_url(); ?>">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 <i class="fa fa-bars"></i>
                                 Reports
+                                <span class="caret"></span>
                             </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="<?php echo base_url('reports/daily'); ?>">
+                                        <i class="fa fa-user nav-icon"></i> 
+                                        &nbsp;&nbsp;Daily Report
+                                    </a>
+                                </li>     
+
+                                <li>
+                                    <a href="<?php echo base_url('reports/monthly'); ?>">
+                                        <i class="fa fa-group"></i> 
+                                        &nbsp;&nbsp;Monthly Report
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo base_url('reports/yearly'); ?>">
+                                        <i class="fa fa-group"></i> 
+                                        &nbsp;&nbsp;Yearly Report
+                                    </a>
+                                </li>
+
+                            </ul>
                         </li>
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
