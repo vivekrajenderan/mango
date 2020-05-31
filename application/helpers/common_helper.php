@@ -330,5 +330,14 @@ function getRefId($condition = array()) {
         return $condition['prefix'] . ($condition['start'] + 1);
     }
 }
+function nextDueDateCalc($period, $periodfrequency, $previousDate){
+    $previousdate=(!empty($previousDate))?$previousDate:date('Y-m-d');
+    $lastduedate=date ( 'Y-m-d' , strtotime ( $previousdate . ' + '.$period.' '.$periodfrequency));
 
+    $nextduedate=date ( 'Y-m-d' , strtotime ( $previousdate . ' + 1 months'));
+    if(strtotime($nextduedate)>strtotime($lastduedate)){
+        return $lastduedate;
+    }
+    return $nextduedate;
+}
 ?>

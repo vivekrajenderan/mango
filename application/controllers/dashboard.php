@@ -14,7 +14,7 @@ class Dashboard extends CI_Controller {
     }
 
     public function index() {
-        $data['set_cur']=getFeild('set_value','settings','id',$this->config->item('settingshortname')['SET_CUR']);       
+        $data['set_cur']='INR';       
         $data['customeroverdue']= $this->customer_model->getCustomerOverdue();        
         $data['customertransoverdue']=array();
         // = $this->customer_model->getLtransOverdue();  

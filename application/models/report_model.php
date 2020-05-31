@@ -6,8 +6,8 @@ class Report_model extends CI_Model {
         $result=array();
         $this->db->select("DATE(transdate) as transdate, SUM(CASE WHEN acctype = 'income' THEN transamount ELSE 0 END) income, SUM(CASE WHEN acctype = 'expense' THEN transamount ELSE 0 END) expense", FALSE);
         $this->db->from('financeoveralltransaction');
-        $this->db->where('transdate >=', $params['startdate']);
-        $this->db->where('transdate <=', $params['enddate']);
+        $this->db->where('DATE(transdate) >=', $params['startdate']);
+        $this->db->where('DATE(transdate) <=', $params['enddate']);
         $this->db->group_by('DATE(transdate)');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {

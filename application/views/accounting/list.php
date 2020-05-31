@@ -40,11 +40,11 @@
                                     >
                                     <thead>
                                         <tr>                                            
-                                            <th data-filterable="true" data-sortable="true" data-direction="desc">Account Type.</th>
-                                            <th data-direction="asc" data-filterable="true" data-sortable="true">Trans Amount</th>                                                                                     
-                                            <th data-filterable="true" data-sortable="true">Reference No</th> 
-                                            <th data-filterable="true" data-sortable="true">Trans Date</th>                                           
-                                            <th data-filterable="true" data-sortable="true">Comment</th>                                           
+                                            <th data-filterable="true">Account Type.</th>
+                                            <th data-filterable="true">Trans Amount</th>                                                                                     
+                                            <th data-filterable="true">Reference No</th> 
+                                            <th data-filterable="true">Trans Date</th>                                           
+                                            <th data-filterable="true">Comment</th>                                           
                                             <th>Status</th>                                           
                                             <th>Action</th>                                           
                                         </tr>

@@ -16,6 +16,7 @@ class Accounting extends CI_Controller {
     public function index() {
         //$params['filtercustom']["empout > " . time() . " OR empout IS NULL"] = '';
         $params['select'] = array('id', 'status', 'acctype', 'transdate', 'transamount', 'refno', 'transtext');
+        $params['sorting'] = array('transdate'=>'desc');
         $data['list'] = $this->dbmodel->getGridAll('overalltransaction', $params);
         $this->load->view('includes/header');
         $this->load->view('accounting/list', $data);
