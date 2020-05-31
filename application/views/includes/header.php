@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>">
+                            <a href="<?php echo base_url('loan'); ?>">
                                 <i class="fa fa-dollar"></i>
                                 Loans
                             </a>
