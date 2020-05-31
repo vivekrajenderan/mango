@@ -6,11 +6,15 @@ if (!defined('BASEPATH'))
 
 
 $config['loanstatus'] = array(
-    'pending' => '1', //Pending
-    'approved' => '2', //Approved
-    'refused' => '3', //Refused
-    'abandoned' => '4', //Abandoned
-    'cleared' => '5', //Cleared
+    'pending' => 'Pending', //Pending
+    'approved' => 'Approved', //Approved
+    'vechile_cheased' => 'Vechile Cheased', //Refused    
+    'cleared' => 'Cleared', //Cleared
+);
+$config['loanperiodfrequency'] = array(
+    'days' => 'Day', //Pending
+    'month' => 'Month', //Pending
+    'year' => 'Year', //Approved    
 );
 $config['settingshortname'] = array(
     'SET_MSB' => '1', //Minimum Savings Balance
@@ -45,4 +49,5 @@ $config['jsfile'] = array(
     'customer' => array('assets/admin/js/customer.js'),
     'accounting' => array('assets/admin/js/accounting.js'),
     'report' => array('assets/admin/js/report.js'),
+    'loan' => array('assets/admin/js/loan.js'),
     'employee' => array('assets/admin/js/employee.js'));
