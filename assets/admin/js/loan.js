@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $("#vechilemodelyear").datepicker({
         format: "yyyy",
         viewMode: "years",
@@ -147,6 +146,64 @@ $(document).ready(function () {
             return true;
         }
     }, "Please choose format type .jpg, .jpeg, .png, .gif, .bmp");
+
+    $("#payment-form").validate({
+        highlight: function (element) {
+            $(element).closest('.elVal').addClass("form-field text-error");
+        },
+        unhighlight: function (element) {
+            $(element).closest('.elVal').removeClass("form-field text-error");
+        }, errorElement: 'span',
+        rules: {
+            subamount: {
+                required: true
+            },
+            fineintrest: {
+                required:'#fineintrestcheck:checked'
+            },
+            fineamount: {
+                required:'#fineintrestcheck:checked'
+            },
+        },
+        messages: {
+            subamount: {
+                required: "Please enter the EMI amount"
+            },
+            fineintrest: {
+                required: "Please enter the Fine intrest"
+            },
+            fineamount: {
+                required: "Please enter the Fine amount"
+            },
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.closest(".elVal"));
+        },
+        submitHandler: function (form) {
+            var formData = new FormData($('#payment-form')[0]);
+            var $form = $("#payment-form");
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            }).done(function (response) {
+
+                if (response.status)
+                {
+                    window.location = baseurl + 'loan';
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            });
+            return false; // required to block normal submit since you used ajax
+        }
+    });
 });
 $(document).on('click', '#close-preview', function () {
     $('.image-preview').popover('hide');
@@ -247,6 +304,7 @@ $(document).on('click', '.loanview', function () {
 
 $(document).on("click", ".close, .closebtn", function () {
     $("#loanviewModal").css({"display": "none"});
+    $("#paymentviewModal").css({"display": "none"});
     $("#deleteLoanmodal").css({"display": "none"});
 });
 
@@ -359,7 +417,37 @@ $(document).on('click', '.approveloan', function () {
         });
     }
 });
-
+$(document).on('click', '.makepayment', function () {
+    var loanid = $(this).attr('data-id');
+    if (loanid)
+    {
+        $.ajax({
+            url: baseurl + 'loan/paymenthistory',
+            type: 'POST',
+            data: {loanid: loanid},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $('#loading-image').css('display', 'block');
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('#loading-image').css('display', 'none');
+                $("body").removeClass("loading");
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    $("#popupshow").html(response.viewhtml);
+                    $("#paymentviewModal").css({"display": "block"});
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    }
+});
 $(document).on('click', '.downloadexport', function () {
     $.ajax({
         url: baseurl + 'loan/downloadexcel',

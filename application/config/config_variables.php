@@ -12,9 +12,7 @@ $config['loanstatus'] = array(
     'cleared' => 'Cleared', //Cleared
 );
 $config['loanperiodfrequency'] = array(
-    'days' => 'Day', //Pending
-    'month' => 'Month', //Pending
-    'year' => 'Year', //Approved    
+    'month' => 'Month'  
 );
 $config['settingshortname'] = array(
     'SET_MSB' => '1', //Minimum Savings Balance
