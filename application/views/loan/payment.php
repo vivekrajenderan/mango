@@ -31,7 +31,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-7">Customer Name</label>
+                                            <label class="col-md-4">Customer Name</label>
                                             <div class="col-md-5">
                                                 <p class="breakword"><?php echo (isset($list->cusname)) ? $list->cusname : ""; ?></p>
                                             </div>
@@ -39,7 +39,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-7">Vehicle Number</label>
+                                            <label class="col-md-4">Vehicle Number</label>
                                             <div class="col-md-5">
                                                 <p class="breakword"><?php echo (isset($list->vechilenumber)) ? $list->vechilenumber : ""; ?></p>
                                             </div>
@@ -49,7 +49,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-7">Loan Amount</label>
+                                            <label class="col-md-4">Loan Amount</label>
                                             <div class="col-md-5">
                                                 <p class="breakword"><?php echo (isset($list->originalloanamount) && !empty($list->originalloanamount)) ? number_format($list->originalloanamount, 2, '.', '') : ""; ?></p>
                                             </div>
@@ -68,20 +68,24 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-7">EMI Date</label>
+                                            <label class="col-md-4">EMI Date</label>
                                             <div class="col-md-5">
                                                 <p class="breakword"><?php echo (isset($list->nextduedate) && !empty($list->nextduedate)) ? $list->nextduedate : ""; ?></p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6">                                        
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fineintrestcheck">Fine
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Fine
                                             </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="checkbox" id="fineintrestcheck" name="fineintrestcheck" class="form-control col-md-7 col-xs-12" value="1">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input type="checkbox" id="fineintrestcheck" name="fineintrestcheck" class="form-control col-md-7 col-xs-12" value="1">
+                                                    <label for="fineintrestcheck">&nbsp;</label>
+                                                </div>                                                
                                             </div>
-                                        </div>
+                                        </div> 
+
                                     </div>
                                 </div>
                                 <div class="row fineintrestchecked">
