@@ -152,7 +152,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Aadhar Document<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Proff Document<span class="required">*</span>
                                             </label>
 
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal"> 
