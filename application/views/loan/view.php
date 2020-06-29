@@ -71,14 +71,23 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="col-md-7">Insurance Start Date</label>
+                            <div class="col-md-5">
+                                <p class="breakword"><?php echo (isset($list->vechileinsurensestartdate) && !empty($list->vechileinsurensestartdate)) ? $list->vechileinsurensestartdate : ""; ?></p>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                        <div class="form-group">
                             <label class="col-md-7">Insurance Due Date</label>
                             <div class="col-md-5">
                                 <p class="breakword"><?php echo (isset($list->vechileinsurenseduedate) && !empty($list->vechileinsurenseduedate)) ? $list->vechileinsurenseduedate : ""; ?></p>
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Engine Type</label>
@@ -87,16 +96,17 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                                       
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Request Status</label>
                             <div class="col-md-5">
                                 <p class="breakword"><?php echo (isset($list->requestdate) && !empty($list->requestdate)) ? $list->requestdate : ""; ?></p>
                             </div> 
                         </div>
-                    </div>                   
-                </div>
-                <div class="row">
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Approved Date</label>
@@ -105,7 +115,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Loan Amount</label>
                             <div class="col-md-5">
@@ -113,8 +126,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Approved Amount</label>
@@ -123,7 +134,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Loan Period</label>
                             <div class="col-md-5">
@@ -131,8 +145,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Loan Period Frequency</label>
@@ -141,7 +153,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Loan Interest Rate</label>
                             <div class="col-md-5">
@@ -149,8 +164,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security1 Name</label>
@@ -159,7 +172,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security1 Aadhar</label>
                             <div class="col-md-5">
@@ -167,8 +183,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security1 Mobile No</label>
@@ -177,7 +191,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security2 Name</label>
                             <div class="col-md-5">
@@ -185,8 +202,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security2  Aadhar</label>
@@ -195,7 +210,10 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">Security2 Mobile No</label>
                             <div class="col-md-5">
@@ -203,8 +221,6 @@
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-7">RC Document</label>
