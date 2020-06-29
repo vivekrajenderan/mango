@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Model Year <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Regitered Year <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="vechilemodelyear" name="vechilemodelyear" class="form-control col-md-7 col-xs-12" maxlength="4" minlength="4" value="<?php echo (isset($list->vechilemodelyear)) ? $list->vechilemodelyear : ""; ?>">
