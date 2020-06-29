@@ -27,6 +27,7 @@ class Loan extends CI_Controller {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
             if (count($data_list) > 0) {
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
+                $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
                 $data['list'] = $data_list[0];
             }
         }
@@ -100,6 +101,7 @@ class Loan extends CI_Controller {
                     'vechilemodel' => (isset($_POST['vechilemodel']) && !empty($_POST['vechilemodel'])) ? trim($_POST['vechilemodel']) : "",
                     'vechilercno' => (isset($_POST['vechilercno']) && !empty($_POST['vechilercno'])) ? trim($_POST['vechilercno']) : "",
                     'vechileinsurenceno' => (isset($_POST['vechileinsurenceno']) && !empty($_POST['vechileinsurenceno'])) ? trim($_POST['vechileinsurenceno']) : "",
+                    'vechileinsurensestartdate' => (isset($_POST['vechileinsurensestartdate']) && !empty($_POST['vechileinsurensestartdate'])) ? cdatentodb($_POST['vechileinsurensestartdate']) : "",
                     'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
                     'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
                     'rcdocument' => trim($file_name),
@@ -150,6 +152,7 @@ class Loan extends CI_Controller {
             $data_list = $this->loan_model->getLoan(array('id' => $_POST['loanid']));
             if (count($data_list) > 0) {
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
+                $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
                 $data['list'] = $data_list[0];
                 $loadhtml = $this->load->view('loan/view', $data, true);
             }
@@ -228,6 +231,7 @@ class Loan extends CI_Controller {
                     $data['history_list'][$key]->dateofpaid=cdatedbton($value->dateofpaid);
                 }
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
+                $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
                 $data['list'] = $data_list[0];
                 $loadhtml = $this->load->view('loan/paymentview', $data, true);
             }
@@ -316,6 +320,7 @@ class Loan extends CI_Controller {
         $returnArr['headingname'] = array('loanreferenceno' => 'Loan No', "cusname" => "Customer Name", "requestdate" => 'Request Date', 'originalloanamount' => 'Loan Amount',
             'approveddate' => 'Approved Date', 'approvedamount' => 'Approved Amount', 'vechilenumber' => 'Vehicle Number', 'vechilename' => 'Vehicle Name', 'vechilemodelyear' => 'Vehicle Model Year',
             'vechilemodel' => 'Vehicle Model', 'vechilercno' => 'Vehicle RC No', 'vechileinsurenceno' => "Vehicle Insurance No",
+            'vechileinsurensestartdate' => 'Insurance Start Date',
             'vechileinsurenseduedate' => 'Insurance Due Date', 'vechileenginetype' => 'Engine Type', 'loanperiod' => 'Loan Period',
             'loanperiodfrequency' => 'Loan Period Frequency', 'loanintrestrate' => 'Loan Interest Rate', 'security1name' => 'Security1 Name',
             'security1aadhar' => 'Security1 Aadhar', 'security1mobileno' => 'Security1 Mobile No', 'security2name' => 'Security2 Name', 'security2aadhar' => 'Security2 Aadhar',

@@ -3,7 +3,7 @@
 class Loan_model extends CI_Model {
 
     public function getLoan($params = array()) {
-        $this->db->select('l.*,c.cusname,v.vechilenumber,v.vechilename,v.vechilemodelyear,v.vechilemodel,v.vechilercno,v.vechileinsurenceno,v.vechileinsurenseduedate,'
+        $this->db->select('l.*,c.cusname,v.vechilenumber,v.vechilename,v.vechilemodelyear,v.vechilemodel,v.vechilercno,v.vechileinsurenceno,v.vechileinsurensestartdate,v.vechileinsurenseduedate,'
                 . 'v.vechileenginetype,v.rcdocument,v.insurencedocument,v.ischessed,v.chesseddate,v.chessedagainstloanid');
         $this->db->from('loan as l');
         $this->db->join('vechicle AS v', 'v.id = l.fk_vechicle_id');

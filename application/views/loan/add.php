@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Regitered Year <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Registered Year <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="vechilemodelyear" name="vechilemodelyear" class="form-control col-md-7 col-xs-12" maxlength="4" minlength="4" value="<?php echo (isset($list->vechilemodelyear)) ? $list->vechilemodelyear : ""; ?>">
@@ -107,7 +107,21 @@
                                     </div> 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Insurance Date
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Insurance From Date
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <div class="input-group date ui-datepicker">
+                                                    <input id="vechileinsurensestartdate" name="vechileinsurensestartdate" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->vechileinsurensestartdate)) ? $list->vechileinsurensestartdate : ""; ?>">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>                                            
+                                            </div>                                            
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Insurance End Date
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <div class="input-group date ui-datepicker">
@@ -116,9 +130,7 @@
                                                 </div>                                            
                                             </div>                                            
                                         </div>
-                                    </div> 
-                                </div>
-                                <div class="row">                                     
+                                    </div>                                     
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Engine Type
@@ -129,6 +141,10 @@
                                         </div>
                                     </div> 
 
+                                    
+                                </div>
+
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">RC Document<span class="required">*</span>
@@ -173,9 +189,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Amount <span class="required">*</span>
@@ -185,6 +198,10 @@
                                             </div>
                                         </div> 
                                     </div> 
+                                    
+                                </div>
+                                
+                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Period <span class="required">*</span>
@@ -194,9 +211,6 @@
                                             </div>
                                         </div>  
                                     </div> 
-                                </div>
-                                
-                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Period Frequency <span class="required">*</span>
@@ -214,6 +228,10 @@
                                             </div>
                                         </div> 
                                     </div> 
+                                    
+                                </div>
+                                
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Interest Rate <span class="required">*</span>
@@ -223,9 +241,6 @@
                                             </div>
                                         </div>  
                                     </div> 
-                                </div>
-                                
-                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Name<span class="required">*</span> 
@@ -235,6 +250,9 @@
                                             </div>
                                         </div> 
                                     </div> 
+                                    
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Aadhar<span class="required">*</span>
@@ -244,8 +262,6 @@
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
-                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Mobile No<span class="required">*</span> 
@@ -255,6 +271,9 @@
                                             </div>
                                         </div> 
                                     </div> 
+                                    
+                                </div>
+                                <div class="row">   
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security2 Name
@@ -263,9 +282,7 @@
                                                 <input type="text" id="security2name" name="security2name" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->security2name) && !empty($list->security2name)) ? $list->security2name : ""; ?>">
                                             </div>
                                         </div>
-                                    </div> 
-                                </div>
-                                <div class="row">                                    
+                                    </div>                                  
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security2 Aadhar
@@ -274,7 +291,9 @@
                                                 <input type="text" id="security2aadhar" name="security2aadhar" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->security2aadhar) && !empty($list->security2aadhar)) ? $list->security2aadhar : ""; ?>">
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>  
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security2 Mobile No
@@ -283,9 +302,8 @@
                                                 <input type="text" id="security2mobileno" name="security2mobileno" class="form-control col-md-7 col-xs-12" maxlength="10" minlength="10" value="<?php echo (isset($list->security2mobileno)) ? $list->security2mobileno : ""; ?>">
                                             </div>
                                         </div> 
-                                    </div> 
+                                    </div>
                                 </div>
-
                                 <div class="row">                                    
                                     <div class="col-md-12 text-center">
                                         <div class="form-group">
