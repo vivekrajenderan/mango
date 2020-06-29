@@ -41,7 +41,7 @@ class Customers extends CI_Controller {
     }
 
     public function save() {
-        if (($this->input->server('REQUEST_METHOD') == 'POST')) {
+        if (($this->input->server('REQUEST_METHOD') == 'POST')) {           
             $this->form_validation->set_rules('cusname', 'Customer Name', 'trim|required');
             $this->form_validation->set_rules('cussex', 'Gender', 'trim|required');
             $this->form_validation->set_rules('cusdob', 'D.O.B', 'trim|required');
@@ -58,6 +58,26 @@ class Customers extends CI_Controller {
                 if (isset($_POST['cust_id']) && !empty($_POST['cust_id'])) {
                     $customerlist = $this->dbmodel->getAll('customer', array('id' => $_POST['cust_id']));
                 }
+                // Profile 
+                if (isset($_FILES['profile']['name']) && (!empty($_FILES['profile']['name']))) {
+                    $upload_image = do_upload_image('profile', UPLOADPATH . 'profile/');
+                    if ($upload_image['image_message'] == "success") {
+                        if (isset($customerlist[0]->profile) && !empty($customerlist[0]->profile)) {
+                            $image_file = './assets/upload/profile/' . $customerlist[0]->profile;
+                            if (file_exists($image_file)) {
+                                unlink($image_file);
+                            }
+                        }
+                        $profile_file_name = trim($upload_image['image_file_name']);
+                    } else {
+                        echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
+                        return false;
+                    }
+                } else {
+                    $profile_file_name = (isset($customerlist[0]->profile) && !empty($customerlist[0]->profile)) ? $customerlist[0]->profile : "";
+                }
+                
+                //Aadhar document
                 if (isset($_FILES['aadhardocument']['name']) && (!empty($_FILES['aadhardocument']['name']))) {
                     $upload_image = do_upload_image('aadhardocument', UPLOADPATH . 'document/');
                     if ($upload_image['image_message'] == "success") {
@@ -87,6 +107,7 @@ class Customers extends CI_Controller {
                     'accountno' => (isset($_POST['accountno']) && !empty($_POST['accountno'])) ? trim($_POST['accountno']) : "",
                     'drivinglicence' => (isset($_POST['drivinglicence']) && !empty($_POST['drivinglicence'])) ? trim($_POST['drivinglicence']) : "",
                     'aadhardocument' => trim($file_name),
+                    'profile' => trim($profile_file_name),
                     'updatedby' => $this->session->userdata('log_id')
                 );
                 $saved = "";

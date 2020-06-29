@@ -139,6 +139,7 @@
                                         </div>
                                     </div> 
                                 </div>
+                                
                                 <div class="row">                                     
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -149,7 +150,52 @@
                                             </div>
                                         </div>
                                     </div> 
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Profile <span class="required">*</span>
+                                            </label>
 
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal"> 
+                                                <?php
+                                                $profiledisplay = "";
+                                                if (isset($list->profile) && !empty($list->profile)) {
+                                                    $profiledisplay = "none";
+                                                    $profile_image_name = base_url() . "assets/admin/img/no_image.png";
+                                                    if (file_exists(UPLOADPATH . "profile/" . $list->profile)) {
+                                                        $profile_image_name = base_url() . UPLOADPATH . 'profile/' . $list->profile;
+                                                    }
+                                                    ?>
+                                                    <div class="control-group file-select-main" id='profile_image'> 
+                                                        <img class="img-thumbnail" src="<?php echo $profile_image_name; ?>" alt="" width="100" height="100"/>
+                                                        &nbsp;&nbsp;<a href="javascript:void(0);" onclick="RemoveProfileImage();" class="btn btn-dark" title="Delete Profile">Remove</a>
+
+                                                    </div>   
+                                                <?php } ?>
+
+
+                                                <!-- image-preview-filename input [CUT FROM HERE]-->
+                                                <div class="input-group image-preview" id="profile_image_content" style="padding-left: 5px;display:<?php echo $profiledisplay; ?>;">
+                                                    <input type="text" class="form-control image-preview-filename" disabled="disabled">
+                                                    <span class="input-group-btn">
+                                                        <!-- image-preview-clear button -->
+                                                        <div class="btn btn-default image-preview-clear" style="display:none;position:relative;bottom: 2px;">
+                                                            <span class="fa fa-times"></span> Clear
+                                                        </div>
+                                                        <!-- image-preview-input -->
+                                                        <div class="btn btn-default image-preview-input">
+                                                            <span class="fa fa-folder-open"></span>
+                                                            <span class="image-preview-input-title">Browse</span>
+                                                            <input type="file" name="profile" id="profile" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> <!-- rename it -->
+                                                        </div>
+                                                    </span>
+                                                </div>                                       
+                                                <!-- /input-group image-preview [TO HERE]--> 
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Proff Document<span class="required">*</span>

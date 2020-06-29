@@ -40,6 +40,10 @@ $(document).ready(function () {
                 minlength: 10,
                 maxlength: 300
             },
+            profile: {
+                required: true,
+                imagefilecheck: true
+            },
             aadhardocument: {
                 required: true,
                 imagefilecheck: true
@@ -68,6 +72,9 @@ $(document).ready(function () {
             cusaddress: {
                 required: "Please enter the address"
             },
+            profile: {
+                required: "Please choose the profile"
+            },
             aadhardocument: {
                 required: "Please choose the aadhar document"
             }
@@ -77,7 +84,8 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var formData = new FormData($('#customer-form')[0]);
-            formData.append('aadhardocument', $('input[type=file]')[0].files[0]);
+            formData.append('aadhardocument', $('#aadhardocument')[0].files[0]);
+            formData.append('profile', $('#profile')[0].files[0]);
             var $form = $("#customer-form");
             $.ajax({
                 type: $form.attr('method'),
@@ -133,8 +141,8 @@ $(function () {
         style: 'font-size: initial;',
     });
     closebtn.attr("class", "close pull-right");
-    // Set the popover default content
-    $('.image-preview').popover({
+    // Profile Document
+    $('#profile_image_content .image-preview').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
@@ -142,15 +150,15 @@ $(function () {
         placement: 'bottom'
     });
     // Clear event
-    $('.image-preview-clear').click(function () {
-        $('.image-preview').attr("data-content", "").popover('hide');
-        $('.image-preview-filename').val("");
-        $('.image-preview-clear').hide();
-        $('.image-preview-input input:file').val("");
-        $(".image-preview-input-title").text("Browse");
+    $('#profile_image_content .image-preview-clear').click(function () {
+        $('#profile_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#profile_image_content .image-preview-filename').val("");
+        $('#profile_image_content .image-preview-clear').hide();
+        $('#profile_image_content .image-preview-input input:file').val("");
+        $("#profile_image_content .image-preview-input-title").text("Browse");
     });
     // Create the preview image
-    $(".image-preview-input input:file").change(function () {
+    $("#profile_image_content .image-preview-input input:file").change(function () {
         var img = $('<img/>', {
             id: 'dynamic',
             width: 250,
@@ -160,11 +168,47 @@ $(function () {
         var reader = new FileReader();
         // Set preview image into the popover data-content
         reader.onload = function (e) {
-            $(".image-preview-input-title").text("Change");
-            $(".image-preview-clear").show();
-            $(".image-preview-filename").val(file.name);
+            $("#profile_image_content .image-preview-input-title").text("Change");
+            $("#profile_image_content .image-preview-clear").show();
+            $("#profile_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#profile_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+        }
+        reader.readAsDataURL(file);
+    });
+    
+     // Aadhar Document
+    $('#document_image_content .image-preview').popover({
+        trigger: 'manual',
+        html: true,
+        title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+        content: "There's no image",
+        placement: 'bottom'
+    });
+    // Clear event
+    $('#document_image_content .image-preview-clear').click(function () {
+        $('#document_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#document_image_content .image-preview-filename').val("");
+        $('#document_image_content .image-preview-clear').hide();
+        $('#document_image_content .image-preview-input input:file').val("");
+        $("#document_image_content .image-preview-input-title").text("Browse");
+    });
+    // Create the preview image
+    $("#document_image_content .image-preview-input input:file").change(function () {
+        var img = $('<img/>', {
+            id: 'dynamic',
+            width: 250,
+            height: 200
+        });
+        var file = this.files[0];
+        var reader = new FileReader();
+        // Set preview image into the popover data-content
+        reader.onload = function (e) {
+            $("#document_image_content .image-preview-input-title").text("Change");
+            $("#document_image_content .image-preview-clear").show();
+            $("#document_image_content .image-preview-filename").val(file.name);
+            img.attr('src', e.target.result);
+            $("#document_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });
@@ -174,6 +218,11 @@ function RemoveImage()
 {
     $("#document_image").hide();
     $("#document_image_content").show();
+}
+function RemoveProfileImage()
+{
+    $("#profile_image").hide();
+    $("#profile_image_content").show();
 }
 
 $(document).on('click', '.customerview', function () {
