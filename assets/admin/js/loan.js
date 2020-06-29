@@ -64,6 +64,10 @@ $(document).ready(function () {
                 required: false,
                 digits: true
             },
+            security1profile: {
+                required: false,
+                imagefilecheck: true
+            },
 
         },
         messages: {
@@ -105,6 +109,9 @@ $(document).ready(function () {
             },
             security1mobileno: {
                 required: "Please enter the security1 Mobile No"
+            },
+            security1profile: {
+                required: "Please choose the security1 Image"
             },
 
         },
@@ -218,17 +225,44 @@ $(document).on('click', '#close-preview', function () {
     );
 });
 
+$(document).on('click', '#profile-close-preview', function () {
+    console.log('came');
+    $('#profile_image_content .image-preview').popover('hide');
+    // Hover befor close the preview
+    $('#profile_image_content .image-preview').hover(
+            function () {
+                $('#profile_image_content .image-preview').popover('show');
+            },
+            function () {
+                $('#profile_image_content .image-preview').popover('hide');
+            }
+    );
+});
+$(document).on('click', '#rc-close-preview', function () {
+    $('#rc_image_content .image-preview').popover('hide');
+    // Hover befor close the preview
+    $('#rc_image_content .image-preview').hover(
+            function () {
+                $('#document_image_content .image-preview').popover('show');
+            },
+            function () {
+                $('#document_image_content .image-preview').popover('hide');
+            }
+    );
+});
+
+
 $(function () {
     // Create the close button
     var closebtn = $('<button/>', {
         type: "button",
         text: 'x',
-        id: 'close-preview',
+        id: 'rc-close-preview',
         style: 'font-size: initial;',
     });
     closebtn.attr("class", "close pull-right");
     // Set the popover default content
-    $('.image-preview').popover({
+    $('#rc_image_content .image-preview').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
@@ -236,15 +270,15 @@ $(function () {
         placement: 'bottom'
     });
     // Clear event
-    $('.image-preview-clear').click(function () {
-        $('.image-preview').attr("data-content", "").popover('hide');
-        $('.image-preview-filename').val("");
-        $('.image-preview-clear').hide();
-        $('.image-preview-input input:file').val("");
-        $(".image-preview-input-title").text("Browse");
+    $('#rc_image_content .image-preview-clear').click(function () {
+        $('#rc_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#rc_image_content .image-preview-filename').val("");
+        $('#rc_image_content .image-preview-clear').hide();
+        $('#rc_image_content .image-preview-input input:file').val("");
+        $("#rc_image_content .image-preview-input-title").text("Browse");
     });
     // Create the preview image
-    $(".image-preview-input input:file").change(function () {
+    $("#rc_image_content .image-preview-input input:file").change(function () {
         var img = $('<img/>', {
             id: 'dynamic',
             width: 250,
@@ -254,17 +288,66 @@ $(function () {
         var reader = new FileReader();
         // Set preview image into the popover data-content
         reader.onload = function (e) {
-            $(".image-preview-input-title").text("Change");
-            $(".image-preview-clear").show();
-            $(".image-preview-filename").val(file.name);
+            $("#rc_image_content .image-preview-input-title").text("Change");
+            $("#rc_image_content .image-preview-clear").show();
+            $("#rc_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#rc_image_content  .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+        }
+        reader.readAsDataURL(file);
+    });
+    
+     // Security1 Image
+    var profileclosebtn = $('<button/>', {
+        type: "button",
+        text: 'x',
+        id: 'profile-close-preview',
+        style: 'font-size: initial;',
+    });
+    profileclosebtn.attr("class", "close pull-right");
+    $('#profile_image_content .image-preview').popover({
+        trigger: 'manual',
+        html: true,
+        title: "<strong>Preview</strong>" + $(profileclosebtn)[0].outerHTML,
+        content: "There's no image",
+        placement: 'bottom'
+    });
+    // Clear event
+    $('#profile_image_content .image-preview-clear').click(function () {
+        $('#profile_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#profile_image_content .image-preview-filename').val("");
+        $('#profile_image_content .image-preview-clear').hide();
+        $('#profile_image_content .image-preview-input input:file').val("");
+        $("#profile_image_content .image-preview-input-title").text("Browse");
+    });
+    // Create the preview image
+    $("#profile_image_content .image-preview-input input:file").change(function () {
+        var img = $('<img/>', {
+            id: 'dynamic',
+            width: 250,
+            height: 200
+        });
+        var file = this.files[0];
+        var reader = new FileReader();
+        // Set preview image into the popover data-content
+        reader.onload = function (e) {
+            $("#profile_image_content .image-preview-input-title").text("Change");
+            $("#profile_image_content .image-preview-clear").show();
+            $("#profile_image_content .image-preview-filename").val(file.name);
+            img.attr('src', e.target.result);
+            $("#profile_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });
 });
 
 function RemoveImage()
+{
+    $("#rc_image").hide();
+    $("#rc_image_content").show();
+}
+
+function ProfileRemoveImage()
 {
     $("#profile_image").hide();
     $("#profile_image_content").show();
