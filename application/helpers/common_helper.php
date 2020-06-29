@@ -316,7 +316,7 @@ function getRefId($condition = array()) {
         }
         return $result['prefix'] . $result['current'];
     } else {
-        $documenttypearr = array('employee' => 'EMP', 'customer' => 'CUST');
+        $documenttypearr = array('employee' => 'EMP','agent' => 'AGNT', 'customer' => 'CUST');
         $temdoc = isset($documenttypearr[$condition['doctype']]) ? $documenttypearr[$condition['doctype']] : $condition['doctype'];
         $condition['prefix'] = str_replace('_', '', strtoupper($temdoc));
         $condition['start'] = 10000;

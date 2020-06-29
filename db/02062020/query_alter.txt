@@ -1,3 +1,8 @@
 ALTER TABLE `financevechicle` ADD `vechileinsurensestartdate` VARCHAR(100) NOT NULL AFTER `vechileinsurenseduedate`;
 ALTER TABLE `financesettings` ADD `document_charge` DECIMAL(5,2) NOT NULL AFTER `fine_days`;
 UPDATE `financesettings` SET `document_charge` = '10.00' WHERE `financesettings`.`id` = 1;
+
+ALTER TABLE `financeemployee` ADD `emp_type` ENUM('employee','agent') NOT NULL DEFAULT 'employee' AFTER `empname`;
+
+ALTER TABLE `financedocprefix` CHANGE `doctype` `doctype` ENUM('employee','customer','loan','agent') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'employee';
+INSERT INTO `financedocprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES (NULL, 'agent', 'AGNT', '1000', '1000', '1', '0', '0', '1554959938', '1590852414');
