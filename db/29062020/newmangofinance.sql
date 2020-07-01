@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 29, 2020 at 02:05 PM
+-- Generation Time: Jun 29, 2020 at 09:00 PM
 -- Server version: 5.7.30-0ubuntu0.16.04.1
 -- PHP Version: 7.2.11-4+ubuntu16.04.1+deb.sury.org+1
 
@@ -86,7 +86,7 @@ CREATE TABLE `financedocprefix` (
 INSERT INTO `financedocprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES
 (1, 'customer', 'CUSTOMER', 1000, 1004, '1', 0, '0', 1554959938, 1593418610),
 (2, 'employee', 'EMPLOYEE', 1000, 1007, '1', 0, '0', 1554959938, 1590852414),
-(3, 'loan', 'LOAN', 1000, 1005, '1', 0, '0', 1554959938, 1590933123);
+(3, 'loan', 'LOAN', 1000, 1008, '1', 0, '0', 1554959938, 1593444341);
 
 -- --------------------------------------------------------
 
@@ -148,6 +148,7 @@ CREATE TABLE `financeloan` (
   `security1name` varchar(250) DEFAULT NULL,
   `security1aadhar` varchar(25) DEFAULT NULL,
   `security1mobileno` varchar(11) DEFAULT NULL,
+  `security1profile` varchar(500) NOT NULL,
   `security2name` varchar(250) DEFAULT NULL,
   `security2aadhar` varchar(25) DEFAULT NULL,
   `security2mobileno` varchar(11) DEFAULT NULL,
@@ -171,9 +172,10 @@ CREATE TABLE `financeloan` (
 -- Dumping data for table `financeloan`
 --
 
-INSERT INTO `financeloan` (`id`, `loanreferenceno`, `fk_customer_id`, `fk_vechicle_id`, `requestdate`, `approveddate`, `activateddate`, `originalloanamount`, `approvedamount`, `loanperiod`, `loanperiodfrequency`, `loanintrestrate`, `security1name`, `security1aadhar`, `security1mobileno`, `security2name`, `security2aadhar`, `security2mobileno`, `nextduedate`, `loanstatus`, `approveddocument`, `cheasedreason`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`, `emiamount`, `lastduedate`, `payment_count`, `late_payment_count`) VALUES
-(1, 'LOAN1003', 1, 1, '2020-05-31', '2020-05-31', '2020-05-31', '16000.00', '16000.00', 3, 'month', '8.50', 'Test', '1425885', '3453453455', '', '', '', '2020-08-01', 'approved', NULL, NULL, 1, 1590931074, '1', '0', 1590916681, 1, '5410.00', '2020-08-31', 0, 0),
-(2, 'LOAN1004', 2, 2, '2020-05-31', '2020-05-31', '2020-05-31', '10000.00', '10000.00', 5, 'month', '12.00', 'pandi', '112222211111', '7485963210', '', '', '', '2020-10-31', 'cleared', NULL, NULL, 1, NULL, '1', '0', 1590933123, 1590933123, '2061.00', '2020-10-31', 0, 0);
+INSERT INTO `financeloan` (`id`, `loanreferenceno`, `fk_customer_id`, `fk_vechicle_id`, `requestdate`, `approveddate`, `activateddate`, `originalloanamount`, `approvedamount`, `loanperiod`, `loanperiodfrequency`, `loanintrestrate`, `security1name`, `security1aadhar`, `security1mobileno`, `security1profile`, `security2name`, `security2aadhar`, `security2mobileno`, `nextduedate`, `loanstatus`, `approveddocument`, `cheasedreason`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`, `emiamount`, `lastduedate`, `payment_count`, `late_payment_count`) VALUES
+(1, 'LOAN1003', 1, 1, '2020-05-31', '2020-05-31', '2020-05-31', '16000.00', '16000.00', 3, 'month', '8.50', 'Test', '1425885', '3453453455', '', '', '', '', '2020-08-01', 'approved', NULL, NULL, 1, 1590931074, '1', '0', 1590916681, 1, '5410.00', '2020-08-31', 0, 0),
+(2, 'LOAN1004', 2, 2, '2020-05-31', '2020-05-31', '2020-05-31', '10000.00', '10000.00', 5, 'month', '12.00', 'pandi', '112222211111', '7485963210', '', '', '', '', '2020-10-31', 'cleared', NULL, NULL, 1, NULL, '1', '0', 1590933123, 1590933123, '2061.00', '2020-10-31', 0, 0),
+(3, 'LOAN1007', 1, 3, '2020-06-29', NULL, NULL, '5455.00', '0.00', 5, 'month', '5.00', 'shshshsh', '434344', '5455555555', '1593444584-security1profile.jpg', '', '', '', NULL, 'pending', NULL, NULL, 1, 1593444584, '1', '0', 1593444341, 1, '1105.00', NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -291,6 +293,7 @@ CREATE TABLE `financesettings` (
   `id` int(11) NOT NULL,
   `fine_percentage` decimal(15,2) NOT NULL,
   `fine_days` int(11) NOT NULL,
+  `document_charge` decimal(5,2) NOT NULL,
   `status` int(1) NOT NULL DEFAULT '1',
   `dels` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -299,8 +302,8 @@ CREATE TABLE `financesettings` (
 -- Dumping data for table `financesettings`
 --
 
-INSERT INTO `financesettings` (`id`, `fine_percentage`, `fine_days`, `status`, `dels`) VALUES
-(1, '1.00', 10, 1, 0);
+INSERT INTO `financesettings` (`id`, `fine_percentage`, `fine_days`, `document_charge`, `status`, `dels`) VALUES
+(1, '1.00', 10, '10.00', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -405,6 +408,7 @@ CREATE TABLE `financevechicle` (
   `vechilercno` varchar(100) DEFAULT NULL,
   `vechileinsurenceno` varchar(100) DEFAULT NULL,
   `vechileinsurenseduedate` varchar(100) DEFAULT NULL,
+  `vechileinsurensestartdate` varchar(100) NOT NULL,
   `vechileenginetype` varchar(100) DEFAULT NULL,
   `rcdocument` varchar(500) DEFAULT NULL,
   `insurencedocument` varchar(500) DEFAULT NULL,
@@ -423,9 +427,10 @@ CREATE TABLE `financevechicle` (
 -- Dumping data for table `financevechicle`
 --
 
-INSERT INTO `financevechicle` (`id`, `fk_customer_id`, `vechilenumber`, `vechilename`, `vechilemodelyear`, `vechilemodel`, `vechilercno`, `vechileinsurenceno`, `vechileinsurenseduedate`, `vechileenginetype`, `rcdocument`, `insurencedocument`, `ischessed`, `chesseddate`, `chessedagainstloanid`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 1, 'TN67J8900', 'Honda', '2020', '', '748596', '', '', '', '1590916681-rcdocument.jpg', NULL, 0, NULL, NULL, 1, 1590931074, '1', '0', 1590916681, 1),
-(2, 2, 'Hero', 'Tn66J5885', '2009', '', 'RVC00001', '', '', '', '1590933122-rcdocument.jpg', NULL, 0, NULL, NULL, 1, NULL, '1', '0', 1590933123, 1590933123);
+INSERT INTO `financevechicle` (`id`, `fk_customer_id`, `vechilenumber`, `vechilename`, `vechilemodelyear`, `vechilemodel`, `vechilercno`, `vechileinsurenceno`, `vechileinsurenseduedate`, `vechileinsurensestartdate`, `vechileenginetype`, `rcdocument`, `insurencedocument`, `ischessed`, `chesseddate`, `chessedagainstloanid`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`) VALUES
+(1, 1, 'TN67J8900', 'Honda', '2020', '', '748596', '', '', '', '', '1590916681-rcdocument.jpg', NULL, 0, NULL, NULL, 1, 1590931074, '1', '0', 1590916681, 1),
+(2, 2, 'Hero', 'Tn66J5885', '2009', '', 'RVC00001', '', '', '', '', '1590933122-rcdocument.jpg', NULL, 0, NULL, NULL, 1, NULL, '1', '0', 1590933123, 1590933123),
+(3, 1, '5454545', 'shshshsh', '2020', '', '545454', '', '', '', '', '1593444475-rcdocument.png', NULL, 0, NULL, NULL, 1, 1593444584, '1', '0', 1593444341, 1);
 
 --
 -- Indexes for dumped tables
@@ -527,7 +532,7 @@ ALTER TABLE `financeemployee`
 -- AUTO_INCREMENT for table `financeloan`
 --
 ALTER TABLE `financeloan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `financeloan_payment`
 --
@@ -567,7 +572,7 @@ ALTER TABLE `financeusers`
 -- AUTO_INCREMENT for table `financevechicle`
 --
 ALTER TABLE `financevechicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -39,7 +39,7 @@ class Loan extends CI_Controller {
     }
 
     public function save() {
-        if (($this->input->server('REQUEST_METHOD') == 'POST')) {
+        if (($this->input->server('REQUEST_METHOD') == 'POST')) {            
             $this->form_validation->set_rules('fk_customer_id', 'Customer', 'trim|required');
             $this->form_validation->set_rules('vechilenumber', 'Vehicle Number', 'trim|required');
             $this->form_validation->set_rules('vechilename', 'Vehicle Name', 'trim|required');
@@ -63,6 +63,7 @@ class Loan extends CI_Controller {
                         $vehiclelist = $this->dbmodel->getAll('vechicle', array('id' => $loanlist[0]->fk_vechicle_id));
                     }
                 }
+                //Rc Document
                 if (isset($_FILES['rcdocument']['name']) && (!empty($_FILES['rcdocument']['name']))) {
                     $upload_image = do_upload_image('rcdocument', UPLOADPATH . 'rcdocument/');
                     if ($upload_image['image_message'] == "success") {
@@ -80,9 +81,27 @@ class Loan extends CI_Controller {
                 } else {
                     $file_name = (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) ? $vehiclelist[0]->rcdocument : "";
                 }
-                $setdata = array(
-                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
-                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                
+                //Security Image
+                if (isset($_FILES['security1profile']['name']) && (!empty($_FILES['security1profile']['name']))) {
+                    $upload_image = do_upload_image('security1profile', UPLOADPATH . 'profile/');
+                    if ($upload_image['image_message'] == "success") {
+                        if (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) {
+                            $image_file = './assets/upload/profile/' . $loanlist[0]->security1profile;
+                            if (file_exists($image_file)) {
+                                unlink($image_file);
+                            }
+                        }
+                        $security1_file_name = trim($upload_image['image_file_name']);
+                    } else {
+                        echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
+                        return false;
+                    }
+                } else {
+                    $security1_file_name = (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) ? $loanlist[0]->security1profile : "";
+                }
+                
+                $setdata = array('fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
                     'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
                     'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
                     'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
@@ -93,6 +112,7 @@ class Loan extends CI_Controller {
                     'security2name' => (isset($_POST['security2name']) && !empty($_POST['security2name'])) ? trim($_POST['security2name']) : "",
                     'security2aadhar' => (isset($_POST['security2aadhar']) && !empty($_POST['security2aadhar'])) ? trim($_POST['security2aadhar']) : "",
                     'security2mobileno' => (isset($_POST['security2mobileno']) && !empty($_POST['security2mobileno'])) ? trim($_POST['security2mobileno']) : "",
+                    'security1profile' => trim($security1_file_name),
                     'createdby' => $this->session->userdata('log_id')
                 );
 
@@ -106,7 +126,7 @@ class Loan extends CI_Controller {
                     'vechileinsurensestartdate' => (isset($_POST['vechileinsurensestartdate']) && !empty($_POST['vechileinsurensestartdate'])) ? cdatentodb($_POST['vechileinsurensestartdate']) : "",
                     'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
                     'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
-                    'rcdocument' => trim($file_name),
+                    'rcdocument' => trim($file_name),                    
                     'createdby' => $this->session->userdata('log_id')
                 );
 

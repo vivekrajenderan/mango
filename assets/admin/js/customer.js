@@ -119,33 +119,46 @@ $(document).ready(function () {
         }
     }, "Please choose format type .jpg, .jpeg, .png, .gif, .bmp");
 });
-$(document).on('click', '#close-preview', function () {
-    $('.image-preview').popover('hide');
+$(document).on('click', '#profile-close-preview', function () {
+    console.log('came');
+    $('#profile_image_content .image-preview').popover('hide');
     // Hover befor close the preview
-    $('.image-preview').hover(
+    $('#profile_image_content .image-preview').hover(
             function () {
-                $('.image-preview').popover('show');
+                $('#profile_image_content .image-preview').popover('show');
             },
             function () {
-                $('.image-preview').popover('hide');
+                $('#profile_image_content .image-preview').popover('hide');
+            }
+    );
+});
+$(document).on('click', '#aadhar-close-preview', function () {
+    $('#document_image_content .image-preview').popover('hide');
+    // Hover befor close the preview
+    $('#document_image_content .image-preview').hover(
+            function () {
+                $('#document_image_content .image-preview').popover('show');
+            },
+            function () {
+                $('#document_image_content .image-preview').popover('hide');
             }
     );
 });
 
 $(function () {
     // Create the close button
-    var closebtn = $('<button/>', {
+    var profileclosebtn = $('<button/>', {
         type: "button",
         text: 'x',
-        id: 'close-preview',
+        id: 'profile-close-preview',
         style: 'font-size: initial;',
     });
-    closebtn.attr("class", "close pull-right");
+    profileclosebtn.attr("class", "close pull-right");
     // Profile Document
     $('#profile_image_content .image-preview').popover({
         trigger: 'manual',
         html: true,
-        title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+        title: "<strong>Preview</strong>" + $(profileclosebtn)[0].outerHTML,
         content: "There's no image",
         placement: 'bottom'
     });
@@ -178,10 +191,18 @@ $(function () {
     });
     
      // Aadhar Document
+     // Create the close button
+    var aadharclosebtn = $('<button/>', {
+        type: "button",
+        text: 'x',
+        id: 'aadhar-close-preview',
+        style: 'font-size: initial;',
+    });
+    aadharclosebtn.attr("class", "close pull-right");
     $('#document_image_content .image-preview').popover({
         trigger: 'manual',
         html: true,
-        title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+        title: "<strong>Preview</strong>" + $(aadharclosebtn)[0].outerHTML,
         content: "There's no image",
         placement: 'bottom'
     });
