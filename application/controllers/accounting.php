@@ -138,9 +138,13 @@ class Accounting extends CI_Controller {
         $returnArr['headingname'] = array('acctype' => 'Account Type', "transdate" => 'Trans Date', 'transamount' => 'Transaction Amount', 'refno' => 'Reference No', 'transtext' => 'Comment');
         $filenametext = 'Account_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     }
 
 }

@@ -6,7 +6,7 @@
             <div class="content-header">                
                 <ol class="breadcrumb">
                     <li><a href="<?php echo base_url(); ?>">Home</a></li>                    
-                    <li class="active">Employee</li>
+                    <li class="active">Agent</li>
                 </ol>
             </div>
             <div class="row">
@@ -18,13 +18,13 @@
                         <div class="portlet-header">
                             <h3>
                                 <i class="fa fa-table"></i>
-                                Add Employee
+                                Add Agent
                             </h3>
-                            <a href="<?php echo base_url('employees'); ?>" class="btn btn-secondary pull-right">Employee List</a>
+                            <a href="<?php echo base_url('agent'); ?>" class="btn btn-secondary pull-right">Agent List</a>
 
                         </div> <!-- /.portlet-header -->
                         <div class="portlet-content">
-                            <form  class="form parsley-form" method="post" autocomplete="off" id="employee-form" action="<?php echo base_url() . 'employees/save'; ?>" enctype="multipart/form-data">
+                            <form  class="form parsley-form" method="post" autocomplete="off" id="agent-form" action="<?php echo base_url() . 'agent/save'; ?>" enctype="multipart/form-data">
                                 <input type="hidden" name="emp_id" id="emp_id" value="<?php echo (isset($list->id)) ? $list->id : ""; ?>">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -66,41 +66,13 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                    </div> 
+                                    </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Marital Status <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Commission<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <select id="fk_maritalstatus_id" name="fk_maritalstatus_id" class="form-control">
-                                                    <option value="">Select Marital</option>       
-                                                    <?php
-                                                    foreach ($maritalstatus as $key => $value) {
-                                                        $selected = (isset($list->fk_maritalstatus_id) && $key == $list->fk_maritalstatus_id) ? 'selected' : '';
-                                                        echo "<option value='$key' $selected>$value</option>";
-                                                    }
-                                                    ?>                                                       
-                                                </select>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Position
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="position" name="position" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->position)) ? $list->position : ""; ?>">
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Monthly Salary<span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="salary" name="salary" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="30" minlength="3" value="<?php echo (isset($list->salary) && !empty($list->salary)) ? number_format($list->salary, 2, '.', '') : ""; ?>">
+                                                <input type="text" id="salary" name="salary" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" value="<?php echo (isset($list->salary) && !empty($list->salary)) ? number_format($list->salary, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div>
                                     </div> 
@@ -185,7 +157,7 @@
                                     <div class="col-md-12 text-center">
                                         <div class="form-group">
                                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                                <a href="<?php echo base_url('employees'); ?>" class="btn btn-primary">Cancel</a>                                    
+                                                <a href="<?php echo base_url('agent'); ?>" class="btn btn-primary">Cancel</a>                                    
                                                 <button type="submit" class="btn btn-success">Submit</button>
                                             </div>
                                         </div>

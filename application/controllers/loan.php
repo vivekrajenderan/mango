@@ -80,7 +80,9 @@ class Loan extends CI_Controller {
                 } else {
                     $file_name = (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) ? $vehiclelist[0]->rcdocument : "";
                 }
-                $setdata = array('fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                $setdata = array(
+                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
                     'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
                     'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
                     'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
@@ -327,9 +329,13 @@ class Loan extends CI_Controller {
             'security2mobileno' => 'Security2 Mobile No');
         $filenametext = 'Loan_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     }
 
 }

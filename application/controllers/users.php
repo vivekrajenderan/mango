@@ -166,9 +166,13 @@ class Users extends CI_Controller {
         $returnArr['headingname'] = array('fullname' => 'Full Name', "username" => 'User Name', 'fk_employee_empname' => 'Employee Name', 'fk_usergroups_groupname' => 'User Group Name', 'status' => 'Active');
         $filenametext = 'Users_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     }
 
 }

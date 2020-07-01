@@ -35,19 +35,19 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-md-7">Postion</label>
+                            <label class="col-md-7">Salary</label>
                             <div class="col-md-5">
-                                <?php echo (isset($list->position)) ? $list->position : ""; ?>
+                                <?php echo (isset($list->salary) && !empty($list->salary)) ? number_format($list->salary, 2, '.', '') : ""; ?>
                             </div> 
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-md-7">Salary</label>
+                            <label class="col-md-7">Email</label>
                             <div class="col-md-5">
-                                <?php echo (isset($list->salary) && !empty($list->salary)) ? number_format($list->salary, 2, '.', '') : ""; ?>
+                                <?php echo (isset($list->email)) ? $list->email : ""; ?>
                             </div> 
                         </div>
                     </div>
@@ -63,32 +63,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-md-7">Email</label>
-                            <div class="col-md-5">
-                                <?php echo (isset($list->email)) ? $list->email : ""; ?>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-md-7">In</label>
-                            <div class="col-md-5">
-                                <?php echo (isset($list->empin) && !empty($list->empin)) ? date('Y-m-d', strtotime($list->empin)) : ""; ?>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-md-7">Out</label>
-                            <div class="col-md-5">
-                                <?php echo (isset($list->empout) && !empty($list->empout)) ? date('Y-m-d', strtotime($list->empout)) : ""; ?>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label class="col-md-7">Status</label>
                             <div class="col-md-5">
                                 <?php echo (isset($list->status) && !empty($list->status)) ? "Active" : "Inactive"; ?>
@@ -96,25 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-md-7">Marital Status</label>
-                            <div class="col-md-5">
-                                <?php echo (isset($list->maritalstatus) && !empty($list->maritalstatus)) ? $list->maritalstatus : ""; ?>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-md-7">Emp No</label>
-                            <div class="col-md-5">
-                                <?php echo (isset($list->empno) && !empty($list->empno)) ? $list->empno : ""; ?>
-                            </div> 
-                        </div>
-                    </div>
-                    
-                </div>
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

@@ -19,7 +19,7 @@ class Agent extends CI_Controller {
         $data['list'] = $this->dbmodel->getGridAll('employee', $params);
         $this->load->view('includes/header');
         $this->load->view('agent/list', $data);
-        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['employee'])));
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['agent'])));
     }
 
     public function add($id = NULL) {
@@ -39,7 +39,7 @@ class Agent extends CI_Controller {
         $data['maritalstatus'] = Getdropdowns('maritalstatus', 'statusname');
         $this->load->view('includes/header');
         $this->load->view('agent/add', $data);
-        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['employee'])));
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['agent'])));
     }
 
     public function save() {
@@ -174,16 +174,21 @@ class Agent extends CI_Controller {
     public function downloadexcel() {
         $this->load->library('excel');
         $returnArr = array();
-        $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'position', 'salary', 'address', 'phone', 'email');
+        $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'salary', 'address', 'phone', 'email');
         $params['filtercustom']['emp_type']='agent';
         $employeelist = $this->dbmodel->getGridAll('employee', $params);
         $returnArr['list'] = $employeelist;
-        $returnArr['headingname'] = array('empno' => 'Agent No', "empname" => 'Agent Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender', 'position' => 'Position','salary'=>'Commission','address'=>'Address','phone'=>'Phone','email'=>'Email');
-        $filenametext = 'Employee_Report_';
+        $returnArr['headingname'] = array('empno' => 'Agent No', "empname" => 'Agent Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender','salary'=>'Commission','address'=>'Address','phone'=>'Phone','email'=>'Email');
+        $filenametext = 'Agent_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
+        
     }
 
 }

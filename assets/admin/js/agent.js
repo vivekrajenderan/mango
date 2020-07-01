@@ -10,6 +10,12 @@ $(document).ready(function () {
             empname: {
                 required: true
             },
+            salary: {
+                required: true,
+                number: true,
+                min: 0,
+                max: 100,
+            },
             emplsex: {
                 required: true
             },

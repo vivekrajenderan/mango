@@ -177,9 +177,13 @@ class Employees extends CI_Controller {
         $returnArr['headingname'] = array('empno' => 'Employee No', "empname" => 'Employee Name', 'dob' => 'D.O.B', 'emplsex' => 'Gender', 'position' => 'Position','salary'=>'Salary','address'=>'Address','phone'=>'Phone','email'=>'Email','empin'=>'Employee IN','empout'=>'Employee Out','fk_maritalstatus_statusname'=>'Marital Status');
         $filenametext = 'Employee_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     }
 
 }
