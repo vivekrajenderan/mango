@@ -116,6 +116,12 @@
                                 Employees
                             </a>
                         </li>
+                        <li>
+                            <a href="<?php echo base_url('agent'); ?>">
+                                <i class="fa fa-users"></i>
+                                Agent
+                            </a>
+                        </li>
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 <i class="fa fa-bars"></i>

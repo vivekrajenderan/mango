@@ -199,9 +199,13 @@ class Customers extends CI_Controller {
         $returnArr['headingname'] = array('cusreferenceno' => 'Customer No', "cusname" => 'Customer Name', 'cusdob' => 'D.O.B', 'cussex' => 'Gender', 'occup' => 'Occupation','aadhar'=>'Aadhar','cusaddress'=>'Address','cusmobileno'=>'Phone','cusemail'=>'Email','accountno'=>'Account No','pan'=>'PAN NO','drivinglicence'=>'Driving License');
         $filenametext = 'Customer_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        $this->excel->streamCustom($data['filename'], $returnArr);
-        $data['filename'] = 'export/' . $data['filename'];
-        echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     }
 
 }
