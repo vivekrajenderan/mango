@@ -16,6 +16,11 @@ $(document).ready(function () {
             fk_customer_id: {
                 required: true
             },
+            commission: {
+                number: true,
+                min: 0,
+                max: 100,
+            },
             vechilenumber: {
                 required: true
             },
@@ -73,6 +78,11 @@ $(document).ready(function () {
         messages: {
             fk_customer_id: {
                 required: "Please choose the customer"
+            },
+            commission:{
+                number: "Commission Percentage is invalid",
+                min: "Commission Percentage is invalid",
+                max: "Commission Percentage is invalid",
             },
             vechilenumber: {
                 required: "Please enter the vehicle number"
@@ -211,6 +221,42 @@ $(document).ready(function () {
             return false; // required to block normal submit since you used ajax
         }
     });
+});
+$('#originalloanamount,#loanperiod,#loanintrestrate').blur(function(){
+    var params={
+        originalloanamount: ($('#originalloanamount').val()!='')?$('#originalloanamount').val():1,
+        loanperiod: ($('#loanperiod').val()!='')?$('#loanperiod').val():1,
+        loanintrestrate: ($('#loanintrestrate').val()!='')?$('#loanintrestrate').val():1,
+    }
+    $.ajax({
+        url: baseurl + 'loan/emiview',
+        type: 'POST',
+        data: params,
+        dataType: 'json',
+        async: false,
+        beforeSend: function () {
+            $('#loading-image').css('display', 'block');
+            $('body').addClass('loading');
+        },
+        complete: function () {
+            $('#loading-image').css('display', 'none');
+            $("body").removeClass("loading");
+        },
+        success: function (response) {
+            if (response.status)
+            {
+                console.log(response);
+            } else
+            {
+                openDanger(response.msg);
+            }
+        }
+    });
+});
+$('#fk_employee_id').change(function(){
+    var amountPercentage=$('option:selected', this).attr('data-default');
+
+    $('#commission').val(parseFloat(amountPercentage).toFixed(2));
 });
 $(document).on('click', '#close-preview', function () {
     $('.image-preview').popover('hide');

@@ -14,7 +14,7 @@ class Loan extends CI_Controller {
     }
 
     public function index() {
-        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount','lastduedate','nextduedate','(nextduedate<CURRENT_DATE) as extendduedate','loanstatus');
+        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname','fk_employee_id','fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount','lastduedate','nextduedate','(nextduedate<CURRENT_DATE) as extendduedate','loanstatus');
         $data['list'] = $this->dbmodel->getGridAll('loan', $params);
         $this->load->view('includes/header');
         $this->load->view('loan/list', $data);
@@ -33,6 +33,10 @@ class Loan extends CI_Controller {
         }
         $data['loanperiodfrequency'] = $this->config->item('loanperiodfrequency');
         $data['customers'] = Getdropdowns('customer', 'cusname');
+
+        $condition_array['emp_type'] = 'agent';
+        $condition_array['status'] = '1';
+        $data['employee'] = $this->dbmodel->getAll('employee', $condition_array,array('id'=>'id','empname'=>'empname','salary'=>'salary'));
         $this->load->view('includes/header');
         $this->load->view('loan/add', $data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
@@ -101,8 +105,11 @@ class Loan extends CI_Controller {
                     $security1_file_name = (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) ? $loanlist[0]->security1profile : "";
                 }
                 
-                $setdata = array('fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                $setdata = array(
+                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                    'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
                     'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
+                    'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
                     'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
                     'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
                     'loanintrestrate' => (isset($_POST['loanintrestrate']) && !empty($_POST['loanintrestrate'])) ? trim($_POST['loanintrestrate']) : "",
@@ -167,7 +174,23 @@ class Loan extends CI_Controller {
             }
         }
     }
-
+    public function emiview() {
+        if (($this->input->server('REQUEST_METHOD') == 'POST')) {
+            $this->form_validation->set_rules('originalloanamount', 'Loan Amount', 'trim|required');
+            $this->form_validation->set_rules('loanperiod', 'Loan Period', 'trim|required');
+            $this->form_validation->set_rules('loanintrestrate', 'Loan Interest Rate', 'trim|required');
+            if ($this->form_validation->run() == FALSE) {
+                echo json_encode(array('status' => 0, 'msg' => validation_errors()));
+                return false;
+            } else {
+                $amount = $_POST['originalloanamount'];
+                $rate = $_POST['loanintrestrate']/ 1200; // Monthly interest rate
+                $term = $_POST['loanperiod']; // Term in months
+                $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
+                echo json_encode(array('status' => true, 'emiamount' => $emi,'totalemiamount'=>$emi*$term,'profit'=>(($emi*$term)-$amount)));
+            }
+        }
+    }
     public function view() {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {

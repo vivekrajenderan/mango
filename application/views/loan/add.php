@@ -57,6 +57,34 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fk_employee_id">Agent 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <select id="fk_employee_id" name="fk_employee_id" class="form-control">
+                                                    <option value="">Select Agent</option>
+                                                    <?php
+                                                    foreach ($employee as $key => $value) {
+                                                        $selected = (isset($list->fk_employee_id) && $value->id == $list->fk_employee_id) ? 'selected' : '';
+                                                        echo "<option value='".$value->id."' $selected data-default='".$value->salary."'>".$value->empname."</option>";
+                                                    }
+                                                    ?>                                                      
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="commission">Commission % 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="text" id="commission" name="commission" class="form-control col-md-7 col-xs-12" value="<?php echo (isset($list->commission)) ? $list->commission : "0"; ?>">
+                                            </div>
+                                        </div> 
+                                    </div>                                     
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Name <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
