@@ -138,9 +138,9 @@
                                 </li>     
 
                                 <li>
-                                    <a href="<?php echo base_url('reports/monthly'); ?>">
-                                        <i class="fa fa-group"></i> 
-                                        &nbsp;&nbsp;Monthly Report
+                                    <a href="<?php echo base_url('reports/loandetailedreport'); ?>">
+                                        <i class="fa fa-money"></i> 
+                                        &nbsp;&nbsp;Loan Detailed Report
                                     </a>
                                 </li>
                                 <li>
