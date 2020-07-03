@@ -14,13 +14,145 @@ class Reports extends CI_Controller {
     }
 
     public function daily() {
-        $params['filtercustom']["date(transdate)='" . date('Y-m-d') . "'"] = '';
-        $params['select'] = array('id', 'status', 'acctype', 'transdate', 'transamount', 'refno', 'transtext');
-        $data['list'] = $this->dbmodel->getGridAll('overalltransaction', $params);
+        $params['filtercustom']["date(dateofpaid)='" . date('Y-m-d') . "'"] = '';
+        if(isset($_GET['fk_loan_id']) && !empty($_GET['fk_loan_id'])){
+            $params['filtercustom']["fk_loan_id"] = $_GET['fk_loan_id'];
+        }
+        if(isset($_GET['fk_customer_id']) && !empty($_GET['fk_customer_id'])){
+            $params['filtercustom']["fk_customer_id"] = $_GET['fk_customer_id'];
+        }
+        if(isset($_GET['date']) && !empty($_GET['date'])){
+            $params['filtercustom']["date(dateofpaid)='" . cdatentodb($_GET['date']) . "'"] = '';
+        }
+        $params['sorting']["dateofpaid"] = 'desc';
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when date(dateofpaid)>date(dateduepaid) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
+        $data['list'] = $this->dbmodel->getGridAll('loan_payment', $params);
+        $data['customers'] = Getdropdowns('customer', 'cusname');
+        $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
         $this->load->view('includes/header');
         $this->load->view('reports/daily', $data);
-        $this->load->view('includes/footer');
-    }
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['report'])));
+    } 
+
+    public function dailydownloadexcel() {
+        $this->load->library('excel');
+        $returnArr = array();
+        $params['filtercustom']["date(dateofpaid)='" . date('Y-m-d') . "'"] = '';
+        if(isset($_POST['fk_loan_id']) && !empty($_POST['fk_loan_id'])){
+            $params['filtercustom']["fk_loan_id"] = $_POST['fk_loan_id'];
+        }
+        if(isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])){
+            $params['filtercustom']["fk_customer_id"] = $_POST['fk_customer_id'];
+        }
+        if(isset($_GET['date']) && !empty($_GET['date'])){
+            $params['filtercustom']["date(dateofpaid)='" . cdatentodb($_GET['date']) . "'"] = '';
+        }
+        $params['sorting']["dateofpaid"] = 'desc';
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when date(dateofpaid)>date(dateduepaid) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
+        $returnArr['list'] = $this->dbmodel->getGridAll('loan_payment', $params);
+        $returnArr['headingname'] = array('fk_loan_loanreferenceno' => 'Document No.', "billreferenceno" => "Bill No.", "amount" => 'Paid Amount', "fineamount" => 'Fine Amount');
+        $filenametext = 'Daily_Report_';
+        $data['filename'] = $filenametext . date('d-m-y') . '.xls';
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
+    } 
+
+    public function loandetailedreport() {
+        if(isset($_GET['fk_loan_id']) && !empty($_GET['fk_loan_id'])){
+            $params['filtercustom']["fk_loan_id"] = $_GET['fk_loan_id'];
+        }
+        if(isset($_GET['fk_customer_id']) && !empty($_GET['fk_customer_id'])){
+            $params['filtercustom']["fk_customer_id"] = $_GET['fk_customer_id'];
+        }
+        if((isset($_GET['fdate']) && !empty($_GET['fdate'])) && (isset($_GET['edate']) && !empty($_GET['edate']))) {
+            $data['fdate']=cdatentodb($_GET['fdate']) ;
+            $data['edate']=cdatentodb($_GET['edate']) ;
+        } else {
+            $data['fdate']=date('Y-m-d',strtotime('-10 days'));
+            $data['edate']=date('Y-m-d');
+            
+        }
+        $params['filtercustom']["date(requestdate)>='" . $data['fdate'] . "' and date(requestdate)<='" . ($data['edate']) . "' "] = '';
+        // pre($params);
+        $data['fdate']=cdatedbton($data['fdate']) ;
+        $data['edate']=cdatedbton($data['edate']) ;
+        $params['sorting']["loan.cdate"] = 'desc';
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','commission','\'-\' as document_charge');
+        $data['list'] = $this->dbmodel->getGridAll('loan', $params);
+        $data['customers'] = Getdropdowns('customer', 'cusname');
+        $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
+        $data['agent'] = Getdropdowns('employee', 'empname',array('emp_type'=>'agent'));
+        $this->load->view('includes/header');
+        $this->load->view('reports/loandetailedreport', $data);
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['report'])));
+    } 
+
+    public function loandetaileddownloadexcel() {
+        $this->load->library('excel');
+        if(isset($_GET['fk_loan_id']) && !empty($_GET['fk_loan_id'])){
+            $params['filtercustom']["fk_loan_id"] = $_GET['fk_loan_id'];
+        }
+        if(isset($_GET['fk_customer_id']) && !empty($_GET['fk_customer_id'])){
+            $params['filtercustom']["fk_customer_id"] = $_GET['fk_customer_id'];
+        }
+        if((isset($_GET['fdate']) && !empty($_GET['fdate'])) && (isset($_GET['edate']) && !empty($_GET['edate']))) {
+            $data['fdate']=cdatentodb($_GET['fdate']) ;
+            $data['edate']=cdatentodb($_GET['edate']) ;
+        } else {
+            $data['fdate']=date('Y-m-d',strtotime('-10 days'));
+            $data['edate']=date('Y-m-d');
+            
+        }
+        $params['filtercustom']["date(requestdate)>='" . $data['fdate'] . "' and date(requestdate)<='" . ($data['edate']) . "' "] = '';
+        $params['sorting']["loan.cdate"] = 'desc';
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','commission','\'-\' as document_charge');
+        $returnArr['list'] = $this->dbmodel->getGridAll('loan', $params);
+        $returnArr['headingname'] = array('fk_customer_cusname' => 'Customer Name','fk_loan_loanreferenceno' => 'Document No.', "fk_employee_empname" => "Agent", "originalloanamount" => 'Amount', "commission" => 'CO Amount', "document_charge" => 'Document Charge');
+        $filenametext = 'Loan_Report_';
+        $data['filename'] = $filenametext . date('d-m-y') . '.xls';
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
+    } 
+
+    public function monthlypaymentreport() {
+        if(isset($_GET['fk_loan_id']) && !empty($_GET['fk_loan_id'])){
+            $params['filtercustom']["fk_loan_id"] = $_GET['fk_loan_id'];
+        }
+        if(isset($_GET['fk_customer_id']) && !empty($_GET['fk_customer_id'])){
+            $params['filtercustom']["fk_customer_id"] = $_GET['fk_customer_id'];
+        }
+        if((isset($_GET['fdate']) && !empty($_GET['fdate'])) && (isset($_GET['edate']) && !empty($_GET['edate']))) {
+            $data['fdate']=cdatentodb($_GET['fdate']) ;
+            $data['edate']=cdatentodb($_GET['edate']) ;
+        } else {
+            $data['fdate']=date('Y-m-01');
+            $data['edate']=date('Y-m-d');
+        }
+        $params['filtercustom']["date(nextduedate)>='" . $data['fdate'] . "' and date(nextduedate)<='" . ($data['edate']) . "' "] = '';
+        $params['filtercustom']["loanstatus"] = 'approved';
+        $data['fdate']=cdatedbton($data['fdate']) ;
+        $data['edate']=cdatedbton($data['edate']) ;
+        $params['sorting']["loan.cdate"] = 'desc';
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','commission','\'-\' as document_charge');
+        $data['list'] = $this->dbmodel->getGridAll('loan', $params);
+
+        $data['customers'] = Getdropdowns('customer', 'cusname');
+        $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
+        $data['agent'] = Getdropdowns('employee', 'empname',array('emp_type'=>'agent'));
+        $this->load->view('includes/header');
+        $this->load->view('reports/monthlypaymentreport', $data);
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['report'])));
+    } 
 
     public function monthly() {
         $this->load->view('includes/header');
