@@ -44,7 +44,7 @@ class Agent extends CI_Controller {
 
     public function save() {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {
-            $this->form_validation->set_rules('empname', 'Employee Name', 'trim|required');
+            $this->form_validation->set_rules('empname', 'Agent Name', 'trim|required');
             $this->form_validation->set_rules('emplsex', 'Gender', 'trim|required');
             $this->form_validation->set_rules('dob', 'D.O.B', 'trim|required');
             $this->form_validation->set_rules('address', 'Address', 'trim|required');
@@ -97,7 +97,7 @@ class Agent extends CI_Controller {
                     $saved = $this->dbmodel->insert('employee', $setdata);
                 }
                 if ($saved) {
-                    $this->session->set_flashdata('SucMessage', ucfirst($this->input->post('empname')) . ' Employee saved Successfully');
+                    $this->session->set_flashdata('SucMessage', ucfirst($this->input->post('empname')) . ' Agent saved Successfully');
                     echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empname')) . ' Agent saved Successfully'));
                 } else {
                     echo json_encode(array('status' => false, 'msg' => 'Agent Saved Not Successfully'));
