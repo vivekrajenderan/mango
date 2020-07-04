@@ -66,6 +66,41 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).on('click', '.monthlypaymentreport', function () {
+        var dailyformData = {
+            fk_customer_id: $('#fk_customer_id').val(),
+            fk_loan_id: $('#fk_loan_id').val(),
+            month: $('#month').val(),
+        }
+        $.ajax({
+            url: baseurl + 'reports/monthlypaymentreportdownloadexcel',
+            type: 'GET',
+            data: dailyformData,
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $('#loading-image').css('display', 'block');
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('#loading-image').css('display', 'none');
+                $("body").removeClass("loading");
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    window.location = baseurl+response.filename;
+                    setTimeout(function () {
+                        deleteexportfile(response.filename);
+                    }, 3000);
+
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    });
     $("#monthdate").datepicker({
         format: "yyyy-mm",
         viewMode: "months",
