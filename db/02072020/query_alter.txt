@@ -2,7 +2,7 @@ ALTER TABLE `financeloan` ADD `fk_employee_id` INT NULL DEFAULT NULL COMMENT 'Ag
 ALTER TABLE `financeloan` ADD `commissionamount` DECIMAL(5,2) NOT NULL DEFAULT '0' AFTER `approvedamount`;
 ALTER TABLE `financeloan` CHANGE `commissionamount` `commission` DECIMAL(5,2) NOT NULL DEFAULT '0.00';
 
-ALTER TABLE `financeloan_payment` ADD `billreferenceno` VARCHAR(250) NOT NULL AFTER `fk_loan_id`;
+ALTER TABLE `financeloanpayment` ADD `billreferenceno` VARCHAR(250) NOT NULL AFTER `fk_loan_id`;
 
 ALTER TABLE `financedocprefix` CHANGE `doctype` `doctype` ENUM('employee','customer','loan','agent','bill') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'employee';
 INSERT INTO `financedocprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES (NULL, 'bill', 'BILL', '1001', '1001', '1', '0', '0', '1554959938', '1590852414');

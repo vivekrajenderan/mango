@@ -14,11 +14,11 @@ class Loan extends CI_Controller {
     }
 
     public function index() {
-        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname','fk_employee_id','fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount','lastduedate','nextduedate','(nextduedate<CURRENT_DATE) as extendduedate','loanstatus');
+        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE) as extendduedate', 'loanstatus');
         $data['list'] = $this->dbmodel->getGridAll('loan', $params);
         $this->load->view('includes/header');
         $this->load->view('loan/list', $data);
-        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['loan'])));
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
     public function add($id = NULL) {
@@ -36,14 +36,14 @@ class Loan extends CI_Controller {
 
         $condition_array['emp_type'] = 'agent';
         $condition_array['status'] = '1';
-        $data['employee'] = $this->dbmodel->getAll('employee', $condition_array,array('id'=>'id','empname'=>'empname','salary'=>'salary'));
+        $data['employee'] = $this->dbmodel->getAll('employee', $condition_array, array('id' => 'id', 'empname' => 'empname', 'salary' => 'salary'));
         $this->load->view('includes/header');
         $this->load->view('loan/add', $data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
     public function save() {
-        if (($this->input->server('REQUEST_METHOD') == 'POST')) {            
+        if (($this->input->server('REQUEST_METHOD') == 'POST')) {
             $this->form_validation->set_rules('fk_customer_id', 'Customer', 'trim|required');
             $this->form_validation->set_rules('vechilenumber', 'Vehicle Number', 'trim|required');
             $this->form_validation->set_rules('vechilename', 'Vehicle Name', 'trim|required');
@@ -85,7 +85,7 @@ class Loan extends CI_Controller {
                 } else {
                     $file_name = (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) ? $vehiclelist[0]->rcdocument : "";
                 }
-                
+
                 //Security Image
                 if (isset($_FILES['security1profile']['name']) && (!empty($_FILES['security1profile']['name']))) {
                     $upload_image = do_upload_image('security1profile', UPLOADPATH . 'profile/');
@@ -104,7 +104,7 @@ class Loan extends CI_Controller {
                 } else {
                     $security1_file_name = (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) ? $loanlist[0]->security1profile : "";
                 }
-                
+
                 $setdata = array(
                     'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
                     'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
@@ -133,7 +133,7 @@ class Loan extends CI_Controller {
                     'vechileinsurensestartdate' => (isset($_POST['vechileinsurensestartdate']) && !empty($_POST['vechileinsurensestartdate'])) ? cdatentodb($_POST['vechileinsurensestartdate']) : "",
                     'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
                     'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
-                    'rcdocument' => trim($file_name),                    
+                    'rcdocument' => trim($file_name),
                     'createdby' => $this->session->userdata('log_id')
                 );
 
@@ -142,10 +142,10 @@ class Loan extends CI_Controller {
                     $setdata['mdate'] = $vehicledata['mdate'] = $this->session->userdata('log_id');
                     $setdata['updatedby'] = $vehicledata['updatedby'] = time();
                     $amount = $setdata['originalloanamount'];
-                    $rate = $setdata['loanintrestrate']/ 1200; // Monthly interest rate
+                    $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
                     $term = $setdata['loanperiod']; // Term in months
                     $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                    $setdata['emiamount']=$emi;
+                    $setdata['emiamount'] = $emi;
                     $saved = $this->dbmodel->update('loan', $setdata, array('id' => $_POST['loan_id']));
                     if (isset($vehiclelist[0]->id) && !empty($vehiclelist[0]->id)) {
                         $saved = $this->dbmodel->update('vechicle', $vehicledata, array('id' => $vehiclelist[0]->id));
@@ -154,10 +154,10 @@ class Loan extends CI_Controller {
                     $setdata['loanreferenceno'] = getRefId(array('doctype' => 'loan'));
                     $setdata['requestdate'] = date('Y-m-d');
                     $amount = $setdata['originalloanamount'];
-                    $rate = $setdata['loanintrestrate']/ 1200; // Monthly interest rate
+                    $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
                     $term = $setdata['loanperiod']; // Term in months
                     $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                    $setdata['emiamount']=$emi;
+                    $setdata['emiamount'] = $emi;
                     $setdata['loanstatus'] = $this->config->item('loanstatus')['pending'];
                     $setdata['cdate'] = $setdata['mdate'] = $vehicledata['cdate'] = $vehicledata['mdate'] = time();
 
@@ -174,6 +174,7 @@ class Loan extends CI_Controller {
             }
         }
     }
+
     public function emiview() {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {
             $this->form_validation->set_rules('originalloanamount', 'Loan Amount', 'trim|required');
@@ -184,13 +185,14 @@ class Loan extends CI_Controller {
                 return false;
             } else {
                 $amount = $_POST['originalloanamount'];
-                $rate = $_POST['loanintrestrate']/ 1200; // Monthly interest rate
+                $rate = $_POST['loanintrestrate'] / 1200; // Monthly interest rate
                 $term = $_POST['loanperiod']; // Term in months
                 $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                echo json_encode(array('status' => true, 'emiamount' => $emi,'totalemiamount'=>$emi*$term,'profit'=>(($emi*$term)-$amount)));
+                echo json_encode(array('status' => true, 'emiamount' => $emi, 'totalemiamount' => $emi * $term, 'profit' => (($emi * $term) - $amount)));
             }
         }
     }
+
     public function view() {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
@@ -232,30 +234,32 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function approve() {
+    public function approve() {        
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
-            $condition_array['md5(id)'] = $_POST['loanid'];
-            $data_list = $this->dbmodel->getAll('loan', $condition_array);
+            $condition_array['id'] = $_POST['loanid'];
+            $data_list = $this->dbmodel->getAll('loan', $condition_array);            
             if (count($data_list) > 0) {
-                $nextduedate=nextDueDateCalc($data_list[0]->loanperiod,$data_list[0]->loanperiodfrequency,$data_list[0]->nextduedate);
-                $lastduedate=date('Y-m-d' , strtotime ( date('Y-m-d') . ' + '.$data_list[0]->loanperiod.' '.$data_list[0]->loanperiodfrequency));
-                $this->dbmodel->update('loan', array('approveddate' => date('Y-m-d'), 'approvedamount' => $data_list[0]->originalloanamount,'loanstatus'=>$this->config->item('loanstatus')['approved'],'activateddate' => date('Y-m-d'),'nextduedate'=>$nextduedate,'lastduedate'=>$lastduedate), array('id' => $data_list[0]->id));
+                $date = $nextduedate=(isset($_POST['duedate']) && !empty($_POST['duedate'])) ? cdatentodb($_POST['duedate']) : date('Y-m-d');
+                //$nextduedate = nextDueDateCalc($data_list[0]->loanperiod, $data_list[0]->loanperiodfrequency, $date);
+                $lastduedate = date('Y-m-d', strtotime($date . ' + ' . $data_list[0]->loanperiod . ' ' . $data_list[0]->loanperiodfrequency));                
+                $this->dbmodel->update('loan', array('approveddate' => $date, 'approvedamount' => $data_list[0]->originalloanamount, 'loanstatus' => $this->config->item('loanstatus')['approved'], 'activateddate' => date('Y-m-d'), 'nextduedate' => $nextduedate, 'lastduedate' => $lastduedate), array('id' => $data_list[0]->id));
                 echo json_encode(array('status' => true));
 
-                $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno.' Loan has been approved successfully!!!');
+                $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno . ' Loan has been approved successfully!!!');
             } else {
                 echo json_encode(array('status' => false, 'msg' => 'Loan has not been approved successfully'));
             }
         }
     }
+
     public function payment($id = NULL) {
         if (isset($id) && !empty($id)) {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
-            $settings_list = $this->dbmodel->getAll('settings', array('id'=>1));
+            $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
             if (count($data_list) > 0) {
                 $data_list[0]->nextduedate = (isset($data_list[0]->nextduedate) && !empty($data_list[0]->nextduedate)) ? cdatedbton($data_list[0]->nextduedate) : '';
                 $data_list[0]->fineintrest = $settings_list[0]->fine_percentage;
-                $data_list[0]->fineamount = ($data_list[0]->emiamount*($settings_list[0]->fine_percentage/100));
+                $data_list[0]->fineamount = ($data_list[0]->emiamount * ($settings_list[0]->fine_percentage / 100));
                 $data_list[0]->fine_days = $settings_list[0]->fine_days;
                 $data['list'] = $data_list[0];
             }
@@ -264,16 +268,17 @@ class Loan extends CI_Controller {
         $this->load->view('loan/payment', $data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
+
     public function paymenthistory() {
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $data_list = $this->loan_model->getLoan(array('id' => $_POST['loanid']));
             if (count($data_list) > 0) {
-                $history_list = $this->dbmodel->getAll('loan_payment', array('fk_loan_id'=>$data_list[0]->id));
-                $data['history_list']=array();
+                $history_list = $this->dbmodel->getAll('loan_payment', array('fk_loan_id' => $data_list[0]->id));
+                $data['history_list'] = array();
                 foreach ($history_list as $key => $value) {
-                    $data['history_list'][$key]=$value;
-                    $data['history_list'][$key]->dateduepaid=cdatedbton($value->dateduepaid);
-                    $data['history_list'][$key]->dateofpaid=cdatedbton($value->dateofpaid);
+                    $data['history_list'][$key] = $value;
+                    $data['history_list'][$key]->dateduepaid = cdatedbton($value->dateduepaid);
+                    $data['history_list'][$key]->dateofpaid = cdatedbton($value->dateofpaid);
                 }
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
                 $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
@@ -283,60 +288,62 @@ class Loan extends CI_Controller {
         }
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
+
     public function makepayment() {
         if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
             $condition_array['id'] = $_POST['loan_id'];
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
-            $settings_list = $this->dbmodel->getAll('settings', array('id'=>1));
+            $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
             if (count($data_list) > 0) {
-                $lastduedate=$data_list[0]->lastduedate;
-                $nextduedate=$data_list[0]->nextduedate;
-                $emiamount=$data_list[0]->emiamount;
-                $updateduedate=date('Y-m-d');
-                
-                $insertdata=array(
-                    'fk_customer_id'=>$_POST['fk_customer_id'],
-                    'fk_vechicle_id'=>$_POST['fk_vechicle_id'],
-                    'fk_loan_id'=>$_POST['loan_id'],
-                    'dateduepaid'=>$nextduedate,
-                    'dateofpaid'=>date('Y-m-d'),
-                    'subamount'=>$_POST['subamount'],
-                    'amount'=>$_POST['subamount'],
+                $lastduedate = $data_list[0]->lastduedate;
+                $nextduedate = $data_list[0]->nextduedate;
+                $emiamount = $data_list[0]->emiamount;
+                $updateduedate = date('Y-m-d');
+
+                $insertdata = array(
+                    'fk_customer_id' => $_POST['fk_customer_id'],
+                    'fk_vechicle_id' => $_POST['fk_vechicle_id'],
+                    'fk_loan_id' => $_POST['loan_id'],
+                    'dateduepaid' => $nextduedate,
+                    'dateofpaid' => date('Y-m-d'),
+                    'subamount' => $_POST['subamount'],
+                    'amount' => $_POST['subamount'],
+                    'billreferenceno'=>getRefId(array('doctype' => 'bill'))
                 );
-                if(isset($_POST['fineintrestcheck']) && $_POST['fineintrestcheck']==1){
-                    $insertdata['fineintrest']=$_POST['fineintrest'];
-                    $insertdata['fineamount']=($_POST['subamount']*($_POST['fineintrest']/100));
-                    $insertdata['amount']+=$insertdata['fineamount'];
+                if (isset($_POST['fineintrestcheck']) && $_POST['fineintrestcheck'] == 1) {
+                    $insertdata['fineintrest'] = $_POST['fineintrest'];
+                    $insertdata['fineamount'] = ($_POST['subamount'] * ($_POST['fineintrest'] / 100));
+                    $insertdata['amount'] += $insertdata['fineamount'];
                 }
-                $financeloan_payment = $this->dbmodel->insert('financeloan_payment', $insertdata);
-                $nextduedate=nextDueDateCalc($data_list[0]->loanperiod,$data_list[0]->loanperiodfrequency,$data_list[0]->nextduedate);
-                $updatearray=array(
-                    'nextduedate'=>(strtotime($lastduedate)<=strtotime($nextduedate))?$lastduedate:$nextduedate,
+                $financeloanpayment = $this->dbmodel->insert('financeloanpayment', $insertdata);
+                $nextduedate = nextDueDateCalc($data_list[0]->loanperiod, $data_list[0]->loanperiodfrequency, $data_list[0]->nextduedate);
+                $updatearray = array(
+                    'nextduedate' => (strtotime($lastduedate) <= strtotime($nextduedate)) ? $lastduedate : $nextduedate,
                 );
-                if((strtotime($lastduedate)<=strtotime($nextduedate))){
-                    $updatearray['loanstatus']=$this->config->item('loanstatus')['cleared'];
+                if ((strtotime($lastduedate) <= strtotime($nextduedate))) {
+                    $updatearray['loanstatus'] = $this->config->item('loanstatus')['cleared'];
                 }
                 $setdata = array(
-                    'fk_customer_id'=>$_POST['fk_customer_id'],
-                    'fk_loan_payment_id'=>$financeloan_payment,
-                    'fk_loan_id'=>$_POST['loan_id'],
+                    'fk_customer_id' => $_POST['fk_customer_id'],
+                    'fk_loan_payment_id' => $financeloanpayment,
+                    'fk_loan_id' => $_POST['loan_id'],
                     'acctype' => "income",
-                    'transamount' => $_POST['subamount'],                    
+                    'transamount' => $_POST['subamount'],
                     'refno' => $data_list[0]->loanreferenceno,
-                    'transtext' => "Loan Repayment",                    
+                    'transtext' => "Loan Repayment",
                     'updatedby' => $this->session->userdata('log_id')
                 );
                 $setdata['createdby'] = $this->session->userdata('log_id');
                 $setdata['transdate'] = date('Y-m-d H:i:s');
                 $saved = $this->dbmodel->insert('overalltransaction', $setdata);
-                if(isset($_POST['fineintrestcheck']) && $_POST['fineintrestcheck']==1){
+                if (isset($_POST['fineintrestcheck']) && $_POST['fineintrestcheck'] == 1) {
                     $setdata['transamount'] = $insertdata['fineamount'];
                     $setdata['transtext'] = "Fine Amount";
                     $saved = $this->dbmodel->insert('overalltransaction', $setdata);
                 }
                 $this->dbmodel->update('loan', $updatearray, array('id' => $data_list[0]->id));
                 echo json_encode(array('status' => true));
-                $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno.' Loan has been payment successfully!!!');
+                $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno . ' Loan has been payment successfully!!!');
             } else {
                 echo json_encode(array('status' => false, 'msg' => 'Loan has not been payment successfully'));
             }
@@ -344,6 +351,7 @@ class Loan extends CI_Controller {
             echo json_encode(array('status' => false, 'msg' => 'Loan has not exists'));
         }
     }
+
     public function deletepopup() {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
@@ -352,6 +360,19 @@ class Loan extends CI_Controller {
             if (count($data_list) > 0) {
                 $data['list'] = $data_list[0];
                 $loadhtml = $this->load->view('loan/delete', $data, true);
+            }
+        }
+        echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
+    }
+
+    public function approvepopup() {
+        $loadhtml = "";
+        if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
+            $condition_array['md5(id)'] = $_POST['loanid'];
+            $data_list = $this->dbmodel->getAll('loan', $condition_array);
+            if (count($data_list) > 0) {
+                $data['list'] = $data_list[0];
+                $loadhtml = $this->load->view('loan/approve', $data, true);
             }
         }
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
@@ -372,12 +393,12 @@ class Loan extends CI_Controller {
             'security2mobileno' => 'Security2 Mobile No');
         $filenametext = 'Loan_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        if(!empty($returnArr['list'])){
+        if (!empty($returnArr['list'])) {
             $this->excel->streamCustom($data['filename'], $returnArr);
             $data['filename'] = 'export/' . $data['filename'];
             echo json_encode(array('status' => true, 'filename' => $data['filename']));
         } else {
-            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+            echo json_encode(array('status' => false, 'msg' => 'No data found'));
         }
     }
 
