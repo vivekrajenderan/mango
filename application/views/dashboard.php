@@ -11,6 +11,31 @@
             </div>
             <div class="row">
 
+                <div class="col-sm-6 col-md-4">
+                    <div class="row-stat">
+                        <p class="row-stat-label">Over All Customer</p>
+                        <h3 class="row-stat-value"><?php echo $customercount;?></h3>                        
+                    </div> <!-- /.row-stat -->
+                </div> <!-- /.col -->
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="row-stat">
+                        <p class="row-stat-label">Approved Loan</p>
+                        <h3 class="row-stat-value"><?php echo $approvecount;?></h3>                        
+                    </div> <!-- /.row-stat -->
+                </div> <!-- /.col -->
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="row-stat">
+                        <p class="row-stat-label">Cleared Loan</p>
+                        <h3 class="row-stat-value"><?php echo $clearedcount;?></h3>                        
+                    </div> <!-- /.row-stat -->
+                </div> <!-- /.col -->
+
+
+            </div>
+            <div class="row">
+
                 <div class="col-md-12">
 
                     <div class="portlet">

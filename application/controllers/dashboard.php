@@ -16,8 +16,10 @@ class Dashboard extends CI_Controller {
     public function index() {
         $data['set_cur']='INR';       
         $data['customeroverdue']= $this->customer_model->getCustomerOverdue();        
-        $data['customertransoverdue']=array();
-        // = $this->customer_model->getLtransOverdue();  
+        $data['customercount']= $this->customer_model->getCustomerCount();  
+        $data['approvecount']= $this->customer_model->getLoanCount($status='approved');  
+        $data['clearedcount']= $this->customer_model->getLoanCount($status='cleared');
+        $data['customertransoverdue']=array();         
         $this->load->view('includes/header');
         $this->load->view('dashboard',$data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'])));

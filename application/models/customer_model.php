@@ -36,4 +36,29 @@ class Customer_model extends CI_Model {
         return $result;
     }
 
+    public function getCustomerCount() {
+        $result = 0;        
+        $this->db->select('count(*) as totalcount');
+        $this->db->from('customer');
+        $this->db->where(array('dels' => '0'));        
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) { 
+            $result = $query->result_array();
+            $result = $result[0]['totalcount'];
+        }
+        return $result;
+    }
+    
+    public function getLoanCount($status) {
+        $result = 0;        
+        $this->db->select('count(*) as totalcount');
+        $this->db->from('loan');
+        $this->db->where(array('loanstatus' => $status));        
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) { 
+            $result = $query->result_array();
+            $result = $result[0]['totalcount'];
+        }
+        return $result;
+    }
 }
