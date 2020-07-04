@@ -180,10 +180,10 @@ CREATE TABLE `financeloan` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `financeloan_payment`
+-- Table structure for table `financeloanpayment`
 --
 
-CREATE TABLE `financeloan_payment` (
+CREATE TABLE `financeloanpayment` (
   `id` int(11) NOT NULL,
   `fk_financecustomer_id` int(11) DEFAULT NULL,
   `fk_financevechicle_id` int(11) DEFAULT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE `financeoveralltransaction` (
   `id` int(11) NOT NULL,
   `fk_financecustomer_id` int(11) DEFAULT 0,
   `fk_financeloan_id` int(11) DEFAULT 0,
-  `fk_financeloan_payment_id` int(11) DEFAULT 0,
+  `fk_financeloanpayment_id` int(11) DEFAULT 0,
   `type` enum('income','expense') DEFAULT NULL,
   `transdate` datetime DEFAULT current_timestamp(),
   `transamount` decimal(15,2) DEFAULT 0.00,
@@ -385,9 +385,9 @@ ALTER TABLE `financeloan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `financeloan_payment`
+-- Indexes for table `financeloanpayment`
 --
-ALTER TABLE `financeloan_payment`
+ALTER TABLE `financeloanpayment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -456,9 +456,9 @@ ALTER TABLE `financeloan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `financeloan_payment`
+-- AUTO_INCREMENT for table `financeloanpayment`
 --
-ALTER TABLE `financeloan_payment`
+ALTER TABLE `financeloanpayment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

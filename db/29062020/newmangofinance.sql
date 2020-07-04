@@ -180,10 +180,10 @@ INSERT INTO `financeloan` (`id`, `loanreferenceno`, `fk_customer_id`, `fk_vechic
 -- --------------------------------------------------------
 
 --
--- Table structure for table `financeloan_payment`
+-- Table structure for table `financeloanpayment`
 --
 
-CREATE TABLE `financeloan_payment` (
+CREATE TABLE `financeloanpayment` (
   `id` int(11) NOT NULL,
   `fk_customer_id` int(11) DEFAULT NULL,
   `fk_vechicle_id` int(11) DEFAULT NULL,
@@ -203,10 +203,10 @@ CREATE TABLE `financeloan_payment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `financeloan_payment`
+-- Dumping data for table `financeloanpayment`
 --
 
-INSERT INTO `financeloan_payment` (`id`, `fk_customer_id`, `fk_vechicle_id`, `fk_loan_id`, `dateduepaid`, `dateofpaid`, `fineintrest`, `fineamount`, `subamount`, `amount`, `createdby`, `updatedby`, `status`, `dels`, `createdate`, `updatedate`) VALUES
+INSERT INTO `financeloanpayment` (`id`, `fk_customer_id`, `fk_vechicle_id`, `fk_loan_id`, `dateduepaid`, `dateofpaid`, `fineintrest`, `fineamount`, `subamount`, `amount`, `createdby`, `updatedby`, `status`, `dels`, `createdate`, `updatedate`) VALUES
 (1, 1, 1, 1, '2020-07-01', '2020-05-31', '1.00', '54.10', '5410.00', '5464.10', NULL, NULL, 1, 0, NULL, NULL),
 (2, 2, 2, 2, '2020-07-01', '2020-06-01', '0.00', '0.00', '2061.00', '2061.00', NULL, NULL, 1, 0, NULL, NULL),
 (3, 2, 2, 2, '2020-08-01', '2020-06-01', '1.00', '20.61', '2061.00', '2081.61', NULL, NULL, 1, 0, NULL, NULL),
@@ -461,9 +461,9 @@ ALTER TABLE `financeloan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `financeloan_payment`
+-- Indexes for table `financeloanpayment`
 --
-ALTER TABLE `financeloan_payment`
+ALTER TABLE `financeloanpayment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -534,9 +534,9 @@ ALTER TABLE `financeemployee`
 ALTER TABLE `financeloan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `financeloan_payment`
+-- AUTO_INCREMENT for table `financeloanpayment`
 --
-ALTER TABLE `financeloan_payment`
+ALTER TABLE `financeloanpayment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `financemaritalstatus`

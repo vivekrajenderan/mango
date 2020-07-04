@@ -4,7 +4,6 @@ $(document).ready(function () {
         viewMode: "years",
         minViewMode: "years"
     });
-
     $("#loan-form").validate({
         highlight: function (element) {
             $(element).closest('.elVal').addClass("form-field text-error");
@@ -79,7 +78,7 @@ $(document).ready(function () {
             fk_customer_id: {
                 required: "Please choose the customer"
             },
-            commission:{
+            commission: {
                 number: "Commission Percentage is invalid",
                 min: "Commission Percentage is invalid",
                 max: "Commission Percentage is invalid",
@@ -176,10 +175,10 @@ $(document).ready(function () {
                 required: true
             },
             fineintrest: {
-                required:'#fineintrestcheck:checked'
+                required: '#fineintrestcheck:checked'
             },
             fineamount: {
-                required:'#fineintrestcheck:checked'
+                required: '#fineintrestcheck:checked'
             },
         },
         messages: {
@@ -222,11 +221,11 @@ $(document).ready(function () {
         }
     });
 });
-$('#originalloanamount,#loanperiod,#loanintrestrate').blur(function(){
-    var params={
-        originalloanamount: ($('#originalloanamount').val()!='')?$('#originalloanamount').val():1,
-        loanperiod: ($('#loanperiod').val()!='')?$('#loanperiod').val():1,
-        loanintrestrate: ($('#loanintrestrate').val()!='')?$('#loanintrestrate').val():1,
+$('#originalloanamount,#loanperiod,#loanintrestrate').blur(function () {
+    var params = {
+        originalloanamount: ($('#originalloanamount').val() != '') ? $('#originalloanamount').val() : 1,
+        loanperiod: ($('#loanperiod').val() != '') ? $('#loanperiod').val() : 1,
+        loanintrestrate: ($('#loanintrestrate').val() != '') ? $('#loanintrestrate').val() : 1,
     }
     $.ajax({
         url: baseurl + 'loan/emiview',
@@ -253,8 +252,8 @@ $('#originalloanamount,#loanperiod,#loanintrestrate').blur(function(){
         }
     });
 });
-$('#fk_employee_id').change(function(){
-    var amountPercentage=$('option:selected', this).attr('data-default');
+$('#fk_employee_id').change(function () {
+    var amountPercentage = $('option:selected', this).attr('data-default');
 
     $('#commission').val(parseFloat(amountPercentage).toFixed(2));
 });
@@ -342,8 +341,8 @@ $(function () {
         }
         reader.readAsDataURL(file);
     });
-    
-     // Security1 Image
+
+    // Security1 Image
     var profileclosebtn = $('<button/>', {
         type: "button",
         text: 'x',
@@ -435,6 +434,7 @@ $(document).on("click", ".close, .closebtn", function () {
     $("#loanviewModal").css({"display": "none"});
     $("#paymentviewModal").css({"display": "none"});
     $("#deleteLoanmodal").css({"display": "none"});
+    $("#approveLoanmodal").css({"display": "none"});
 });
 
 $(document).on("keypress keyup blur", ".allownumericwithdecimal", function (event) {
@@ -487,6 +487,7 @@ $(document).on('click', '.switchstatus', function () {
 
 $(document).on('click', '.loandelete', function () {
     var loanid = $(this).attr('data-id');
+    $("#approveLoanmodal").hide();
     if (loanid)
     {
         $.ajax({
@@ -516,12 +517,14 @@ $(document).on('click', '.loandelete', function () {
         });
     }
 });
+
 $(document).on('click', '.approveloan', function () {
     var loanid = $(this).attr('data-id');
+    $("#deleteLoanmodal").hide();
     if (loanid)
     {
         $.ajax({
-            url: baseurl + 'loan/approve',
+            url: baseurl + 'loan/approvepopup',
             type: 'POST',
             data: {loanid: loanid},
             dataType: 'json',
@@ -537,7 +540,11 @@ $(document).on('click', '.approveloan', function () {
             success: function (response) {
                 if (response.status)
                 {
-                    window.location = baseurl + 'loan';
+                    $("#popupshow").html(response.viewhtml);
+                    $("#approveLoanmodal").css({"display": "block"});
+                    $("#duedate").datepicker({
+                        dateFormat: 'yyyy-mm-dd'
+                    });
                 } else
                 {
                     openDanger(response.msg);
@@ -546,6 +553,7 @@ $(document).on('click', '.approveloan', function () {
         });
     }
 });
+
 $(document).on('click', '.makepayment', function () {
     var loanid = $(this).attr('data-id');
     if (loanid)
@@ -600,6 +608,54 @@ $(document).on('click', '.downloadexport', function () {
             {
                 openDanger(response.msg);
             }
+        }
+    });
+
+});
+$(document).on('click', '.loansubmit', function () {
+    $("#approve-form").validate({
+        highlight: function (element) {
+            $(element).closest('.elVal').addClass("form-field text-error");
+        },
+        unhighlight: function (element) {
+            $(element).closest('.elVal').removeClass("form-field text-error");
+        }, errorElement: 'span',
+        rules: {
+            duedate: {
+                required: true
+            },
+        },
+        messages: {
+            duedate: {
+                required: "Please choose the due date"
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.closest(".elVal"));
+        },
+        submitHandler: function (form) {
+            var formData = new FormData($('#approve-form')[0]);
+            var $form = $("#approve-form");
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            }).done(function (response) {
+
+                if (response.status)
+                {
+                    window.location = baseurl + 'loan';
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            });
+            return false; // required to block normal submit since you used ajax
         }
     });
 
