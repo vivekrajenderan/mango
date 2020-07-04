@@ -273,7 +273,7 @@ class Loan extends CI_Controller {
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $data_list = $this->loan_model->getLoan(array('id' => $_POST['loanid']));
             if (count($data_list) > 0) {
-                $history_list = $this->dbmodel->getAll('loan_payment', array('fk_loan_id' => $data_list[0]->id));
+                $history_list = $this->dbmodel->getAll('loanpayment', array('fk_loan_id' => $data_list[0]->id));
                 $data['history_list'] = array();
                 foreach ($history_list as $key => $value) {
                     $data['history_list'][$key] = $value;

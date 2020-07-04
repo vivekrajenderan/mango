@@ -144,9 +144,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo base_url('reports/yearly'); ?>">
+                                    <a href="<?php echo base_url('reports/monthlypaymentreport'); ?>">
                                         <i class="fa fa-group"></i> 
-                                        &nbsp;&nbsp;Yearly Report
+                                        &nbsp;&nbsp;Repayment Report
                                     </a>
                                 </li>
 
