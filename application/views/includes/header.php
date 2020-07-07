@@ -86,43 +86,43 @@
 
                     <ul class="nav navbar-nav mainbar-nav">
 
-                        <li class="active">
+                        <li class="<?php echo ($this->uri->segment(1)=='dashboard')?'active':''; ?>">
                             <a href="<?php echo base_url(); ?>">
                                 <i class="fa fa-dashboard"></i>
                                 Dashboard
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($this->uri->segment(1)=='customers')?'active':''; ?>">
                             <a href="<?php echo base_url('customers'); ?>">
                                 <i class="fa fa-user"></i>
                                 Customer
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($this->uri->segment(1)=='loan')?'active':''; ?>">
                             <a href="<?php echo base_url('loan'); ?>">
                                 <i class="fa fa-dollar"></i>
                                 Loans
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($this->uri->segment(1)=='accounting')?'active':''; ?>">
                             <a href="<?php echo base_url('accounting'); ?>">
                                 <i class="fa fa-building-o"></i>
                                 Accounting
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($this->uri->segment(1)=='employees')?'active':''; ?>">
                             <a href="<?php echo base_url('employees'); ?>">
                                 <i class="fa fa-users"></i>
                                 Employees
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($this->uri->segment(1)=='agent')?'active':''; ?>">
                             <a href="<?php echo base_url('agent'); ?>">
                                 <i class="fa fa-users"></i>
                                 Agent
                             </a>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown <?php echo ($this->uri->segment(1)=='reports')?'active':''; ?>">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 <i class="fa fa-bars"></i>
                                 Reports
@@ -130,20 +130,20 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li>
+                                <li class="<?php echo ($this->uri->segment(2)=='daily')?'active':''; ?>">
                                     <a href="<?php echo base_url('reports/daily'); ?>">
                                         <i class="fa fa-user nav-icon"></i> 
-                                        &nbsp;&nbsp;Daily Report
+                                        &nbsp;Daily Report
                                     </a>
                                 </li>     
 
-                                <li>
+                                <li class="<?php echo ($this->uri->segment(2)=='loandetailedreport')?'active':''; ?>">
                                     <a href="<?php echo base_url('reports/loandetailedreport'); ?>">
                                         <i class="fa fa-money"></i> 
                                         &nbsp;&nbsp;Loan Detailed Report
                                     </a>
                                 </li>
-                                <li>
+                                <li class="<?php echo ($this->uri->segment(2)=='monthlypaymentreport')?'active':''; ?>">
                                     <a href="<?php echo base_url('reports/monthlypaymentreport'); ?>">
                                         <i class="fa fa-group"></i> 
                                         &nbsp;&nbsp;Repayment Report
@@ -152,7 +152,7 @@
 
                             </ul>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown <?php echo ($this->uri->segment(1)=='users')?'active':''; ?>">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
                                 <i class="fa fa-cogs"></i>
                                 Settings
@@ -160,20 +160,20 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li>
+                                <li class="<?php echo ($this->uri->segment(1)=='users')?'active':''; ?>">
                                     <a href="<?php echo base_url('users'); ?>">
                                         <i class="fa fa-user nav-icon"></i> 
                                         &nbsp;&nbsp;Users
                                     </a>
                                 </li>     
 
-                                <li>
+                                <li style="display: none;">
                                     <a href="<?php echo base_url('usergroups'); ?>">
                                         <i class="fa fa-group"></i> 
                                         &nbsp;&nbsp;User Group
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="<?php echo base_url('tax'); ?>">
                                         <i class="fa fa-group"></i> 
                                         &nbsp;&nbsp;Tax

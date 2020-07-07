@@ -138,7 +138,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Insurance From Date
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <div class="input-group date ui-datepicker">
+                                                <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
                                                     <input id="vechileinsurensestartdate" name="vechileinsurensestartdate" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->vechileinsurensestartdate)) ? $list->vechileinsurensestartdate : ""; ?>">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>                                            
@@ -152,7 +152,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Insurance End Date
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <div class="input-group date ui-datepicker">
+                                                <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
                                                     <input id="vechileinsurenseduedate" name="vechileinsurenseduedate" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->vechileinsurenseduedate)) ? $list->vechileinsurenseduedate : ""; ?>">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>                                            

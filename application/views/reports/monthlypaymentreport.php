@@ -63,7 +63,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="payment_status">Payment Status</label>
+                                                    <select id="payment_status" name="payment_status" class="form-control">
+                                                        <option value="">All Status</option>
+                                                        <option value="1" <?php echo (isset($_GET['payment_status']) && 1 == $_GET['payment_status']) ? 'selected' : ''; ?>>Upcomming Payment</option>
+                                                        <option value="2" <?php echo (isset($_GET['payment_status']) && 2== $_GET['payment_status']) ? 'selected' : ''; ?>>Late Paid</option>
+                                                        <option value="3" <?php echo (isset($_GET['payment_status']) && 3 == $_GET['payment_status']) ? 'selected' : ''; ?>>Not yet Paid</option>
+                                                        <option value="4" <?php echo (isset($_GET['payment_status']) && 4 == $_GET['payment_status']) ? 'selected' : ''; ?>>Paid</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group" style="margin-top: 40px;">
                                                     <a href="<?php echo base_url('reports/monthlypaymentreport'); ?>" class="btn btn-primary">Reset</a>
@@ -74,7 +85,11 @@
                                     </form>
                                 </div>
                             </div>
-
+                            <div>
+                                <span class="fa fa-circle" style="color: #FFFF00;"></span> Upcomming Payment
+                                <span class="fa fa-circle" style="color: #ff3b6c;"></span> Late Paid
+                                <span class="fa fa-circle" style="color: #ff0000;"></span> Not yet Paid
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>

@@ -82,7 +82,7 @@ class Reports extends CI_Controller {
         $data['fdate']=cdatedbton($data['fdate']) ;
         $data['edate']=cdatedbton($data['edate']) ;
         $params['sorting']["loan.cdate"] = 'desc';
-        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','commission','\'-\' as document_charge');
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','agent_charge','document_charge');
         $data['list'] = $this->dbmodel->getGridAll('loan', $params);
         $data['customers'] = Getdropdowns('customer', 'cusname');
         $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
@@ -110,9 +110,9 @@ class Reports extends CI_Controller {
         }
         $params['filtercustom']["date(requestdate)>='" . $data['fdate'] . "' and date(requestdate)<='" . ($data['edate']) . "' "] = '';
         $params['sorting']["loan.cdate"] = 'desc';
-        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','commission','\'-\' as document_charge');
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_employee_id','fk_employee_empname', 'loanreferenceno', 'originalloanamount','agent_charge','document_charge');
         $returnArr['list'] = $this->dbmodel->getGridAll('loan', $params);
-        $returnArr['headingname'] = array('fk_customer_cusname' => 'Customer Name','fk_loan_loanreferenceno' => 'Document No.', "fk_employee_empname" => "Agent", "originalloanamount" => 'Amount', "commission" => 'CO Amount', "document_charge" => 'Document Charge');
+        $returnArr['headingname'] = array('fk_customer_cusname' => 'Customer Name','fk_loan_loanreferenceno' => 'Document No.', "fk_employee_empname" => "Agent", "originalloanamount" => 'Amount', "agent_charge" => 'CO Amount', "document_charge" => 'Document Charge');
         $filenametext = 'Loan_Report_';
         $data['filename'] = $filenametext . date('d-m-y') . '.xls';
         if(!empty($returnArr['list'])){
@@ -139,20 +139,20 @@ class Reports extends CI_Controller {
     } 
 
     public function monthlypaymentreportdownloadexcel() {
-        // $this->load->library('excel');        
+        $this->load->library('excel');        
         $returnArr['list'] = $this->report_model->getMonthlyPaymentReport();;
 
         $returnArr['headingname'] = array('cusname' => 'Customer Name','cusmobileno' => 'Customer No.','loanreferenceno' => 'Document No.', "dateduepaid" => 'Date Due Paid', "dateofpaid" => 'Date Of Paid');
-        pre($returnArr);
-        // $filenametext = 'Repayment_Report_';
-        // $data['filename'] = $filenametext . date('d-m-y') . '.xls';
-        // if(!empty($returnArr['list'])){
-        //     $this->excel->streamCustom($data['filename'], $returnArr);
-        //     $data['filename'] = 'export/' . $data['filename'];
-        //     echo json_encode(array('status' => true, 'filename' => $data['filename']));
-        // } else {
-        //     echo json_encode(array('status' => false, 'msg' =>'No data found'));
-        // }
+        // pre($returnArr);
+        $filenametext = 'Repayment_Report_';
+        $data['filename'] = $filenametext . date('d-m-y') . '.xls';
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
     } 
 
     public function monthly() {

@@ -542,8 +542,8 @@ $(document).on('click', '.approveloan', function () {
                 {
                     $("#popupshow").html(response.viewhtml);
                     $("#approveLoanmodal").css({"display": "block"});
-                    $("#duedate").datepicker({
-                        dateFormat: 'yyyy-mm-dd'
+                    $(".ui-datepicker").datepicker({
+                        format: 'dd/mm/yyyy'
                     });
                 } else
                 {
