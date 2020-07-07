@@ -89,8 +89,8 @@
                                             <th>Document No.</th>
                                             <th>Agent</th>
                                             <th>Amount</th>
-                                            <th>Document Charge</th>
                                             <th>Commission(CO)</th>
+                                            <th>Document Charge</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -104,7 +104,7 @@
                                                     <td><?php echo (isset($value->loanreferenceno)) ? $value->loanreferenceno : ""; ?></td>
                                                     <td><?php echo (isset($value->fk_employee_empname)) ? $value->fk_employee_empname : "-"; ?></td>
                                                     <td><?php echo (isset($value->originalloanamount)) ? $value->originalloanamount : ""; ?></td>
-                                                    <td><?php echo (isset($value->commission)) ? $value->commission : "-"; ?></td>
+                                                    <td><?php echo (isset($value->agent_charge)) ? $value->agent_charge : "-"; ?></td>
                                                     <td><?php echo (isset($value->document_charge)) ? $value->document_charge : ""; ?></td>
                                                 </tr>
                                         <?php

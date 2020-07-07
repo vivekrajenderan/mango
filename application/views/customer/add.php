@@ -60,7 +60,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">D.O.B <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <div class="input-group date ui-datepicker">
+                                                <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
                                                     <input id="cusdob" name="cusdob" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->cusdob)) ? $list->cusdob : ""; ?>">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>

@@ -7,7 +7,7 @@ class Dashboard extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('customer_model'));
+        $this->load->model(array('customer_model','report_model'));
         if ($this->session->userdata('log_id') == "") {
             redirect(base_url() . 'login/', 'refresh');
         }
@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller {
         $data['customercount']= $this->customer_model->getCustomerCount();  
         $data['approvecount']= $this->customer_model->getLoanCount($status='approved');  
         $data['clearedcount']= $this->customer_model->getLoanCount($status='cleared');
-        $data['customertransoverdue']=array();         
+        $data['customertransoverdue'] = $this->report_model->getMonthlyPaymentReport();  
         $this->load->view('includes/header');
         $this->load->view('dashboard',$data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'])));

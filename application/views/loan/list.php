@@ -27,7 +27,10 @@
                         </div> <!-- /.portlet-header -->
 
                         <div class="portlet-content">           
-
+                            <div>
+                                <span class="fa fa-circle" style="color: #FFFF00;"></span> Insurance Expired
+                                <span class="fa fa-circle" style="color: #ff3131c7;"></span> Not yet Paid
+                            </div>
                             <div class="table-responsive">                                
                                 <table 
                                     class="table table-striped table-bordered table-hover table-highlight table-checkable" 
@@ -43,8 +46,7 @@
                                             <th data-filterable="true" data-sortable="true" data-direction="desc">Loan. No.</th>
                                             <th data-direction="asc" data-filterable="true" data-sortable="true">Customer Name</th>                                                                                     
                                             <th data-filterable="true" data-sortable="true">Vehicle No</th> 
-                                            <th data-filterable="true" data-sortable="true">Request Date</th>                                           
-                                            <th data-filterable="true" data-sortable="true">Approved Date</th>                                           
+                                            <th data-filterable="true" data-sortable="true">Request Date</th>                                          
                                             <th data-filterable="true" data-sortable="true">Amount</th> 
                                             <th data-filterable="true" data-sortable="true">EMI Amount</th>                                            
                                             <th>Status</th>                                           
@@ -54,11 +56,12 @@
                                     <tbody>
                                         <?php foreach ($list as $key => $value) { ?>
                                             <tr>                                           
-                                                <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->loanreferenceno)) ? $value->loanreferenceno : ""; ?></td>
+                                                <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''; ?>">
+                                                <?php echo ($value->fk_vechicle_vechileinsurenseduedate<date('Y-m-d'))?'<span style="background-color: #FFFF00;">'.$value->loanreferenceno .'</span>':''.$value->loanreferenceno .''; ?></td>
+                                                
                                                 <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->fk_customer_cusname)) ? $value->fk_customer_cusname : ""; ?></td>    
                                                 <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->fk_vechicle_vechilenumber)) ? $value->fk_vechicle_vechilenumber : ""; ?></td>
-                                                <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->requestdate)) ? cdatedbton($value->requestdate) : ""; ?></td>                                                                                            
-                                                <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->approveddate)) ? cdatedbton($value->approveddate) : ""; ?></td>                                                                                            
+                                                <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->requestdate)) ? cdatedbton($value->requestdate) : ""; ?></td>                      
                                                 <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->originalloanamount) && !empty($value->originalloanamount)) ? $value->originalloanamount : 0; ?></td>                                                                     <td style="<?php echo ($value->extendduedate>0)?'background-color: #ff3131c7':''?>"><?php echo (isset($value->emiamount) && !empty($value->emiamount)) ? $value->emiamount : 0; ?></td>                       
                                                 <td>
                                                     <label class="label-switch switch-success">
@@ -67,16 +70,18 @@
                                                 </td> 
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="javascript:void(0);" class="btn btn-default btn-sm loanview" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="View"><i class="fa fa-eye"></i></a>
+                                                        
                                                         <?php if(empty($value->approveddate)){?><a href="javascript:void(0);" class="btn btn-secondary btn-sm approveloan" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Approve Loan"><i class="fa fa-check"></i></a><?php } else if($value->loanstatus=='approved'){?>
                                                             <a href="<?php echo base_url('loan/payment/' . $value->ecodeid); ?>" class="btn btn-info btn-sm " title="Load Payment"><i class="fa fa-money"></i></a>
                                                         <?php } ?>
+                                                        <a href="javascript:void(0);" class="btn btn-default btn-sm loanview" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="View"><i class="fa fa-eye"></i></a>
+                                                        <?php if(empty($value->approveddate)){?><a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a><?php }?>
                                                         <?php if($value->loanstatus!='pending' ){?>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm makepayment" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Make Payment"><i class="fa fa-list"></i></a>
                                                         <?php } else {?>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm loandelete" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Delete"><i class="fa fa-times"></i></a>
                                                         <?php } ?>
-                                                        <?php if(empty($value->approveddate)){?><a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a><?php }?>
+                                                        
                                                         
                                                             <!--<a href="<?php echo base_url('loan/delete/' . $value->ecodeid); ?>" class="btn btn-danger btn-sm" onClick="return confirm('Do u really want to delete Loan?');"><i class="fa fa-times"></i></a>-->                                                        
                                                     </div>
