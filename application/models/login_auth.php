@@ -32,11 +32,9 @@ class Login_auth extends CI_Model {
                 'log_report' => $row[0]['preport'],
                 'log_time' => time()
             );
-            $this->session->set_userdata($session_data);
-            return 1;
-        } else {
-            return 0;
-        }
+            $this->session->set_userdata($session_data);            
+        } 
+        return $row;
     }
 
     public function adduser($data) {
