@@ -27,7 +27,7 @@ class Login extends CI_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|maxn_length[30]');
             if ($this->form_validation->run() === TRUE) {
                 $login_verify = $this->login_auth->login_verify(trim($this->input->post('username')), trim($this->input->post('password')));
-                if ($login_verify == 1) {
+                if (count($login_verify)>0) {
                     redirect(base_url() . 'dashboard', 'refresh');
                 } else {
                     $msg = "Invalid Credential";

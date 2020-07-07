@@ -41,6 +41,7 @@
 $route['default_controller'] = "login";
 $route['404_override'] = '';
 $route['employees'] = 'employees/index';
+$route['apiLogin'] = 'api/login';
 
 
 /* End of file routes.php */
