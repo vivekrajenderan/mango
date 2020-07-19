@@ -66,6 +66,10 @@ class Api extends REST_Controller {
             }
         }
     }
+    public function logout_post() {
+        $this->session->sess_destroy(); 
+        $this->response(array('status' => true, "msg" => "Logout Successfully"), 200);
+    }
     public function dashboardCount_post() {
         $data['set_cur']='INR';             
         $data['customercount']= $this->customer_model->getCustomerCount();  
