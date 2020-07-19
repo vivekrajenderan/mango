@@ -34,7 +34,7 @@ class Api extends REST_Controller {
         $post_request = file_get_contents('php://input');
         $this->getrequest = json_decode($post_request, true);        
         $this->load->helper(array('form', 'url'));
-        $this->load->model(array('dbmodel', 'login_auth'));
+        $this->load->model(array('dbmodel', 'login_auth','customer_model','report_model'));
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('', '');
     }
@@ -66,7 +66,28 @@ class Api extends REST_Controller {
             }
         }
     }
-
+    public function dashboardCount_post() {
+        $data['set_cur']='INR';             
+        $data['customercount']= $this->customer_model->getCustomerCount();  
+        $data['approvecount']= $this->customer_model->getLoanCount($status='approved');  
+        $data['clearedcount']= $this->customer_model->getLoanCount($status='cleared');
+        $this->response(array('status' => true, "data" => $data), 200);
+    }
+    public function customer_post() {
+        $data['customer'] = $this->report_model->getMonthlyPaymentReport();  
+        $this->response(array('status' => true, "data" => $data), 200);
+    }
+    public function loan_post() {
+        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE) as extendduedate', 'loanstatus','fk_vechicle_id','fk_vechicle_vechileinsurenseduedate');
+        $data['list'] = $this->dbmodel->getGridAll('loan', $params); 
+        if(!empty($data['list'])){
+            foreach ($data['list'] as $key => $value) {
+                $data['list'][$key]->extendduedate=($value->extendduedate>0)?'#ff3131c7':'';
+                $data['list'][$key]->vechileinsurenseduedate_color=($value->fk_vechicle_vechileinsurenseduedate<date('Y-m-d'))?'#FFFF00':'';
+            }
+        }
+        $this->response(array('status' => true, "data" => $data), 200);
+    }
 }
 
 ?>
