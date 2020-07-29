@@ -13,12 +13,6 @@ $(document).ready(function () {
             cussex: {
                 required: true
             },
-            cusdob: {
-                required: true
-            },
-            pan: {
-                required: true
-            },
             cusmobileno: {
                 required: true,
                 minlength: 10,
@@ -27,7 +21,7 @@ $(document).ready(function () {
             },
             accountno: {
                 required: true,
-                minlength: 5,
+                minlength: 1,
                 maxlength: 30,
                 digits: true,
             },
