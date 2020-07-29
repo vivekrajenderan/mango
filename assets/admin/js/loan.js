@@ -12,9 +12,41 @@ $(document).ready(function () {
             $(element).closest('.elVal').removeClass("form-field text-error");
         }, errorElement: 'span',
         rules: {
-            fk_customer_id: {
+            cusname: {
                 required: true
             },
+            cussex: {
+                required: true
+            },
+            cusmobileno: {
+                required: true,
+                minlength: 10,
+                maxlength: 10,
+                digits: true,
+            },
+            accountno: {
+                required: true,
+                minlength: 1,
+                maxlength: 30,
+                digits: true,
+            },
+            cusemail: {
+                required: false,
+                email: true
+            },
+            cusaddress: {
+                required: true,
+                minlength: 10,
+                maxlength: 300
+            },
+            profile: {
+                required: true,
+                imagefilecheck: true
+            },
+            aadhardocument: {
+                required: true,
+                imagefilecheck: true
+            },            
             commission: {
                 number: true,
                 min: 0,
@@ -75,8 +107,32 @@ $(document).ready(function () {
 
         },
         messages: {
-            fk_customer_id: {
-                required: "Please choose the customer"
+            cusname: {
+                required: "Please enter customer name"
+            },
+            cussex: {
+                required: "Please choose gender"
+            },
+            cusdob: {
+                required: "Please choose D.O.B"
+            },
+            pan: {
+                required: "Please enter the PAN No"
+            },
+            cusmobileno: {
+                required: "Please enter the mobile no"
+            },
+            accountno: {
+                required: "Please enter the Account No"
+            },
+            cusaddress: {
+                required: "Please enter the address"
+            },
+            profile: {
+                required: "Please choose the profile"
+            },
+            aadhardocument: {
+                required: "Please choose the aadhar document"
             },
             commission: {
                 number: "Commission Percentage is invalid",
@@ -270,8 +326,7 @@ $(document).on('click', '#close-preview', function () {
     );
 });
 
-$(document).on('click', '#profile-close-preview', function () {
-    console.log('came');
+$(document).on('click', '#profile-close-preview', function () {    
     $('#profile_image_content .image-preview').popover('hide');
     // Hover befor close the preview
     $('#profile_image_content .image-preview').hover(
@@ -287,6 +342,32 @@ $(document).on('click', '#rc-close-preview', function () {
     $('#rc_image_content .image-preview').popover('hide');
     // Hover befor close the preview
     $('#rc_image_content .image-preview').hover(
+            function () {
+                $('#rc_image_content .image-preview').popover('show');
+            },
+            function () {
+                $('#rc_image_content .image-preview').popover('hide');
+            }
+    );
+});
+$(document).on('click', '#customer_profile-close-preview', function () {
+    $('#customer_profile_image_content .image-preview').popover('hide');
+    // Hover befor close the preview
+    $('#customer_profile_image_content .image-preview').hover(
+            function () {
+                $('#customer_profile_image_content .image-preview').popover('show');
+            },
+            function () {
+                $('#customer_profile_image_content .image-preview').popover('hide');
+            }
+    );
+});
+
+
+$(document).on('click', '#customer_document-close-preview', function () {
+    $('#document_image_content .image-preview').popover('hide');
+    // Hover befor close the preview
+    $('#document_image_content .image-preview').hover(
             function () {
                 $('#document_image_content .image-preview').popover('show');
             },
@@ -384,6 +465,96 @@ $(function () {
         }
         reader.readAsDataURL(file);
     });
+    
+    
+     // Customer Profile Start
+    var customerprofileclosebtn = $('<button/>', {
+        type: "button",
+        text: 'x',
+        id: 'customer_profile-close-preview',
+        style: 'font-size: initial;',
+    });
+    customerprofileclosebtn.attr("class", "close pull-right");
+    $('#customer_profile_image_content .image-preview').popover({
+        trigger: 'manual',
+        html: true,
+        title: "<strong>Preview</strong>" + $(customerprofileclosebtn)[0].outerHTML,
+        content: "There's no image",
+        placement: 'bottom'
+    });
+    // Clear event
+    $('#customer_profile_image_content .image-preview-clear').click(function () {
+        $('#customer_profile_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#customer_profile_image_content .image-preview-filename').val("");
+        $('#customer_profile_image_content .image-preview-clear').hide();
+        $('#customer_profile_image_content .image-preview-input input:file').val("");
+        $("#customer_profile_image_content .image-preview-input-title").text("Browse");
+    });
+    // Create the preview image
+    $("#customer_profile_image_content .image-preview-input input:file").change(function () {
+        var img = $('<img/>', {
+            id: 'dynamic',
+            width: 250,
+            height: 200
+        });
+        var file = this.files[0];
+        var reader = new FileReader();
+        // Set preview image into the popover data-content
+        reader.onload = function (e) {
+            $("#customer_profile_image_content .image-preview-input-title").text("Change");
+            $("#customer_profile_image_content .image-preview-clear").show();
+            $("#customer_profile_image_content .image-preview-filename").val(file.name);
+            img.attr('src', e.target.result);
+            $("#customer_profile_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+        }
+        reader.readAsDataURL(file);
+    });
+    
+    // Customer Profile End
+    
+    // Proff Start
+    var customedocclosebtn = $('<button/>', {
+        type: "button",
+        text: 'x',
+        id: 'customer_document-close-preview',
+        style: 'font-size: initial;',
+    });
+    customedocclosebtn.attr("class", "close pull-right");
+    $('#document_image_content .image-preview').popover({
+        trigger: 'manual',
+        html: true,
+        title: "<strong>Preview</strong>" + $(customedocclosebtn)[0].outerHTML,
+        content: "There's no image",
+        placement: 'bottom'
+    });
+    // Clear event
+    $('#document_image_content .image-preview-clear').click(function () {
+        $('#document_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#document_image_content .image-preview-filename').val("");
+        $('#document_image_content .image-preview-clear').hide();
+        $('#document_image_content .image-preview-input input:file').val("");
+        $("#document_image_content .image-preview-input-title").text("Browse");
+    });
+    // Create the preview image
+    $("#document_image_content .image-preview-input input:file").change(function () {
+        var img = $('<img/>', {
+            id: 'dynamic',
+            width: 250,
+            height: 200
+        });
+        var file = this.files[0];
+        var reader = new FileReader();
+        // Set preview image into the popover data-content
+        reader.onload = function (e) {
+            $("#document_image_content .image-preview-input-title").text("Change");
+            $("#document_image_content .image-preview-clear").show();
+            $("#document_image_content .image-preview-filename").val(file.name);
+            img.attr('src', e.target.result);
+            $("#document_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+        }
+        reader.readAsDataURL(file);
+    });
+    // Proff End
 });
 
 function RemoveImage()
@@ -398,6 +569,17 @@ function ProfileRemoveImage()
     $("#profile_image_content").show();
 }
 
+function RemoveAadharImage()
+{
+    $("#document_image").hide();
+    $("#document_image_content").show();
+}
+
+function RemoveProfileImage()
+{
+    $("#customer_profile_image").hide();
+    $("#customer_profile_image_content").show();
+}
 $(document).on('click', '.loanview', function () {
     var loanid = $(this).attr('data-id');
     if (loanid)
