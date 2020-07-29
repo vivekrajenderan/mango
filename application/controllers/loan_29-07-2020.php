@@ -3,9 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Loan extends CI_Controller {
+class Loan extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model(array('dbmodel', 'loan_model'));
         if ($this->session->userdata('log_id') == "") {
@@ -13,32 +15,28 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function index() {
-        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE) as extendduedate', 'loanstatus', 'fk_vechicle_id', 'fk_vechicle_vechileinsurenseduedate');
+    public function index()
+    {
+        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE) as extendduedate', 'loanstatus','fk_vechicle_id','fk_vechicle_vechileinsurenseduedate');
         $data['list'] = $this->dbmodel->getGridAll('loan', $params);
         $this->load->view('includes/header');
         $this->load->view('loan/list', $data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
-    public function add($id = NULL) {
+    public function add($id = NULL)
+    {
         $data['list'] = array();
-        $data['customerlist'] = array();
         if (!empty($id)) {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
             if (count($data_list) > 0) {
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
                 $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
                 $data['list'] = $data_list[0];
-                $customer_list = $this->dbmodel->getAll('customer', array('id' => $data_list[0]->fk_customer_id));
-                if (count($customer_list) > 0) {
-                    $customer_list[0]->cusdob = cdatedbton($customer_list[0]->cusdob);
-                    $data['customerlist'] = $customer_list[0];
-                }
             }
         }
         $data['loanperiodfrequency'] = $this->config->item('loanperiodfrequency');
-        $data['genderlist'] = $this->config->item('gender');
+        $data['customers'] = Getdropdowns('customer', 'cusname');
 
         $condition_array['emp_type'] = 'agent';
         $condition_array['status'] = '1';
@@ -48,14 +46,10 @@ class Loan extends CI_Controller {
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
-    public function save() {
+    public function save()
+    {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {
-            $this->form_validation->set_rules('cusname', 'Customer Name', 'trim|required');
-            $this->form_validation->set_rules('cussex', 'Gender', 'trim|required');
-            $this->form_validation->set_rules('aadhar', 'Aadhar No', 'trim|required');
-            $this->form_validation->set_rules('cusaddress', 'Address', 'trim|required');
-            $this->form_validation->set_rules('cusmobileno', 'Mobile No', 'trim|required|min_length[10]|max_length[10]|xss_clean|callback_uniquemobileno');
-            $this->form_validation->set_rules('accountno', 'Account No', 'trim|required|min_length[1]|max_length[30]|xss_clean');
+            $this->form_validation->set_rules('fk_customer_id', 'Customer', 'trim|required');
             $this->form_validation->set_rules('vechilenumber', 'Vehicle Number', 'trim|required');
             $this->form_validation->set_rules('vechilename', 'Vehicle Name', 'trim|required');
             $this->form_validation->set_rules('vechilemodelyear', 'Vehicle Model Year', 'trim|required');
@@ -78,37 +72,12 @@ class Loan extends CI_Controller {
                         $vehiclelist = $this->dbmodel->getAll('vechicle', array('id' => $loanlist[0]->fk_vechicle_id));
                     }
                 }
-                
-                // Customer
-                $customerlist = array();
-                if (isset($loanlist[0]->fk_customer_id) && !empty($loanlist[0]->fk_customer_id)) {
-                    $customerlist = $this->dbmodel->getAll('customer', array('id' => $loanlist[0]->fk_customer_id));
-                }                
-                // Profile 
-                if (isset($_FILES['profile']['name']) && (!empty($_FILES['profile']['name']))) {
-                    $upload_image = do_upload_image('profile', UPLOADPATH . 'profile/');
+                //Rc Document
+                if (isset($_FILES['rcdocument']['name']) && (!empty($_FILES['rcdocument']['name']))) {
+                    $upload_image = do_upload_image('rcdocument', UPLOADPATH . 'rcdocument/');
                     if ($upload_image['image_message'] == "success") {
-                        if (isset($customerlist[0]->profile) && !empty($customerlist[0]->profile)) {
-                            $image_file = './assets/upload/profile/' . $customerlist[0]->profile;
-                            if (file_exists($image_file)) {
-                                unlink($image_file);
-                            }
-                        }
-                        $profile_file_name = trim($upload_image['image_file_name']);
-                    } else {
-                        echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
-                        return false;
-                    }
-                } else {
-                    $profile_file_name = (isset($customerlist[0]->profile) && !empty($customerlist[0]->profile)) ? $customerlist[0]->profile : "";
-                }
-
-                //Aadhar document
-                if (isset($_FILES['aadhardocument']['name']) && (!empty($_FILES['aadhardocument']['name']))) {
-                    $upload_image = do_upload_image('aadhardocument', UPLOADPATH . 'document/');
-                    if ($upload_image['image_message'] == "success") {
-                        if (isset($customerlist[0]->aadhardocument) && !empty($customerlist[0]->aadhardocument)) {
-                            $image_file = './assets/upload/document/' . $customerlist[0]->aadhardocument;
+                        if (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) {
+                            $image_file = './assets/upload/rcdocument/' . $vehiclelist[0]->rcdocument;
                             if (file_exists($image_file)) {
                                 unlink($image_file);
                             }
@@ -119,155 +88,105 @@ class Loan extends CI_Controller {
                         return false;
                     }
                 } else {
-                    $file_name = (isset($customerlist[0]->aadhardocument) && !empty($customerlist[0]->aadhardocument)) ? $customerlist[0]->aadhardocument : "";
+                    $file_name = (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) ? $vehiclelist[0]->rcdocument : "";
                 }
-                $customersetdata = array('cusname' => (isset($_POST['cusname']) && !empty($_POST['cusname'])) ? trim($_POST['cusname']) : "",
-                    'cussex' => (isset($_POST['cussex']) && !empty($_POST['cussex'])) ? trim($_POST['cussex']) : "",
-                    'cusdob' => (isset($_POST['cusdob']) && !empty($_POST['cusdob'])) ? cdatentodb($_POST['cusdob']) : "",
-                    'occup' => (isset($_POST['occup']) && !empty($_POST['occup'])) ? trim($_POST['occup']) : "",
-                    'pan' => (isset($_POST['pan']) && !empty($_POST['pan'])) ? trim($_POST['pan']) : "",
-                    'aadhar' => (isset($_POST['aadhar']) && !empty($_POST['aadhar'])) ? trim($_POST['aadhar']) : "",
-                    'cusmobileno' => (isset($_POST['cusmobileno']) && !empty($_POST['cusmobileno'])) ? trim($_POST['cusmobileno']) : "",
-                    'cusemail' => (isset($_POST['cusemail']) && !empty($_POST['cusemail'])) ? trim($_POST['cusemail']) : "",
-                    'cusaddress' => (isset($_POST['cusaddress']) && !empty($_POST['cusaddress'])) ? trim($_POST['cusaddress']) : "",
-                    'accountno' => (isset($_POST['accountno']) && !empty($_POST['accountno'])) ? trim($_POST['accountno']) : "",
-                    'drivinglicence' => (isset($_POST['drivinglicence']) && !empty($_POST['drivinglicence'])) ? trim($_POST['drivinglicence']) : "",
-                    'aadhardocument' => trim($file_name),
-                    'profile' => trim($profile_file_name),
-                    'updatedby' => $this->session->userdata('log_id')
+
+                //Security Image
+                if (isset($_FILES['security1profile']['name']) && (!empty($_FILES['security1profile']['name']))) {
+                    $upload_image = do_upload_image('security1profile', UPLOADPATH . 'profile/');
+                    if ($upload_image['image_message'] == "success") {
+                        if (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) {
+                            $image_file = './assets/upload/profile/' . $loanlist[0]->security1profile;
+                            if (file_exists($image_file)) {
+                                unlink($image_file);
+                            }
+                        }
+                        $security1_file_name = trim($upload_image['image_file_name']);
+                    } else {
+                        echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
+                        return false;
+                    }
+                } else {
+                    $security1_file_name = (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) ? $loanlist[0]->security1profile : "";
+                }
+
+                $setdata = array(
+                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                    'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
+                    'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
+                    'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
+                    'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
+                    'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
+                    'loanintrestrate' => (isset($_POST['loanintrestrate']) && !empty($_POST['loanintrestrate'])) ? trim($_POST['loanintrestrate']) : "",
+                    'security1name' => (isset($_POST['security1name']) && !empty($_POST['security1name'])) ? trim($_POST['security1name']) : "",
+                    'security1aadhar' => (isset($_POST['security1aadhar']) && !empty($_POST['security1aadhar'])) ? trim($_POST['security1aadhar']) : "",
+                    'security1mobileno' => (isset($_POST['security1mobileno']) && !empty($_POST['security1mobileno'])) ? trim($_POST['security1mobileno']) : "",
+                    'security2name' => (isset($_POST['security2name']) && !empty($_POST['security2name'])) ? trim($_POST['security2name']) : "",
+                    'security2aadhar' => (isset($_POST['security2aadhar']) && !empty($_POST['security2aadhar'])) ? trim($_POST['security2aadhar']) : "",
+                    'security2mobileno' => (isset($_POST['security2mobileno']) && !empty($_POST['security2mobileno'])) ? trim($_POST['security2mobileno']) : "",
+                    'security1profile' => trim($security1_file_name),
+                    'createdby' => $this->session->userdata('log_id')
                 );
-                $customer_id = '';
-                if (isset($loanlist[0]->fk_customer_id) && !empty($loanlist[0]->fk_customer_id)) {
-                    $this->dbmodel->update('customer', $customersetdata, array('id' => $loanlist[0]->fk_customer_id));
-                    $customer_id=$loanlist[0]->fk_customer_id;
+
+                $vehicledata = array(
+                    'fk_customer_id' => (isset($_POST['fk_customer_id']) && !empty($_POST['fk_customer_id'])) ? trim($_POST['fk_customer_id']) : "",
+                    'vechilenumber' => (isset($_POST['vechilenumber']) && !empty($_POST['vechilenumber'])) ? trim($_POST['vechilenumber']) : "",
+                    'vechilename' => (isset($_POST['vechilename']) && !empty($_POST['vechilename'])) ? trim($_POST['vechilename']) : "",
+                    'vechilemodelyear' => (isset($_POST['vechilemodelyear']) && !empty($_POST['vechilemodelyear'])) ? trim($_POST['vechilemodelyear']) : "",
+                    'vechilemodel' => (isset($_POST['vechilemodel']) && !empty($_POST['vechilemodel'])) ? trim($_POST['vechilemodel']) : "",
+                    'vechilercno' => (isset($_POST['vechilercno']) && !empty($_POST['vechilercno'])) ? trim($_POST['vechilercno']) : "",
+                    'vechileinsurenceno' => (isset($_POST['vechileinsurenceno']) && !empty($_POST['vechileinsurenceno'])) ? trim($_POST['vechileinsurenceno']) : "",
+                    'vechileinsurensestartdate' => (isset($_POST['vechileinsurensestartdate']) && !empty($_POST['vechileinsurensestartdate'])) ? cdatentodb($_POST['vechileinsurensestartdate']) : "",
+                    'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
+                    'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
+                    'rcdocument' => trim($file_name),
+                    'createdby' => $this->session->userdata('log_id')
+                );
+
+                $saved = "";
+                $document_charge=getFeild('document_charge','settings','id',1);
+                $setdata['agent_charge'] = ($setdata['commission']>0)?(($setdata['originalloanamount']*$setdata['commission'])/100):0;
+                if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
+                    $setdata['mdate'] = $vehicledata['mdate'] = $this->session->userdata('log_id');
+                    $setdata['updatedby'] = $vehicledata['updatedby'] = time();
+                    $amount = $setdata['originalloanamount'];
+                    $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
+                    $term = $setdata['loanperiod']; // Term in months
+                    $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
+                    $setdata['emiamount'] = $emi;
+                    
+                    $saved = $this->dbmodel->update('loan', $setdata, array('id' => $_POST['loan_id']));
+                    if (isset($vehiclelist[0]   ->id) && !empty($vehiclelist[0]->id)) {
+                        $saved = $this->dbmodel->update('vechicle', $vehicledata, array('id' => $vehiclelist[0]->id));
+                    }
                 } else {
-                    $customersetdata['cusreferenceno'] = getRefId(array('doctype' => 'customer'));
-                    $customer_id = $this->dbmodel->insert('customer', $customersetdata);                    
+                    $amount = $setdata['originalloanamount'];
+                    $setdata['document_charge'] = ($document_charge>0)?(($amount*$document_charge)/100):0;
+                    $setdata['loanreferenceno'] = getRefId(array('doctype' => 'loan'));
+                    $setdata['requestdate'] = date('Y-m-d');
+                    $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
+                    $term = $setdata['loanperiod']; // Term in months
+                    $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
+                    $setdata['emiamount'] = $emi;
+                    $setdata['loanstatus'] = $this->config->item('loanstatus')['pending'];
+                    $setdata['cdate'] = $setdata['mdate'] = $vehicledata['cdate'] = $vehicledata['mdate'] = time();
+
+                    $vehicleid = $this->dbmodel->insert('vechicle', $vehicledata);
+                    $setdata['fk_vechicle_id'] = $vehicleid;
+                    $saved = $this->dbmodel->insert('loan', $setdata);
                 }
-
-
-                //Loan                
-                //Rc Document
-                if (!empty($customer_id)) {
-                    if (isset($_FILES['rcdocument']['name']) && (!empty($_FILES['rcdocument']['name']))) {
-                        $upload_image = do_upload_image('rcdocument', UPLOADPATH . 'rcdocument/');
-                        if ($upload_image['image_message'] == "success") {
-                            if (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) {
-                                $image_file = './assets/upload/rcdocument/' . $vehiclelist[0]->rcdocument;
-                                if (file_exists($image_file)) {
-                                    unlink($image_file);
-                                }
-                            }
-                            $file_name = trim($upload_image['image_file_name']);
-                        } else {
-                            echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
-                            return false;
-                        }
-                    } else {
-                        $file_name = (isset($vehiclelist[0]->rcdocument) && !empty($vehiclelist[0]->rcdocument)) ? $vehiclelist[0]->rcdocument : "";
-                    }
-
-                    //Security Image
-                    if (isset($_FILES['security1profile']['name']) && (!empty($_FILES['security1profile']['name']))) {
-                        $upload_image = do_upload_image('security1profile', UPLOADPATH . 'profile/');
-                        if ($upload_image['image_message'] == "success") {
-                            if (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) {
-                                $image_file = './assets/upload/profile/' . $loanlist[0]->security1profile;
-                                if (file_exists($image_file)) {
-                                    unlink($image_file);
-                                }
-                            }
-                            $security1_file_name = trim($upload_image['image_file_name']);
-                        } else {
-                            echo json_encode(array('status' => 0, 'msg' => "<p>Please upload only image</p>"));
-                            return false;
-                        }
-                    } else {
-                        $security1_file_name = (isset($loanlist[0]->security1profile) && !empty($loanlist[0]->security1profile)) ? $loanlist[0]->security1profile : "";
-                    }
-
-                    $setdata = array(
-                        'fk_customer_id' => $customer_id,
-                        'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
-                        'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
-                        'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
-                        'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
-                        'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
-                        'loanintrestrate' => (isset($_POST['loanintrestrate']) && !empty($_POST['loanintrestrate'])) ? trim($_POST['loanintrestrate']) : "",
-                        'security1name' => (isset($_POST['security1name']) && !empty($_POST['security1name'])) ? trim($_POST['security1name']) : "",
-                        'security1aadhar' => (isset($_POST['security1aadhar']) && !empty($_POST['security1aadhar'])) ? trim($_POST['security1aadhar']) : "",
-                        'security1mobileno' => (isset($_POST['security1mobileno']) && !empty($_POST['security1mobileno'])) ? trim($_POST['security1mobileno']) : "",
-                        'security2name' => (isset($_POST['security2name']) && !empty($_POST['security2name'])) ? trim($_POST['security2name']) : "",
-                        'security2aadhar' => (isset($_POST['security2aadhar']) && !empty($_POST['security2aadhar'])) ? trim($_POST['security2aadhar']) : "",
-                        'security2mobileno' => (isset($_POST['security2mobileno']) && !empty($_POST['security2mobileno'])) ? trim($_POST['security2mobileno']) : "",
-                        'security1profile' => trim($security1_file_name),
-                        'createdby' => $this->session->userdata('log_id')
-                    );
-
-                    $vehicledata = array(
-                        'fk_customer_id' => $customer_id,
-                        'vechilenumber' => (isset($_POST['vechilenumber']) && !empty($_POST['vechilenumber'])) ? trim($_POST['vechilenumber']) : "",
-                        'vechilename' => (isset($_POST['vechilename']) && !empty($_POST['vechilename'])) ? trim($_POST['vechilename']) : "",
-                        'vechilemodelyear' => (isset($_POST['vechilemodelyear']) && !empty($_POST['vechilemodelyear'])) ? trim($_POST['vechilemodelyear']) : "",
-                        'vechilemodel' => (isset($_POST['vechilemodel']) && !empty($_POST['vechilemodel'])) ? trim($_POST['vechilemodel']) : "",
-                        'vechilercno' => (isset($_POST['vechilercno']) && !empty($_POST['vechilercno'])) ? trim($_POST['vechilercno']) : "",
-                        'vechileinsurenceno' => (isset($_POST['vechileinsurenceno']) && !empty($_POST['vechileinsurenceno'])) ? trim($_POST['vechileinsurenceno']) : "",
-                        'vechileinsurensestartdate' => (isset($_POST['vechileinsurensestartdate']) && !empty($_POST['vechileinsurensestartdate'])) ? cdatentodb($_POST['vechileinsurensestartdate']) : "",
-                        'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
-                        'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
-                        'rcdocument' => trim($file_name),
-                        'createdby' => $this->session->userdata('log_id')
-                    );
-
-                    $saved = "";
-                    $document_charge = getFeild('document_charge', 'settings', 'id', 1);
-                    $setdata['agent_charge'] = ($setdata['commission'] > 0) ? (($setdata['originalloanamount'] * $setdata['commission']) / 100) : 0;
-                    if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
-                        $setdata['mdate'] = $vehicledata['mdate'] = $this->session->userdata('log_id');
-                        $setdata['updatedby'] = $vehicledata['updatedby'] = time();
-                        $amount = $setdata['originalloanamount'];
-                        $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
-                        $term = $setdata['loanperiod']; // Term in months
-                        $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                        $setdata['emiamount'] = $emi;
-
-                        $saved = $this->dbmodel->update('loan', $setdata, array('id' => $_POST['loan_id']));
-                        if (isset($vehiclelist[0]->id) && !empty($vehiclelist[0]->id)) {
-                            $saved = $this->dbmodel->update('vechicle', $vehicledata, array('id' => $vehiclelist[0]->id));
-                        }
-                    } else {
-                        $amount = $setdata['originalloanamount'];
-                        $setdata['document_charge'] = ($document_charge > 0) ? (($amount * $document_charge) / 100) : 0;
-                        $setdata['loanreferenceno'] = getRefId(array('doctype' => 'loan'));
-                        $setdata['requestdate'] = date('Y-m-d');
-                        $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
-                        $term = $setdata['loanperiod']; // Term in months
-                        $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                        $setdata['emiamount'] = $emi;
-                        $setdata['loanstatus'] = $this->config->item('loanstatus')['pending'];
-                        $setdata['cdate'] = $setdata['mdate'] = $vehicledata['cdate'] = $vehicledata['mdate'] = time();
-
-                        $vehicleid = $this->dbmodel->insert('vechicle', $vehicledata);
-                        $setdata['fk_vechicle_id'] = $vehicleid;
-                        $saved = $this->dbmodel->insert('loan', $setdata);
-                    }
-                    if ($saved) {
-                        $this->session->set_flashdata('SucMessage', $_POST['vechilenumber'] . ' Loan saved Successfully');
-                        echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empname')) . ' Loan saved Successfully'));
-                        return false;
-                    } else {
-                        echo json_encode(array('status' => false, 'msg' => 'Loan Saved Not Successfully'));
-                        return false;
-                    }
+                if ($saved) {
+                    $this->session->set_flashdata('SucMessage', $_POST['vechilenumber'] . ' Loan saved Successfully');
+                    echo json_encode(array('status' => true, 'msg' => ucfirst($this->input->post('empname')) . ' Loan saved Successfully'));
                 } else {
-                    echo json_encode(array('status' => false, 'msg' => 'Customer Saved Not Successfully'));
-                    return false;
+                    echo json_encode(array('status' => false, 'msg' => 'Loan Saved Not Successfully'));
                 }
             }
         }
     }
 
-    public function emiview() {
+    public function emiview()
+    {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {
             $this->form_validation->set_rules('originalloanamount', 'Loan Amount', 'trim|required');
             $this->form_validation->set_rules('loanperiod', 'Loan Period', 'trim|required');
@@ -285,7 +204,8 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function view() {
+    public function view()
+    {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $data_list = $this->loan_model->getLoan(array('id' => $_POST['loanid']));
@@ -299,7 +219,8 @@ class Loan extends CI_Controller {
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!empty($id)) {
             $condition_array['md5(id)'] = $id;
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
@@ -313,7 +234,8 @@ class Loan extends CI_Controller {
         redirect(base_url() . 'loan');
     }
 
-    public function changestatus() {
+    public function changestatus()
+    {
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $condition_array['md5(id)'] = $_POST['loanid'];
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
@@ -326,7 +248,8 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function approve() {
+    public function approve()
+    {
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $condition_array['id'] = $_POST['loanid'];
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
@@ -344,7 +267,8 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function payment($id = NULL) {
+    public function payment($id = NULL)
+    {
         if (isset($id) && !empty($id)) {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
             $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
@@ -361,7 +285,8 @@ class Loan extends CI_Controller {
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
-    public function paymenthistory() {
+    public function paymenthistory()
+    {
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $data_list = $this->loan_model->getLoan(array('id' => $_POST['loanid']));
             if (count($data_list) > 0) {
@@ -381,7 +306,8 @@ class Loan extends CI_Controller {
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
-    public function makepayment() {
+    public function makepayment()
+    {
         if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
             $condition_array['id'] = $_POST['loan_id'];
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
@@ -447,7 +373,8 @@ class Loan extends CI_Controller {
         }
     }
 
-    public function deletepopup() {
+    public function deletepopup()
+    {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $condition_array['md5(id)'] = $_POST['loanid'];
@@ -460,7 +387,8 @@ class Loan extends CI_Controller {
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
-    public function approvepopup() {
+    public function approvepopup()
+    {
         $loadhtml = "";
         if (isset($_POST['loanid']) && !empty($_POST['loanid'])) {
             $condition_array['md5(id)'] = $_POST['loanid'];
@@ -473,7 +401,8 @@ class Loan extends CI_Controller {
         echo json_encode(array('status' => true, 'viewhtml' => $loadhtml));
     }
 
-    public function downloadexcel() {
+    public function downloadexcel()
+    {
         $this->load->library('excel');
         $returnArr = array();
         $loanlist = $this->loan_model->getLoan();
@@ -498,5 +427,4 @@ class Loan extends CI_Controller {
             echo json_encode(array('status' => false, 'msg' => 'No data found'));
         }
     }
-
 }
