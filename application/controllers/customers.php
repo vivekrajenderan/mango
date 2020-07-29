@@ -15,7 +15,7 @@ class Customers extends CI_Controller {
 
     public function index() {
         //$params['filtercustom']["empout > " . time() . " OR empout IS NULL"] = '';
-        $params['select'] = array('id', 'status', 'cusreferenceno', 'cusname', 'cusmobileno', 'cusemail');
+        $params['select'] = array('id', 'status', 'cusreferenceno', 'cusname', 'cusmobileno', 'cusemail','accountno');
         $data['list'] = $this->dbmodel->getGridAll('customer', $params);
         $this->load->view('includes/header');
         $this->load->view('customer/list', $data);
@@ -44,12 +44,12 @@ class Customers extends CI_Controller {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {           
             $this->form_validation->set_rules('cusname', 'Customer Name', 'trim|required');
             $this->form_validation->set_rules('cussex', 'Gender', 'trim|required');
-            $this->form_validation->set_rules('cusdob', 'D.O.B', 'trim|required');
-            $this->form_validation->set_rules('pan', 'PAN No', 'trim|required');
+            //$this->form_validation->set_rules('cusdob', 'D.O.B', 'trim|required');
+            //$this->form_validation->set_rules('pan', 'PAN No', 'trim|required');
             $this->form_validation->set_rules('aadhar', 'Aadhar No', 'trim|required');
             $this->form_validation->set_rules('cusaddress', 'Address', 'trim|required');
             $this->form_validation->set_rules('cusmobileno', 'Mobile No', 'trim|required|min_length[10]|max_length[10]|xss_clean|callback_uniquemobileno');
-            $this->form_validation->set_rules('accountno', 'Account No', 'trim|required|min_length[5]|max_length[30]|xss_clean');
+            $this->form_validation->set_rules('accountno', 'Account No', 'trim|required|min_length[1]|max_length[30]|xss_clean');
             if ($this->form_validation->run() == FALSE) {
                 echo json_encode(array('status' => 0, 'msg' => validation_errors()));
                 return false;

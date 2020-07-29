@@ -14,6 +14,7 @@ class Employees extends CI_Controller {
     }
 
     public function index() {
+$params['filtercustom']['emp_type']='employee';
         //$params['filtercustom']["empout > " . time() . " OR empout IS NULL"] = '';
         $params['select'] = array('id', 'status', 'empno', 'empname', 'dob', 'emplsex', 'position', 'salary', 'address', 'phone', 'email', 'empin', 'empout', 'fk_maritalstatus_id', 'fk_maritalstatus_statusname');
         $data['list'] = $this->dbmodel->getGridAll('employee', $params);

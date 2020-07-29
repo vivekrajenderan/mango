@@ -40,11 +40,10 @@
                                     >
                                     <thead>
                                         <tr>                                            
-                                            <th data-filterable="true" data-sortable="true" data-direction="desc">Customer. No.</th>
+                                            <th data-filterable="true" data-sortable="true" data-direction="desc">Document No.</th>
                                             <th data-direction="asc" data-filterable="true" data-sortable="true">Name</th>                                                                                     
                                             <th data-filterable="true" data-sortable="true">Phone No</th> 
-                                            <th data-filterable="true" data-sortable="true">Email</th>                                           
-                                            <th data-filterable="true" data-sortable="true">Acc. No</th>                                           
+                                            <th data-filterable="true" data-sortable="true">Email</th>                                            
                                             <th>Status</th>                                           
                                             <th>Action</th>                                           
                                         </tr>
@@ -52,11 +51,11 @@
                                     <tbody>
                                         <?php foreach ($list as $key => $value) { ?>
                                             <tr>                                           
-                                                <td><?php echo (isset($value->cusreferenceno)) ? $value->cusreferenceno : ""; ?></td>
+                                                <td><?php echo (isset($value->accountno))? $value->accountno: ""; ?></td>
                                                 <td><?php echo (isset($value->cusname)) ? $value->cusname : ""; ?></td>    
                                                 <td><?php echo (isset($value->cusmobileno)) ? $value->cusmobileno : ""; ?></td>
                                                 <td><?php echo (isset($value->cusemail)) ? $value->cusemail: ""; ?></td>                                                                                            
-                                                <td><?php echo (isset($value->accountno)) ? $value->accountno: ""; ?></td>                                                                                                                                            
+                                                
                                                 <td>
                                                     <label class="label-switch switch-success">
                                                         <input type="checkbox" class="switch-square switch-bootstrap switchstatus" name="status" id="status_<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" data-status="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'checked' : ''; ?> >
