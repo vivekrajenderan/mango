@@ -24,9 +24,8 @@ $(document).ready(function () {
                 maxlength: 10,
                 digits: true,
             },
-            accountno: {
+            loanreferenceno: {
                 required: true,
-                minlength: 1,
                 maxlength: 30,
                 digits: true,
             },
@@ -72,13 +71,16 @@ $(document).ready(function () {
             originalloanamount: {
                 required: true
             },
+            totalemiamount: {
+                required: true
+            },
             loanperiod: {
                 required: true,
             },
             loanperiodfrequency: {
                 required: true
             },
-            loanintrestrate: {
+            emiamount: {
                 required: true
             },
             security1name: {
@@ -122,7 +124,7 @@ $(document).ready(function () {
             cusmobileno: {
                 required: "Please enter the mobile no"
             },
-            accountno: {
+            loanreferenceno: {
                 required: "Please enter the Account No"
             },
             cusaddress: {
@@ -155,7 +157,10 @@ $(document).ready(function () {
                 required: "Please choose the RC Document"
             },
             originalloanamount: {
-                required: "Please enter the loan amount"
+                required: "Please enter the HP amount"
+            },
+            totalemiamount: {
+                required: "Please enter the Total amount"
             },
             loanperiod: {
                 required: "Please enter the loan period"
@@ -163,8 +168,8 @@ $(document).ready(function () {
             loanperiodfrequency: {
                 required: "Please choose the loan period frequency"
             },
-            loanintrestrate: {
-                required: "Please enter the loan interest rate"
+            emiamount: {
+                required: "Please enter the EMI amount"
             },
             security1name: {
                 required: "Please enter the security1 Name"
@@ -277,102 +282,113 @@ $(document).ready(function () {
         }
     });
 });
-$('#originalloanamount,#loanperiod,#loanintrestrate').blur(function () {
-    var params = {
-        originalloanamount: ($('#originalloanamount').val() != '') ? $('#originalloanamount').val() : 1,
-        loanperiod: ($('#loanperiod').val() != '') ? $('#loanperiod').val() : 1,
-        loanintrestrate: ($('#loanintrestrate').val() != '') ? $('#loanintrestrate').val() : 1,
+$('#emiamount,#loanperiod').blur(function () {
+    // var params = {
+    //     emiamount: ($('#emiamount').val() != '') ? $('#emiamount').val() : 0,
+    //     loanperiod: ($('#loanperiod').val() != '') ? $('#loanperiod').val() : 0
+    // };
+    $('#totalemiamount').val('0');
+    if($('#emiamount').val() != '' && $('#loanperiod').val() != ''){
+        var total= parseFloat($('#emiamount').val())*parseFloat($('#loanperiod').val());
+        $('#totalemiamount').val(total);
     }
-    $.ajax({
-        url: baseurl + 'loan/emiview',
-        type: 'POST',
-        data: params,
-        dataType: 'json',
-        async: false,
-        beforeSend: function () {
-            $('#loading-image').css('display', 'block');
-            $('body').addClass('loading');
-        },
-        complete: function () {
-            $('#loading-image').css('display', 'none');
-            $("body").removeClass("loading");
-        },
-        success: function (response) {
-            if (response.status)
-            {
-                console.log(response);
-            } else
-            {
-                openDanger(response.msg);
-            }
-        }
-    });
-});
+})
+// $('#originalloanamount,#loanperiod,#loanintrestrate').blur(function () {
+//     var params = {
+//         originalloanamount: ($('#originalloanamount').val() != '') ? $('#originalloanamount').val() : 1,
+//         loanperiod: ($('#loanperiod').val() != '') ? $('#loanperiod').val() : 1,
+//         loanintrestrate: ($('#loanintrestrate').val() != '') ? $('#loanintrestrate').val() : 1,
+//     }
+//     $.ajax({
+//         url: baseurl + 'loan/emiview',
+//         type: 'POST',
+//         data: params,
+//         dataType: 'json',
+//         async: false,
+//         beforeSend: function () {
+//             $('#loading-image').css('display', 'block');
+//             $('body').addClass('loading');
+//         },
+//         complete: function () {
+//             $('#loading-image').css('display', 'none');
+//             $("body").removeClass("loading");
+//         },
+//         success: function (response) {
+//             if (response.status)
+//             {
+//                 console.log(response);
+//             } else
+//             {
+//                 openDanger(response.msg);
+//             }
+//         }
+//     });
+// });
 $('#fk_employee_id').change(function () {
     var amountPercentage = $('option:selected', this).attr('data-default');
 
     $('#commission').val(parseFloat(amountPercentage).toFixed(2));
 });
-$(document).on('click', '#close-preview', function () {
-    $('.image-preview').popover('hide');
-    // Hover befor close the preview
-    $('.image-preview').hover(
-            function () {
-                $('.image-preview').popover('show');
-            },
-            function () {
-                $('.image-preview').popover('hide');
-            }
-    );
-});
+// $(document).on('click', '#close-preview', function () {
+//     $('.image-preview').popover('hide');
+//     // Hover befor close the preview
+//     $('.image-preview').hover(
+//             function () {
+//                 $('.image-preview').popover('show');
+//             },
+//             function () {
+//                 $('.image-preview').popover('hide');
+//             }
+//     );
+// });
 
 $(document).on('click', '#profile-close-preview', function () {    
-    $('#profile_image_content .image-preview').popover('hide');
+    $('#profile_image_content').popover('hide');
     // Hover befor close the preview
-    $('#profile_image_content .image-preview').hover(
+    $('#profile_image_content').hover(
             function () {
-                $('#profile_image_content .image-preview').popover('show');
+                $('#profile_image_content').popover('show');
             },
             function () {
-                $('#profile_image_content .image-preview').popover('hide');
+                $('#profile_image_content').popover('hide');
             }
     );
 });
 $(document).on('click', '#rc-close-preview', function () {
-    $('#rc_image_content .image-preview').popover('hide');
+    $('#rc_image_content').popover('hide');
     // Hover befor close the preview
-    $('#rc_image_content .image-preview').hover(
+    $('#rc_image_content').hover(
             function () {
-                $('#rc_image_content .image-preview').popover('show');
+                $('#rc_image_content').popover('show');
             },
             function () {
-                $('#rc_image_content .image-preview').popover('hide');
+                $('#rc_image_content').popover('hide');
             }
     );
 });
 $(document).on('click', '#customer_profile-close-preview', function () {
-    $('#customer_profile_image_content .image-preview').popover('hide');
+    $('#customer_profile_image_content').popover('hide');
     // Hover befor close the preview
-    $('#customer_profile_image_content .image-preview').hover(
+    $('#customer_profile_image_content').hover(
             function () {
-                $('#customer_profile_image_content .image-preview').popover('show');
+                $('#customer_profile_image_content').popover('show');
             },
             function () {
-                $('#customer_profile_image_content .image-preview').popover('hide');
+                $('#customer_profile_image_content').popover('hide');
             }
     );
 });
 
 
 $(document).on('click', '#customer_document-close-preview', function () {
-    $('#document_image_content .image-preview').popover('hide');
+    $('#document_image_content').popover('hide');
     // Hover befor close the preview
-    $('#document_image_content .image-preview').hover(
+    $('#document_image_content').hover(
             function () {
-                $('#document_image_content .image-preview').popover('show');
+                $('#document_image_content').popover('show');
             },
             function () {
-                $('#document_image_content .image-preview').popover('hide');
+                $('#document_image_content').popover('hide');
             }
     );
 });
@@ -388,7 +404,7 @@ $(function () {
     });
     closebtn.attr("class", "close pull-right");
     // Set the popover default content
-    $('#rc_image_content .image-preview').popover({
+    $('#rc_image_content').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
@@ -397,7 +413,7 @@ $(function () {
     });
     // Clear event
     $('#rc_image_content .image-preview-clear').click(function () {
-        $('#rc_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#rc_image_content').attr("data-content", "").popover('hide');
         $('#rc_image_content .image-preview-filename').val("");
         $('#rc_image_content .image-preview-clear').hide();
         $('#rc_image_content .image-preview-input input:file').val("");
@@ -418,7 +434,7 @@ $(function () {
             $("#rc_image_content .image-preview-clear").show();
             $("#rc_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $("#rc_image_content  .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#rc_image_content").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });
@@ -431,7 +447,7 @@ $(function () {
         style: 'font-size: initial;',
     });
     profileclosebtn.attr("class", "close pull-right");
-    $('#profile_image_content .image-preview').popover({
+    $('#profile_image_content').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(profileclosebtn)[0].outerHTML,
@@ -440,7 +456,7 @@ $(function () {
     });
     // Clear event
     $('#profile_image_content .image-preview-clear').click(function () {
-        $('#profile_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#profile_image_content').attr("data-content", "").popover('hide');
         $('#profile_image_content .image-preview-filename').val("");
         $('#profile_image_content .image-preview-clear').hide();
         $('#profile_image_content .image-preview-input input:file').val("");
@@ -461,7 +477,7 @@ $(function () {
             $("#profile_image_content .image-preview-clear").show();
             $("#profile_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $("#profile_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#profile_image_content").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });
@@ -475,7 +491,7 @@ $(function () {
         style: 'font-size: initial;',
     });
     customerprofileclosebtn.attr("class", "close pull-right");
-    $('#customer_profile_image_content .image-preview').popover({
+    $('#customer_profile_image_content').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(customerprofileclosebtn)[0].outerHTML,
@@ -484,7 +500,8 @@ $(function () {
     });
     // Clear event
     $('#customer_profile_image_content .image-preview-clear').click(function () {
-        $('#customer_profile_image_content .image-preview').attr("data-content", "").popover('hide');
+        console.log('image-preview-clear');
+        $('#customer_profile_image_content').attr("data-content", "").popover('hide');
         $('#customer_profile_image_content .image-preview-filename').val("");
         $('#customer_profile_image_content .image-preview-clear').hide();
         $('#customer_profile_image_content .image-preview-input input:file').val("");
@@ -492,6 +509,7 @@ $(function () {
     });
     // Create the preview image
     $("#customer_profile_image_content .image-preview-input input:file").change(function () {
+        console.log('sdfsdf');
         var img = $('<img/>', {
             id: 'dynamic',
             width: 250,
@@ -505,12 +523,12 @@ $(function () {
             $("#customer_profile_image_content .image-preview-clear").show();
             $("#customer_profile_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $("#customer_profile_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#customer_profile_image_content").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });
     
-    // Customer Profile End
+    //Customer Profile End
     
     // Proff Start
     var customedocclosebtn = $('<button/>', {
@@ -520,7 +538,7 @@ $(function () {
         style: 'font-size: initial;',
     });
     customedocclosebtn.attr("class", "close pull-right");
-    $('#document_image_content .image-preview').popover({
+    $('#document_image_content').popover({
         trigger: 'manual',
         html: true,
         title: "<strong>Preview</strong>" + $(customedocclosebtn)[0].outerHTML,
@@ -529,7 +547,7 @@ $(function () {
     });
     // Clear event
     $('#document_image_content .image-preview-clear').click(function () {
-        $('#document_image_content .image-preview').attr("data-content", "").popover('hide');
+        $('#document_image_content').attr("data-content", "").popover('hide');
         $('#document_image_content .image-preview-filename').val("");
         $('#document_image_content .image-preview-clear').hide();
         $('#document_image_content .image-preview-input input:file').val("");
@@ -550,7 +568,7 @@ $(function () {
             $("#document_image_content .image-preview-clear").show();
             $("#document_image_content .image-preview-filename").val(file.name);
             img.attr('src', e.target.result);
-            $("#document_image_content .image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            $("#document_image_content").attr("data-content", $(img)[0].outerHTML).popover("show");
         }
         reader.readAsDataURL(file);
     });

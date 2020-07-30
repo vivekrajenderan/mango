@@ -26,10 +26,20 @@
                         <div class="portlet-content">
                             <form  class="form parsley-form" method="post" autocomplete="off" id="loan-form" action="<?php echo base_url() . 'loan/save'; ?>" enctype="multipart/form-data">
                                 <input type="hidden" name="loan_id" id="loan_id" value="<?php echo (isset($list->id)) ? $list->id : ""; ?>">
+                                <input type="hidden" name="loanperiodfrequency" id="loanperiodfrequency" value="month">
                                 <h4 class="heading">
                                     Customer Details
                                 </h4>
                                 <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Document No <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="text" id="loanreferenceno" name="loanreferenceno" class="form-control col-md-7 col-xs-12" maxlength="30"  value="<?php echo (isset($list->loanreferenceno)) ? $list->loanreferenceno : ""; ?>">
+                                            </div>
+                                        </div> 
+                                    </div> 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Name <span class="required">*</span>
@@ -39,6 +49,9 @@
                                             </div>
                                         </div> 
                                     </div> 
+                                    
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Gender <span class="required">*</span>
@@ -56,8 +69,6 @@
                                             </div>
                                         </div> 
                                     </div> 
-                                </div>
-                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">D.O.B 
@@ -67,17 +78,6 @@
                                                     <input id="cusdob" name="cusdob" class="form-control" type="text" data-required="true" value="<?php echo (isset($customerlist->cusdob)) ? $customerlist->cusdob : ""; ?>">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">PAN
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-
-                                                <input type="text" id="pan" name="pan" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($customerlist->pan)) ? $customerlist->pan : ""; ?>">
-
                                             </div>
                                         </div> 
                                     </div> 
@@ -100,7 +100,7 @@
                                                 <input type="text" id="aadhar" name="aadhar" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="30" minlength="3" value="<?php echo (isset($customerlist->aadhar) && !empty($customerlist->aadhar)) ? number_format($customerlist->aadhar, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -125,10 +125,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Account No <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">PAN
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="accountno" name="accountno" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="1" value="<?php echo (isset($customerlist->accountno)) ? $customerlist->accountno : ""; ?>">
+                                                <input type="text" id="pan" name="pan" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($customerlist->pan)) ? $customerlist->pan : ""; ?>">
                                             </div>
                                         </div> 
                                     </div> 
@@ -222,30 +222,26 @@
                                                 <?php } ?>
 
 
-                                                <!-- image-preview-filename input [CUT FROM HERE]-->
                                                 <div class="input-group image-preview" id="document_image_content" style="padding-left: 5px;display:<?php echo $customerdisplay; ?>;">
                                                     <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                                     <span class="input-group-btn">
-                                                        <!-- image-preview-clear button -->
                                                         <div class="btn btn-default image-preview-clear" style="display:none;position:relative;bottom: 2px;">
                                                             <span class="fa fa-times"></span> Clear
                                                         </div>
-                                                        <!-- image-preview-input -->
                                                         <div class="btn btn-default image-preview-input">
                                                             <span class="fa fa-folder-open"></span>
                                                             <span class="image-preview-input-title">Browse</span>
-                                                            <input type="file" name="aadhardocument" id="aadhardocument" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> <!-- rename it -->
+                                                            <input type="file" name="aadhardocument" id="aadhardocument" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> 
                                                         </div>
                                                     </span>
                                                 </div>                                       
-                                                <!-- /input-group image-preview [TO HERE]--> 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <br>
                                 <h4 class="heading">
-                                    Loan Details
+                                    Vehicle Details
                                 </h4>
                                 <div class="row">                                    
                                     <div class="col-sm-6">
@@ -257,36 +253,6 @@
                                             </div>
                                         </div> 
                                     </div>                                   
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fk_employee_id">Agent 
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <select id="fk_employee_id" name="fk_employee_id" class="form-control">
-                                                    <option value="">Select Agent</option>
-                                                    <?php
-                                                    foreach ($employee as $key => $value) {
-                                                        $selected = (isset($list->fk_employee_id) && $value->id == $list->fk_employee_id) ? 'selected' : '';
-                                                        echo "<option value='" . $value->id . "' $selected data-default='" . $value->salary . "'>" . $value->empname . "</option>";
-                                                    }
-                                                    ?>                                                      
-                                                </select>
-                                            </div>
-                                        </div> 
-                                    </div> 
-                                </div> 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="commission">Commission % 
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="commission" name="commission" class="form-control col-md-7 col-xs-12" value="<?php echo (isset($list->commission)) ? $list->commission : "0"; ?>">
-                                            </div>
-                                        </div> 
-                                    </div>                                     
-
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Name <span class="required">*</span>
@@ -295,9 +261,19 @@
                                                 <input type="text" id="vechilename" name="vechilename" class="form-control col-md-7 col-xs-12" maxlength="50" minlength="3" value="<?php echo (isset($list->vechilename)) ? $list->vechilename : ""; ?>">
                                             </div>
                                         </div> 
-                                    </div>
-                                </div>
+                                    </div>                
+                                     
+                                </div> 
                                 <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Model
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="vechilemodel" name="vechilemodel" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->vechilemodel)) ? $list->vechilemodel : ""; ?>">
+                                            </div>
+                                        </div> 
+                                    </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Registered Year <span class="required">*</span>
@@ -307,18 +283,8 @@
                                             </div>
                                         </div> 
                                     </div>
-
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Model
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="vechilemodel" name="vechilemodel" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->vechilemodel)) ? $list->vechilemodel : ""; ?>">
-                                            </div>
-                                        </div> 
-                                    </div> 
                                 </div>
+                                
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -422,58 +388,107 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <br>
+                                <h4 class="heading">
+                                    Loan Details
+                                </h4>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Amount <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">HP Amount <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="originalloanamount" name="originalloanamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="2" value="<?php echo (isset($list->originalloanamount)) ? number_format($list->originalloanamount, 2, '.', '') : ""; ?>">
+                                                <input type="number" id="originalloanamount" name="originalloanamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" value="<?php echo (isset($list->originalloanamount)) ? number_format($list->originalloanamount, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div> 
-                                    </div> 
-
-
+                                    </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Period <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Period (In Months) <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="loanperiod" name="loanperiod" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->loanperiod)) ? $list->loanperiod : ""; ?>">
                                             </div>
                                         </div>  
                                     </div> 
+                                    
                                 </div>
 
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Period Frequency <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">EMI Amount <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <select id="loanperiodfrequency" name="loanperiodfrequency" class="form-control">
-                                                    <option value="">Select Loan Period Frequency</option>       
-                                                    <?php
-                                                    foreach ($loanperiodfrequency as $key => $value) {
-                                                        $selected = (isset($list->loanperiodfrequency) && $key == $list->loanperiodfrequency) ? 'selected' : '';
-                                                        echo "<option value='$key' $selected>$value</option>";
-                                                    }
-                                                    ?>                                                       
-                                                </select>
+                                                <input type="number" id="emiamount" name="emiamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->emiamount)) ? number_format($list->emiamount, 2, '.', '') : ""; ?>">
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Total Amount <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="number" id="totalemiamount" disabled name="totalemiamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" value="<?php echo (isset($list->totalemiamount)) ? number_format($list->totalemiamount, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div> 
                                     </div> 
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Loan Interest Rate <span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fk_employee_id">Agent 
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="loanintrestrate" name="loanintrestrate" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->loanintrestrate)) ? number_format($list->loanintrestrate, 2, '.', '') : ""; ?>">
+                                                <select id="fk_employee_id" name="fk_employee_id" class="form-control">
+                                                    <option value="">Select Agent</option>
+                                                    <?php
+                                                    foreach ($employee as $key => $value) {
+                                                        $selected = (isset($list->fk_employee_id) && $value->id == $list->fk_employee_id) ? 'selected' : '';
+                                                        echo "<option value='" . $value->id . "' $selected data-default='" . $value->salary . "'>" . $value->empname . "</option>";
+                                                    }
+                                                    ?>                                                      
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="commission">Commission % 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="text" id="commission" name="commission" class="form-control col-md-7 col-xs-12" value="<?php echo (isset($list->commission)) ? $list->commission : "0"; ?>">
+                                            </div>
+                                        </div> 
+                                    </div>  
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Document Charge <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="number" id="document_charge" name="document_charge" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->document_charge)) ? number_format($list->document_charge, 2, '.', '') : number_format($document_charge, 2, '.', ''); ?>">
                                             </div>
                                         </div>  
-                                    </div> 
+                                    </div>  
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="requestdate">HF Date 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
+                                                    <input id="requestdate" name="requestdate" class="form-control" type="text" data-required="true" value="<?php echo (isset($list->requestdate)) ? $list->requestdate : ""; ?>">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>                  
                                 </div>
+                                <br>
+                                <h4 class="heading">
+                                    Security Details
+                                </h4>                    
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -552,7 +567,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security2 Name
@@ -586,7 +601,7 @@
                                             </div>
                                         </div> 
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="row">                                    
