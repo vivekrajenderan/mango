@@ -92,12 +92,12 @@
                                 Dashboard
                             </a>
                         </li>
-                        <li class="<?php echo ($this->uri->segment(1)=='customers')?'active':''; ?>">
+                        <!-- <li class="<?php echo ($this->uri->segment(1)=='customers')?'active':''; ?>">
                             <a href="<?php echo base_url('customers'); ?>">
                                 <i class="fa fa-user"></i>
                                 Customer
                             </a>
-                        </li>
+                        </li> -->
                         <li class="<?php echo ($this->uri->segment(1)=='loan')?'active':''; ?>">
                             <a href="<?php echo base_url('loan'); ?>">
                                 <i class="fa fa-dollar"></i>

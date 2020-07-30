@@ -37,8 +37,11 @@ class Loan extends CI_Controller {
                 }
             }
         }
+        $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
+        $data['document_charge']=$settings_list[0]->document_charge;
         $data['loanperiodfrequency'] = $this->config->item('loanperiodfrequency');
         $data['genderlist'] = $this->config->item('gender');
+        
 
         $condition_array['emp_type'] = 'agent';
         $condition_array['status'] = '1';
@@ -50,12 +53,14 @@ class Loan extends CI_Controller {
 
     public function save() {
         if (($this->input->server('REQUEST_METHOD') == 'POST')) {
+            $this->form_validation->set_rules('loanreferenceno', 'Document No.', 'trim|required|max_length[30]|xss_clean');
+
+            // $this->form_validation->set_rules('loanreferenceno', 'Document No.', 'trim|required');
             $this->form_validation->set_rules('cusname', 'Customer Name', 'trim|required');
             $this->form_validation->set_rules('cussex', 'Gender', 'trim|required');
             $this->form_validation->set_rules('aadhar', 'Aadhar No', 'trim|required');
             $this->form_validation->set_rules('cusaddress', 'Address', 'trim|required');
             $this->form_validation->set_rules('cusmobileno', 'Mobile No', 'trim|required|min_length[10]|max_length[10]|xss_clean|callback_uniquemobileno');
-            $this->form_validation->set_rules('accountno', 'Account No', 'trim|required|min_length[1]|max_length[30]|xss_clean');
             $this->form_validation->set_rules('vechilenumber', 'Vehicle Number', 'trim|required');
             $this->form_validation->set_rules('vechilename', 'Vehicle Name', 'trim|required');
             $this->form_validation->set_rules('vechilemodelyear', 'Vehicle Model Year', 'trim|required');
@@ -63,7 +68,7 @@ class Loan extends CI_Controller {
             $this->form_validation->set_rules('originalloanamount', 'Loan Amount', 'trim|required');
             $this->form_validation->set_rules('loanperiod', 'Loan Period', 'trim|required');
             $this->form_validation->set_rules('loanperiodfrequency', 'Loan Period Frequency', 'trim|required');
-            $this->form_validation->set_rules('loanintrestrate', 'Loan Interest Rate', 'trim|required');
+            $this->form_validation->set_rules('emiamount', 'EMI Amount', 'trim|required');
             $this->form_validation->set_rules('security1name', 'Security1 Name', 'trim|required');
             $this->form_validation->set_rules('security1aadhar', 'Security1 Aadhar', 'trim|required');
             $this->form_validation->set_rules('security1mobileno', 'Security1 Mobile No', 'trim|required|min_length[10]|max_length[10]|xss_clean');
@@ -121,7 +126,8 @@ class Loan extends CI_Controller {
                 } else {
                     $file_name = (isset($customerlist[0]->aadhardocument) && !empty($customerlist[0]->aadhardocument)) ? $customerlist[0]->aadhardocument : "";
                 }
-                $customersetdata = array('cusname' => (isset($_POST['cusname']) && !empty($_POST['cusname'])) ? trim($_POST['cusname']) : "",
+                $customersetdata = array(
+                    'cusname' => (isset($_POST['cusname']) && !empty($_POST['cusname'])) ? trim($_POST['cusname']) : "",
                     'cussex' => (isset($_POST['cussex']) && !empty($_POST['cussex'])) ? trim($_POST['cussex']) : "",
                     'cusdob' => (isset($_POST['cusdob']) && !empty($_POST['cusdob'])) ? cdatentodb($_POST['cusdob']) : "",
                     'occup' => (isset($_POST['occup']) && !empty($_POST['occup'])) ? trim($_POST['occup']) : "",
@@ -134,13 +140,16 @@ class Loan extends CI_Controller {
                     'drivinglicence' => (isset($_POST['drivinglicence']) && !empty($_POST['drivinglicence'])) ? trim($_POST['drivinglicence']) : "",
                     'aadhardocument' => trim($file_name),
                     'profile' => trim($profile_file_name),
-                    'updatedby' => $this->session->userdata('log_id')
+                    'updatedby' => $this->session->userdata('log_id'),
+                    'mdate'=>time()
                 );
                 $customer_id = '';
                 if (isset($loanlist[0]->fk_customer_id) && !empty($loanlist[0]->fk_customer_id)) {
                     $this->dbmodel->update('customer', $customersetdata, array('id' => $loanlist[0]->fk_customer_id));
                     $customer_id=$loanlist[0]->fk_customer_id;
                 } else {
+                    $customersetdata['cdate']= $customersetdata['mdate'];
+                    $customersetdata['createdby'] = $customersetdata['updatedby'];
                     $customersetdata['cusreferenceno'] = getRefId(array('doctype' => 'customer'));
                     $customer_id = $this->dbmodel->insert('customer', $customersetdata);                    
                 }
@@ -189,11 +198,15 @@ class Loan extends CI_Controller {
                     $setdata = array(
                         'fk_customer_id' => $customer_id,
                         'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
-                        'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "",
-                        'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
+
+                        'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "0",
+                        'totalemiamount' => (isset($_POST['totalemiamount']) && !empty($_POST['totalemiamount'])) ? trim($_POST['totalemiamount']) : "0",
+                        'emiamount' => (isset($_POST['emiamount']) && !empty($_POST['emiamount'])) ? trim($_POST['emiamount']) : "0",
                         'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
-                        'loanperiodfrequency' => (isset($_POST['loanperiodfrequency']) && !empty($_POST['loanperiodfrequency'])) ? trim($_POST['loanperiodfrequency']) : "",
-                        'loanintrestrate' => (isset($_POST['loanintrestrate']) && !empty($_POST['loanintrestrate'])) ? trim($_POST['loanintrestrate']) : "",
+
+                        'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
+                        'document_charge' => (isset($_POST['document_charge']) && !empty($_POST['document_charge'])) ? trim($_POST['document_charge']) : 0,
+
                         'security1name' => (isset($_POST['security1name']) && !empty($_POST['security1name'])) ? trim($_POST['security1name']) : "",
                         'security1aadhar' => (isset($_POST['security1aadhar']) && !empty($_POST['security1aadhar'])) ? trim($_POST['security1aadhar']) : "",
                         'security1mobileno' => (isset($_POST['security1mobileno']) && !empty($_POST['security1mobileno'])) ? trim($_POST['security1mobileno']) : "",
@@ -201,7 +214,8 @@ class Loan extends CI_Controller {
                         'security2aadhar' => (isset($_POST['security2aadhar']) && !empty($_POST['security2aadhar'])) ? trim($_POST['security2aadhar']) : "",
                         'security2mobileno' => (isset($_POST['security2mobileno']) && !empty($_POST['security2mobileno'])) ? trim($_POST['security2mobileno']) : "",
                         'security1profile' => trim($security1_file_name),
-                        'createdby' => $this->session->userdata('log_id')
+                        'updatedby' => $this->session->userdata('log_id'),
+                        'mdate' => time(),
                     );
 
                     $vehicledata = array(
@@ -216,37 +230,25 @@ class Loan extends CI_Controller {
                         'vechileinsurenseduedate' => (isset($_POST['vechileinsurenseduedate']) && !empty($_POST['vechileinsurenseduedate'])) ? cdatentodb($_POST['vechileinsurenseduedate']) : "",
                         'vechileenginetype' => (isset($_POST['vechileenginetype']) && !empty($_POST['vechileenginetype'])) ? trim($_POST['vechileenginetype']) : "",
                         'rcdocument' => trim($file_name),
-                        'createdby' => $this->session->userdata('log_id')
+                        'updatedby' => $this->session->userdata('log_id'),
+                        'mdate' => time(),
                     );
 
                     $saved = "";
                     $document_charge = getFeild('document_charge', 'settings', 'id', 1);
                     $setdata['agent_charge'] = ($setdata['commission'] > 0) ? (($setdata['originalloanamount'] * $setdata['commission']) / 100) : 0;
                     if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
-                        $setdata['mdate'] = $vehicledata['mdate'] = $this->session->userdata('log_id');
-                        $setdata['updatedby'] = $vehicledata['updatedby'] = time();
-                        $amount = $setdata['originalloanamount'];
-                        $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
-                        $term = $setdata['loanperiod']; // Term in months
-                        $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                        $setdata['emiamount'] = $emi;
-
+                        
                         $saved = $this->dbmodel->update('loan', $setdata, array('id' => $_POST['loan_id']));
                         if (isset($vehiclelist[0]->id) && !empty($vehiclelist[0]->id)) {
                             $saved = $this->dbmodel->update('vechicle', $vehicledata, array('id' => $vehiclelist[0]->id));
                         }
                     } else {
-                        $amount = $setdata['originalloanamount'];
-                        $setdata['document_charge'] = ($document_charge > 0) ? (($amount * $document_charge) / 100) : 0;
-                        $setdata['loanreferenceno'] = getRefId(array('doctype' => 'loan'));
-                        $setdata['requestdate'] = date('Y-m-d');
-                        $rate = $setdata['loanintrestrate'] / 1200; // Monthly interest rate
-                        $term = $setdata['loanperiod']; // Term in months
-                        $emi = ceil($amount * $rate * (pow(1 + $rate, $term) / (pow(1 + $rate, $term) - 1)));
-                        $setdata['emiamount'] = $emi;
+                        $setdata['loanreferenceno'] = $_POST['loanreferenceno'];
+                        $setdata['requestdate'] = (isset($_POST['requestdate']) && !empty($_POST['requestdate'])) ? cdatentodb($_POST['requestdate']) : date('Y-m-d');
                         $setdata['loanstatus'] = $this->config->item('loanstatus')['pending'];
-                        $setdata['cdate'] = $setdata['mdate'] = $vehicledata['cdate'] = $vehicledata['mdate'] = time();
-
+                        $setdata['cdate'] = $vehicledata['cdate'] = $vehicledata['mdate'];
+                        $setdata['createdby'] = $vehicledata['createdby'] = $vehicledata['updatedby'];
                         $vehicleid = $this->dbmodel->insert('vechicle', $vehicledata);
                         $setdata['fk_vechicle_id'] = $vehicleid;
                         $saved = $this->dbmodel->insert('loan', $setdata);
@@ -334,7 +336,7 @@ class Loan extends CI_Controller {
                 $date = $nextduedate = (isset($_POST['duedate']) && !empty($_POST['duedate'])) ? cdatentodb($_POST['duedate']) : date('Y-m-d');
                 //$nextduedate = nextDueDateCalc($data_list[0]->loanperiod, $data_list[0]->loanperiodfrequency, $date);
                 $lastduedate = date('Y-m-d', strtotime($date . ' + ' . $data_list[0]->loanperiod . ' ' . $data_list[0]->loanperiodfrequency));
-                $this->dbmodel->update('loan', array('approveddate' => $date, 'approvedamount' => $data_list[0]->originalloanamount, 'loanstatus' => $this->config->item('loanstatus')['approved'], 'activateddate' => date('Y-m-d'), 'nextduedate' => $nextduedate, 'lastduedate' => $lastduedate), array('id' => $data_list[0]->id));
+                $this->dbmodel->update('loan', array('approveddate' => $date, 'totalemiamount' => $data_list[0]->originalloanamount, 'loanstatus' => $this->config->item('loanstatus')['approved'], 'activateddate' => date('Y-m-d'), 'nextduedate' => $nextduedate, 'lastduedate' => $lastduedate), array('id' => $data_list[0]->id));
                 echo json_encode(array('status' => true));
 
                 $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno . ' Loan has been approved successfully!!!');
@@ -479,8 +481,8 @@ class Loan extends CI_Controller {
         $loanlist = $this->loan_model->getLoan();
         $returnArr['list'] = $loanlist;
         $returnArr['headingname'] = array(
-            'loanreferenceno' => 'Loan No', "cusname" => "Customer Name", "requestdate" => 'Request Date', 'originalloanamount' => 'Loan Amount',
-            'approveddate' => 'Approved Date', 'approvedamount' => 'Approved Amount', 'vechilenumber' => 'Vehicle Number', 'vechilename' => 'Vehicle Name', 'vechilemodelyear' => 'Vehicle Model Year',
+            'loanreferenceno' => 'Document No', "cusname" => "Customer Name", "requestdate" => 'Request Date', 'originalloanamount' => 'HP Amount',
+            'approveddate' => 'Approved Date', 'totalemiamount' => 'Total Amount', 'vechilenumber' => 'Vehicle Number', 'vechilename' => 'Vehicle Name', 'vechilemodelyear' => 'Vehicle Model Year',
             'vechilemodel' => 'Vehicle Model', 'vechilercno' => 'Vehicle RC No', 'vechileinsurenceno' => "Vehicle Insurance No",
             'vechileinsurensestartdate' => 'Insurance Start Date',
             'vechileinsurenseduedate' => 'Insurance Due Date', 'vechileenginetype' => 'Engine Type', 'loanperiod' => 'Loan Period',
