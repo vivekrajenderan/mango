@@ -36,6 +36,13 @@ $config['settingshortname'] = array(
 );
 
 $config['gender'] = array('male' => 'Male', 'female' => 'Female', 'others' => 'Others');
+$config['regioncolor'] = array(
+    'red' => array('name'=>'Red','color'=>'white','bgcolor'=>'red'),
+    'yellow' => array('name'=>'Yellow','color'=>'black','bgcolor'=>'yellow'),
+    'blue' => array('name'=>'Blue','color'=>'white','bgcolor'=>'blue'),
+    'green' => array('name'=>'Green','color'=>'white','bgcolor'=>'green'),
+    'white' => array('name'=>'White','color'=>'black','bgcolor'=>'white'),
+);
 $config['acctype'] = array('income' => 'Income', 'expense' => 'Expense');
 $config['jsfile'] = array(
     'datatable' => array('assets/admin/js/datatable/jquery.dataTables.min.js', 'assets/admin/js/datatable/DT_bootstrap.js'),

@@ -85,7 +85,6 @@
                                                 </div>                                                
                                             </div>
                                         </div> 
-
                                     </div>
                                 </div>
                                 <div class="row fineintrestchecked">
@@ -108,7 +107,20 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-md-6">                                        
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="prepay">Previous EMI
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input type="checkbox" id="preemi" name="preemi" class="form-control col-md-7 col-xs-12" value="1">
+                                                    <label for="preemi">&nbsp;</label>
+                                                </div>                                                
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <div class="form-group">

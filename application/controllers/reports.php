@@ -25,7 +25,7 @@ class Reports extends CI_Controller {
             $params['filtercustom']["date(dateofpaid)='" . cdatentodb($_GET['date']) . "'"] = '';
         }
         $params['sorting']["dateofpaid"] = 'desc';
-        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when date(dateofpaid)>date(dateduepaid) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when (date(dateofpaid)>date(dateduepaid) and preemi=0) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
         $data['list'] = $this->dbmodel->getGridAll('loanpayment', $params);
         $data['customers'] = Getdropdowns('customer', 'cusname');
         $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
@@ -48,7 +48,7 @@ class Reports extends CI_Controller {
             $params['filtercustom']["date(dateofpaid)='" . cdatentodb($_GET['date']) . "'"] = '';
         }
         $params['sorting']["dateofpaid"] = 'desc';
-        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when date(dateofpaid)>date(dateduepaid) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
+        $params['select'] = array('fk_customer_id','fk_customer_cusname','fk_loan_id','fk_loan_loanreferenceno', 'billreferenceno', 'fineamount', 'amount', 'dateduepaid', 'dateofpaid','case when (date(dateofpaid)>date(dateduepaid) and preemi=0) then DATEDIFF(dateofpaid,dateduepaid) else 0 end as diffdays');
         $returnArr['list'] = $this->dbmodel->getGridAll('loanpayment', $params);
         $returnArr['headingname'] = array('fk_loan_loanreferenceno' => 'Document No.', "billreferenceno" => "Bill No.", "amount" => 'Paid Amount', "fineamount" => 'Fine Amount');
         $filenametext = 'Daily_Report_';
@@ -217,4 +217,32 @@ class Reports extends CI_Controller {
         }
     }
 
+    public function allpendingpaymentreport() {
+        
+        $data['list'] = $this->report_model->getPendingPaymentReport();;
+        $data['customers'] = Getdropdowns('customer', 'cusname');
+        $data['loan'] = Getdropdowns('loan', 'loanreferenceno');
+        $data['agent'] = Getdropdowns('employee', 'empname',array('emp_type'=>'agent'));
+        $data['regioncolor'] = $this->config->item('regioncolor');
+        $this->load->view('includes/header');
+        $this->load->view('reports/pendingpaymentreport', $data);
+        $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['report'])));
+    } 
+
+    public function allpendingpaymentreportdownloadexcel() {
+        $this->load->library('excel');        
+        $returnArr['list'] = $this->report_model->getPendingPaymentReport();;
+
+        $returnArr['headingname'] = array('cusname' => 'Customer Name','cusmobileno' => 'Customer No.','loanreferenceno' => 'Document No.', "nextduedate" => 'Payment Pending From', "differencemonth" => 'Count');
+        // pre($returnArr);
+        $filenametext = 'Pending_Report_';
+        $data['filename'] = $filenametext . date('d-m-y') . '.xls';
+        if(!empty($returnArr['list'])){
+            $this->excel->streamCustom($data['filename'], $returnArr);
+            $data['filename'] = 'export/' . $data['filename'];
+            echo json_encode(array('status' => true, 'filename' => $data['filename']));
+        } else {
+            echo json_encode(array('status' => false, 'msg' =>'No data found'));
+        }
+    } 
 }

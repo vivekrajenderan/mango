@@ -101,6 +101,41 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).on('click', '.allpendingpaymentreport', function () {
+        var dailyformData = {
+            fk_customer_id: $('#fk_customer_id').val(),
+            fk_loan_id: $('#fk_loan_id').val(),
+            month: $('#month').val(),
+        }
+        $.ajax({
+            url: baseurl + 'reports/allpendingpaymentreportdownloadexcel',
+            type: 'GET',
+            data: dailyformData,
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                $('#loading-image').css('display', 'block');
+                $('body').addClass('loading');
+            },
+            complete: function () {
+                $('#loading-image').css('display', 'none');
+                $("body").removeClass("loading");
+            },
+            success: function (response) {
+                if (response.status)
+                {
+                    window.location = baseurl+response.filename;
+                    setTimeout(function () {
+                        deleteexportfile(response.filename);
+                    }, 3000);
+
+                } else
+                {
+                    openDanger(response.msg);
+                }
+            }
+        });
+    });
     $("#monthdate").datepicker({
         format: "yyyy-mm",
         viewMode: "months",
@@ -166,4 +201,14 @@ $(document).ready(function () {
         });
         e.preventDefault();
     });
+    // $("#btnPrint").on("click", function () {
+    //     var divContents = $(".table-responsive").html();
+    //     var printWindow = window.open('', '', 'height=400,width=800');
+    //     printWindow.document.write('<html><head><title>DIV Contents</title>');
+    //     printWindow.document.write('</head><body >');
+    //     printWindow.document.write(divContents);
+    //     printWindow.document.write('</body></html>');
+    //     printWindow.document.close();
+    //     printWindow.print();
+    // });
 });
