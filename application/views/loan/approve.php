@@ -4,7 +4,7 @@
             <form class="form parsley-form" method="post" autocomplete="off" id="approve-form" action="<?php echo base_url() . 'loan/approve'; ?>" enctype="multipart/form-data">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title"><?php echo (isset($list->loanreferenceno)) ? $list->loanreferenceno : ""; ?></h3>
+                    <h3 class="modal-title">Document No.: <?php echo (isset($list->loanreferenceno)) ? $list->loanreferenceno : ""; ?></h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -12,11 +12,11 @@
                             <input type="hidden" name="loanid" id="loanid" value="<?php echo (isset($list->id)) ? $list->id : ""; ?>">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Start Due Date
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">HP Date
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12 elVal">
                                         <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
-                                            <input id="duedate" name="duedate" class="form-control" type="text" data-required="true" value="">
+                                            <input id="duedate" name="duedate" class="form-control" type="text" data-required="true"  value="<?php echo (isset($list->requestdate)) ? $list->requestdate : ""; ?>">
                                             <span class="input-group-addon" onclick=""><i class="fa fa-calendar"></i></span>
                                         </div>
                                     </div>

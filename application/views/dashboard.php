@@ -55,6 +55,7 @@
                                         <tr>
                                             <th data-direction="asc" data-filterable="true" data-sortable="true">Customer Name</th>
                                             <th data-filterable="true" data-sortable="true" data-direction="desc">Cust. No.</th>
+                                            <th data-filterable="true" data-sortable="true">Vechicle No.</th>
                                             <th data-filterable="true" data-sortable="true">Document No.</th>
                                             <th data-filterable="true" data-sortable="true">Date Due Paid</th>
                                         </tr>
@@ -62,8 +63,9 @@
                                     <tbody>
                                         <?php foreach ($customertransoverdue as $key => $value) { ?>
                                             <tr style="background-color:<?php echo ($value->colorcode); ?>">
-                                                <td><?php echo (isset($value->cusname)) ? $value->cusname : ""; ?></td>
+                                                <td><a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>"><?php echo (isset($value->cusname)) ? $value->cusname : ""; ?></a></td>
                                                 <td><?php echo (isset($value->cusmobileno)) ? $value->cusmobileno : "-"; ?></td>
+                                                <td><?php echo (isset($value->vechilenumber)) ? $value->vechilenumber : ""; ?></td>
                                                 <td><?php echo (isset($value->loanreferenceno)) ? $value->loanreferenceno : ""; ?></td>
                                                 <td><?php echo (isset($value->dateduepaid)) ? $value->dateduepaid : "-"; ?></td>
                                             </tr>

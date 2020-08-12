@@ -36,7 +36,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Document No <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="loanreferenceno" name="loanreferenceno" class="form-control col-md-7 col-xs-12" maxlength="30"  value="<?php echo (isset($list->loanreferenceno)) ? $list->loanreferenceno : ""; ?>">
+                                                <input type="text" id="loanreferenceno" name="loanreferenceno" class="form-control col-md-7 col-xs-12" maxlength="30" <?php echo (isset($list->loanreferenceno)) ? "readonly" : ""; ?> value="<?php echo (isset($list->loanreferenceno)) ? $list->loanreferenceno : ""; ?>">
                                             </div>
                                         </div> 
                                     </div> 
@@ -45,7 +45,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Name <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="cusname" name="cusname" class="form-control col-md-7 col-xs-12" maxlength="50" minlength="3" value="<?php echo (isset($customerlist->cusname)) ? $customerlist->cusname : ""; ?>">
+                                                <input type="text" id="cusname" name="cusname" class="form-control col-md-7 col-xs-12" maxlength="50" minlength="3" <?php echo (isset($customerlist->cusname)) ? "readonly" : ""; ?> value="<?php echo (isset($customerlist->cusname)) ? $customerlist->cusname : ""; ?>">
                                             </div>
                                         </div> 
                                     </div> 
@@ -97,7 +97,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Aadhar<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="aadhar" name="aadhar" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="30" minlength="3" value="<?php echo (isset($customerlist->aadhar) && !empty($customerlist->aadhar)) ? number_format($customerlist->aadhar, 2, '.', '') : ""; ?>">
+                                                <input type="text" id="aadhar" name="aadhar" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="30" minlength="3" value="<?php echo (isset($customerlist->aadhar) && !empty($customerlist->aadhar)) ? $customerlist->aadhar : ""; ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -238,6 +238,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="regioncolor">Region Colour <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <select id="regioncolor" name="regioncolor" class="form-control">
+                                                    <option value="">Select Colour</option>
+                                                    <?php
+                                                    foreach ($regioncolor as $key => $value) {
+                                                        $selected = (isset($customerlist->regioncolor) && $key == $customerlist->regioncolor) ? 'selected' : '';
+                                                        echo "<option value='$key' style='background-color:".$value['bgcolor'].";color:".$value['color'].";' $selected>".$value['name']."</option>";
+                                                    }
+                                                    ?>                                             -->
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div> 
                                 </div>
                                 <br>
                                 <h4 class="heading">
@@ -267,10 +284,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Model
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Manufecturer year
                                             </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="vechilemodel" name="vechilemodel" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->vechilemodel)) ? $list->vechilemodel : ""; ?>">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                <input type="text" id="vechilemanufectureyear" name="vechilemanufectureyear" class="form-control col-md-7 col-xs-12" maxlength="4" minlength="4" value="<?php echo (isset($list->vechilemanufectureyear)) ? $list->vechilemanufectureyear : ""; ?>">
                                             </div>
                                         </div> 
                                     </div>
@@ -288,10 +305,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle RC No<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Vehicle Chassis No<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="vechilercno" name="vechilercno" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->vechilercno) && !empty($list->vechilercno)) ? $list->vechilercno : ""; ?>">
+                                                <input type="text" id="vechilechessisno" name="vechilechessisno" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->vechilechessisno) && !empty($list->vechilechessisno)) ? $list->vechilechessisno : ""; ?>">
                                             </div>
                                         </div>
                                     </div> 
@@ -345,7 +362,7 @@
                                     </div> 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">RC Document<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">RC Document
                                             </label>
 
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal"> 
@@ -429,7 +446,7 @@
                                             <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Total Amount <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="number" id="totalemiamount" disabled name="totalemiamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" value="<?php echo (isset($list->totalemiamount)) ? number_format($list->totalemiamount, 2, '.', '') : ""; ?>">
+                                                <input type="number" id="totalemiamount" readonly name="totalemiamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" value="<?php echo (isset($list->totalemiamount)) ? number_format($list->totalemiamount, 2, '.', '') : ""; ?>">
                                             </div>
                                         </div> 
                                     </div> 
@@ -437,7 +454,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fk_employee_id">Agent 
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fk_employee_id">Agent  <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <select id="fk_employee_id" name="fk_employee_id" class="form-control">
@@ -454,7 +471,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="commission">Commission % 
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="commission">Commission %  <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="commission" name="commission" class="form-control col-md-7 col-xs-12" value="<?php echo (isset($list->commission)) ? $list->commission : "0"; ?>">
@@ -474,7 +491,7 @@
                                     </div>  
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="requestdate">HF Date 
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="requestdate">HP Date <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
@@ -487,12 +504,12 @@
                                 </div>
                                 <br>
                                 <h4 class="heading">
-                                    Security Details
+                                    Guarantor Details
                                 </h4>                    
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Name<span class="required">*</span> 
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Guarantor Name<span class="required">*</span> 
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="security1name" name="security1name" class="form-control col-md-7 col-xs-12" maxlength="100" minlength="3" value="<?php echo (isset($list->security1name)) ? $list->security1name : ""; ?>">
@@ -503,7 +520,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Aadhar<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Guarantor Aadhar
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="security1aadhar" name="security1aadhar" class="form-control col-md-7 col-xs-12" maxlength="30" minlength="3" value="<?php echo (isset($list->security1aadhar) && !empty($list->security1aadhar)) ? $list->security1aadhar : ""; ?>">
@@ -514,7 +531,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Mobile No<span class="required">*</span> 
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Guarantor Mobile No<span class="required">*</span> 
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal">
                                                 <input type="text" id="security1mobileno" name="security1mobileno" class="form-control col-md-7 col-xs-12" maxlength="10" minlength="10" value="<?php echo (isset($list->security1mobileno)) ? $list->security1mobileno : ""; ?>">
@@ -525,7 +542,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Security1 Image<span class="required">*</span>
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Guarantor Image
                                             </label>
 
                                             <div class="col-md-6 col-sm-6 col-xs-12 elVal"> 

@@ -4,6 +4,11 @@ $(document).ready(function () {
         viewMode: "years",
         minViewMode: "years"
     });
+    $("#vechilemanufectureyear").datepicker({
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years"
+    });
     $("#loan-form").validate({
         highlight: function (element) {
             $(element).closest('.elVal').addClass("form-field text-error");
@@ -16,6 +21,15 @@ $(document).ready(function () {
                 required: true
             },
             cussex: {
+                required: true
+            },
+            regioncolor: {
+                required: true
+            },
+            aadhar: {
+                required: true
+            },
+            requestdate: {
                 required: true
             },
             cusmobileno: {
@@ -47,9 +61,17 @@ $(document).ready(function () {
                 imagefilecheck: true
             },            
             commission: {
+                required: true,
                 number: true,
                 min: 0,
                 max: 100,
+            },
+            document_charge: {
+                required: true,
+                number: true,
+            },
+            fk_employee_id: {
+                required: true
             },
             vechilenumber: {
                 required: true
@@ -61,12 +83,8 @@ $(document).ready(function () {
                 required: true,
                 digits: true,
             },
-            vechilercno: {
+            vechilechessisno: {
                 required: true
-            },
-            rcdocument: {
-                required: true,
-                imagefilecheck: true
             },
             originalloanamount: {
                 required: true
@@ -87,24 +105,12 @@ $(document).ready(function () {
                 required: true
             },
             security1aadhar: {
-                required: true,
+                
                 digits: true
             },
             security1mobileno: {
                 required: true,
                 digits: true
-            },
-            security2aadhar: {
-                required: false,
-                digits: true
-            },
-            security2mobileno: {
-                required: false,
-                digits: true
-            },
-            security1profile: {
-                required: false,
-                imagefilecheck: true
             },
 
         },
@@ -115,8 +121,11 @@ $(document).ready(function () {
             cussex: {
                 required: "Please choose gender"
             },
-            cusdob: {
-                required: "Please choose D.O.B"
+            regioncolor: {
+                required: "Please choose region color"
+            },
+            requestdate: {
+                required: "Please choose HF date"
             },
             pan: {
                 required: "Please enter the PAN No"
@@ -133,10 +142,14 @@ $(document).ready(function () {
             profile: {
                 required: "Please choose the profile"
             },
+            aadhar: {
+                required: "Please choose the aadhar number"
+            },
             aadhardocument: {
                 required: "Please choose the aadhar document"
             },
             commission: {
+                required: "Please enter the commission percentage",
                 number: "Commission Percentage is invalid",
                 min: "Commission Percentage is invalid",
                 max: "Commission Percentage is invalid",
@@ -150,12 +163,10 @@ $(document).ready(function () {
             vechilemodelyear: {
                 required: "Please enter the vehicle model year"
             },
-            vechilercno: {
-                required: "Please enter the vehicle RC No"
+            vechilechessisno: {
+                required: "Please enter the vehicle chassis No"
             },
-            rcdocument: {
-                required: "Please choose the RC Document"
-            },
+            
             originalloanamount: {
                 required: "Please enter the HP amount"
             },
@@ -171,17 +182,21 @@ $(document).ready(function () {
             emiamount: {
                 required: "Please enter the EMI amount"
             },
+            fk_employee_id: {
+                required: "Please choose the agent"
+            },
+            document_charge: {
+                required: "Please enter the document amount",
+                number: "Document amount is invalid"
+            },
             security1name: {
                 required: "Please enter the security1 Name"
             },
             security1aadhar: {
-                required: "Please enter the security1 Aadhar"
+                digits: "Please enter the security1 Aadhar"
             },
             security1mobileno: {
                 required: "Please enter the security1 Mobile No"
-            },
-            security1profile: {
-                required: "Please choose the security1 Image"
             },
 
         },
@@ -190,7 +205,7 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var formData = new FormData($('#loan-form')[0]);
-            formData.append('rcdocument', $('input[type=file]')[0].files[0]);
+            //formData.append('rcdocument', $('input[type=file]')[0].files[0]);
             var $form = $("#loan-form");
             $.ajax({
                 type: $form.attr('method'),
@@ -280,6 +295,12 @@ $(document).ready(function () {
             });
             return false; // required to block normal submit since you used ajax
         }
+    });
+    $('#regioncolor').css("background", $("#regioncolor option:selected").css("background-color"));
+        $('#regioncolor').css("color", $("#regioncolor option:selected").css("color"));
+    $('#regioncolor').change(function () {
+        $('#regioncolor').css("background", $("#regioncolor option:selected").css("background-color"));
+        $('#regioncolor').css("color", $("#regioncolor option:selected").css("color"));
     });
 });
 $('#emiamount,#loanperiod').blur(function () {

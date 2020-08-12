@@ -146,7 +146,13 @@
                                 <li class="<?php echo ($this->uri->segment(2)=='monthlypaymentreport')?'active':''; ?>">
                                     <a href="<?php echo base_url('reports/monthlypaymentreport'); ?>">
                                         <i class="fa fa-group"></i> 
-                                        &nbsp;&nbsp;Repayment Report
+                                        &nbsp;&nbsp;Monthly Repayment Report
+                                    </a>
+                                </li>
+                                <li class="<?php echo ($this->uri->segment(2)=='allpendingpaymentreport')?'active':''; ?>">
+                                    <a href="<?php echo base_url('reports/allpendingpaymentreport'); ?>">
+                                        <i class="fa fa-group"></i> 
+                                        &nbsp;&nbsp;Pending payment Report
                                     </a>
                                 </li>
 

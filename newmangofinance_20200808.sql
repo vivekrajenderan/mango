@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2020 at 01:41 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.2.31
+-- Generation Time: Aug 08, 2020 at 04:00 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -43,6 +44,7 @@ CREATE TABLE `financecustomer` (
   `accountno` varchar(30) DEFAULT NULL,
   `aadhardocument` varchar(500) DEFAULT NULL,
   `dldocument` varchar(500) DEFAULT NULL,
+  `regioncolor` varchar(10) NOT NULL,
   `profile` varchar(500) NOT NULL,
   `createdby` int(11) DEFAULT NULL,
   `updatedby` int(11) DEFAULT NULL,
@@ -51,15 +53,6 @@ CREATE TABLE `financecustomer` (
   `cdate` int(15) DEFAULT NULL,
   `mdate` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `financecustomer`
---
-
-INSERT INTO `financecustomer` (`id`, `cusreferenceno`, `cusname`, `cusdob`, `cussex`, `cusaddress`, `cusmobileno`, `cusemail`, `occup`, `aadhar`, `pan`, `drivinglicence`, `accountno`, `aadhardocument`, `dldocument`, `profile`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 'CUSTOMER1001', 'vivek', '2020-05-05', 'male', 'fdsshshshahshgshshshshsgssgssg sgsgsghsgshsh', '6578585856', 'vivek@gmail', 'agag', '54747476666.00', '43563', '97070777', '4536743674747474', '1593857522-aadhardocument.jpg', NULL, '1593857522-profile.jpg', NULL, 1, '1', '0', NULL, NULL),
-(2, 'CUSTOMER1002', 'webs', '2020-07-05', 'female', 'sh shs shsh', '6578585655', 'fshs@gmail.', 'coolie', '436363636363.00', 'RAGAG', 'LI898', '54444444747', '1590411948-aadhardocument.png', NULL, '', NULL, 1, '1', '0', NULL, NULL),
-(3, 'CUSTOMER1003', 'gttt', '2020-10-06', 'male', 'dfhdh hshshshshsh', '5444444444', '', '', '6757666666666666.00', '54747474', '', '54444444', '1593418610-aadhardocument.png', NULL, '1593418669-profile.png', NULL, 1, '1', '1', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,11 +78,11 @@ CREATE TABLE `financedocprefix` (
 --
 
 INSERT INTO `financedocprefix` (`id`, `doctype`, `prefix`, `start`, `current`, `status`, `fk_users_id`, `dels`, `cdate`, `mdate`) VALUES
-(1, 'customer', 'CUSTOMER', 1000, 1004, '1', 0, '0', 1554959938, 1593418610),
-(2, 'employee', 'EMPLOYEE', 1000, 1006, '1', 0, '0', 1554959938, 1590852414),
-(3, 'loan', 'LOAN', 1000, 1003, '1', 0, '0', 1554959938, 1593859498),
-(4, 'agent', 'AGNT', 1000, 1003, '1', 0, '0', 1554959938, 1593857720),
-(5, 'bill', 'BILL', 1001, 1004, '1', 0, '0', 1554959938, 1593860148);
+(1, 'customer', 'CUSTOMER', 0, 1, '1', 0, '0', 1554959938, 1596884440),
+(2, 'employee', 'EMPLOYEE', 0, 1, '1', 0, '0', 1554959938, 1590852414),
+(3, 'loan', 'LOAN', 0, 1, '1', 0, '0', 1554959938, 1595506387),
+(4, 'agent', 'AGNT', 0, 1, '1', 0, '0', 1554959938, 1596884492),
+(5, 'bill', 'BILL', 0, 1, '1', 0, '0', 1554959938, 1596875182);
 
 -- --------------------------------------------------------
 
@@ -121,17 +114,6 @@ CREATE TABLE `financeemployee` (
   `mdate` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `financeemployee`
---
-
-INSERT INTO `financeemployee` (`id`, `fk_users_id`, `empno`, `empname`, `emp_type`, `dob`, `emplsex`, `fk_maritalstatus_id`, `position`, `salary`, `address`, `phone`, `email`, `empin`, `empout`, `empl_lastupd`, `profileimage`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 1, 'EMPLOYEE1003', 'vvjfjfq', 'employee', '2020-01-04', 'male', 1, '', '43454.58000', 'jhg jkggk k g', '9999999999', '', '2020-04-18 22:41:39', NULL, NULL, '1587229899-profileimage.jpg', '1', '0', 0, 0),
-(2, 1, 'EMPLOYEE1004', 'Prabha', 'employee', '2010-07-07', 'male', 1, 'Head Manager', '59000.00000', '19th, cross street, Main road, Madurai', '9436363636', 'prabha@gmail.com', '2020-04-19 11:39:19', NULL, NULL, '1587278386-profileimage.jpg', '1', '1', 0, 0),
-(3, 1, 'EMPLOYEE1005', 'Pandikumar', 'employee', '0000-00-00', 'male', 1, '', '887.00000', 'jhgfjk fk fj hgd fd', '9999999998', '', '2020-04-19 12:18:23', NULL, NULL, '1587278940-profileimage.jpg', '1', '0', 0, 0),
-(4, 1, 'AGNT1001', 'Agent 1', 'agent', '1993-02-15', 'male', 0, '', '2.00000', '12, lakshiyapuram street, rjpm', '7402551202', '', '2020-07-04 12:14:23', NULL, NULL, '1593857663-profileimage.jpg', '1', '0', 0, 0),
-(5, 1, 'AGNT1002', 'Agent 2', 'agent', '1993-03-03', 'male', 0, '', '1.00000', '120, anna nagar malayadipatti', '7485963321', '', '2020-07-04 12:15:20', NULL, NULL, '1593857720-profileimage.jpg', '1', '0', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -148,10 +130,10 @@ CREATE TABLE `financeloan` (
   `approveddate` date DEFAULT NULL,
   `activateddate` date DEFAULT NULL,
   `originalloanamount` decimal(15,2) DEFAULT 0.00,
-  `approvedamount` decimal(15,2) DEFAULT 0.00,
+  `totalemiamount` decimal(15,2) DEFAULT 0.00,
   `commission` decimal(5,2) NOT NULL DEFAULT 0.00,
   `loanperiod` int(11) DEFAULT NULL,
-  `loanperiodfrequency` enum('month','year','days') DEFAULT NULL,
+  `loanperiodfrequency` enum('month','year','days') DEFAULT 'month',
   `loanintrestrate` decimal(5,2) DEFAULT 0.00,
   `security1name` varchar(250) DEFAULT NULL,
   `security1aadhar` varchar(25) DEFAULT NULL,
@@ -178,14 +160,6 @@ CREATE TABLE `financeloan` (
   `agent_charge` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `financeloan`
---
-
-INSERT INTO `financeloan` (`id`, `loanreferenceno`, `fk_customer_id`, `fk_employee_id`, `fk_vechicle_id`, `requestdate`, `approveddate`, `activateddate`, `originalloanamount`, `approvedamount`, `commission`, `loanperiod`, `loanperiodfrequency`, `loanintrestrate`, `security1name`, `security1aadhar`, `security1mobileno`, `security1profile`, `security2name`, `security2aadhar`, `security2mobileno`, `nextduedate`, `loanstatus`, `approveddocument`, `cheasedreason`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`, `emiamount`, `lastduedate`, `payment_count`, `late_payment_count`, `document_charge`, `agent_charge`) VALUES
-(1, 'LOAN1001', 1, 4, 1, '2020-07-04', '2020-07-16', '2020-07-04', '60000.00', '60000.00', '2.00', 3, 'month', '16.50', 'Pandi', '147852369000', '7485963210', '1593858014-security1profile.jpg', '', '', '', '2020-08-16', 'approved', NULL, NULL, 1, NULL, '1', '0', 1593858014, 1593858014, '20553.00', '2020-10-16', 0, 0, '6000.00', '1200.00'),
-(2, 'LOAN1002', 2, 5, 2, '2020-07-04', '2020-05-05', '2020-07-04', '20000.00', '20000.00', '1.00', 5, 'month', '17.50', 'Test', '14785962358', '7485962130', '1593859498-security1profile.jpg', '', '', '', '2020-07-05', 'approved', NULL, NULL, 1, NULL, '1', '0', 1593859498, 1593859498, '4177.00', '2020-10-05', 0, 0, '2000.00', '200.00');
-
 -- --------------------------------------------------------
 
 --
@@ -204,6 +178,7 @@ CREATE TABLE `financeloanpayment` (
   `fineamount` decimal(15,2) DEFAULT 0.00,
   `subamount` decimal(15,2) DEFAULT 0.00,
   `amount` decimal(15,2) DEFAULT 0.00,
+  `preemi` int(11) NOT NULL DEFAULT 0,
   `createdby` int(11) DEFAULT NULL,
   `updatedby` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT 1,
@@ -211,15 +186,6 @@ CREATE TABLE `financeloanpayment` (
   `createdate` datetime DEFAULT NULL,
   `updatedate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `financeloanpayment`
---
-
-INSERT INTO `financeloanpayment` (`id`, `fk_customer_id`, `fk_vechicle_id`, `fk_loan_id`, `billreferenceno`, `dateduepaid`, `dateofpaid`, `fineintrest`, `fineamount`, `subamount`, `amount`, `createdby`, `updatedby`, `status`, `dels`, `createdate`, `updatedate`) VALUES
-(1, 1, 1, 1, 'BILL1001', '2020-07-16', '2020-07-04', '0.00', '0.00', '20553.00', '20553.00', NULL, NULL, 1, 0, NULL, NULL),
-(2, 2, 2, 2, 'BILL1002', '2020-05-05', '2020-07-04', '0.00', '0.00', '4177.00', '4177.00', 1, 1, 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 2, 2, 2, 'BILL1003', '2020-06-05', '2020-07-04', '0.00', '0.00', '4177.00', '4177.00', 1, 1, 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -268,15 +234,6 @@ CREATE TABLE `financeoveralltransaction` (
   `mdate` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `financeoveralltransaction`
---
-
-INSERT INTO `financeoveralltransaction` (`id`, `fk_customer_id`, `fk_loan_id`, `fk_loan_payment_id`, `acctype`, `transdate`, `transamount`, `refno`, `transtext`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 1, 1, 1, 'income', '2020-07-04 12:37:12', '20553.00', 'LOAN1001', 'Loan Repayment', 1, 1, '1', '0', NULL, NULL),
-(2, 2, 2, 2, 'income', '2020-07-04 12:55:39', '4177.00', 'LOAN1002', 'Loan Repayment', 1, 1, '1', '0', 1593860139, 1593860139),
-(3, 2, 2, 3, 'income', '2020-07-04 12:55:48', '4177.00', 'LOAN1002', 'Loan Repayment', 1, 1, '1', '0', 1593860148, 1593860148);
-
 -- --------------------------------------------------------
 
 --
@@ -297,7 +254,7 @@ CREATE TABLE `financesettings` (
 --
 
 INSERT INTO `financesettings` (`id`, `fine_percentage`, `fine_days`, `document_charge`, `status`, `dels`) VALUES
-(1, '1.00', 10, '10.00', 1, 0);
+(1, '1.00', 10, '0.00', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -383,8 +340,7 @@ CREATE TABLE `financeusers` (
 --
 
 INSERT INTO `financeusers` (`id`, `fullname`, `fk_employee_id`, `username`, `password`, `fk_usergroups_id`, `fk_users_id`, `status`, `pwdresetdate`, `dels`, `cdate`, `mdate`, `devicetoken`) VALUES
-(1, 'admin', 0, 'admin', 'UEIXRVNswNXlg+vbGbx3mA==', 1, 0, '1', '0000-00-00 00:00:00', '0', 0, 0, ''),
-(2, 'welcome', 1, 'testuser', 'P/cMYLgsnbWje12UFNmZhg==', 2, 1, '1', '0000-00-00 00:00:00', '0', 0, 0, '');
+(1, 'admin', 0, 'admin', 'UEIXRVNswNXlg+vbGbx3mA==', 1, 0, '1', '0000-00-00 00:00:00', '0', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -398,8 +354,8 @@ CREATE TABLE `financevechicle` (
   `vechilenumber` varchar(100) DEFAULT NULL,
   `vechilename` varchar(100) DEFAULT NULL,
   `vechilemodelyear` varchar(100) DEFAULT NULL,
-  `vechilemodel` varchar(100) DEFAULT NULL,
-  `vechilercno` varchar(100) DEFAULT NULL,
+  `vechilemanufectureyear` varchar(100) DEFAULT NULL,
+  `vechilechessisno` varchar(100) DEFAULT NULL,
   `vechileinsurenceno` varchar(100) DEFAULT NULL,
   `vechileinsurenseduedate` varchar(100) DEFAULT NULL,
   `vechileinsurensestartdate` varchar(100) NOT NULL,
@@ -416,14 +372,6 @@ CREATE TABLE `financevechicle` (
   `cdate` int(15) DEFAULT NULL,
   `mdate` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `financevechicle`
---
-
-INSERT INTO `financevechicle` (`id`, `fk_customer_id`, `vechilenumber`, `vechilename`, `vechilemodelyear`, `vechilemodel`, `vechilercno`, `vechileinsurenceno`, `vechileinsurenseduedate`, `vechileinsurensestartdate`, `vechileenginetype`, `rcdocument`, `insurencedocument`, `ischessed`, `chesseddate`, `chessedagainstloanid`, `createdby`, `updatedby`, `status`, `dels`, `cdate`, `mdate`) VALUES
-(1, 1, 'TN67J4124', 'Hero Passion Pro', '2010', 'Hero Passion Pro 110', 'RC12345678', 'INS1478522', '2021-07-31', '2020-06-01', '', '1593858014-rcdocument.jpg', NULL, 0, NULL, NULL, 1, NULL, '1', '0', 1593858014, 1593858014),
-(2, 2, 'TN67L7485', 'Honda', '2015', 'Dream Neo', 'RC9012345', 'IN9012345', '2020-01-31', '2019-01-01', 'Drum', '1593859498-rcdocument.png', NULL, 0, NULL, NULL, 1, NULL, '1', '0', 1593859498, 1593859498);
 
 --
 -- Indexes for dumped tables
@@ -510,31 +458,31 @@ ALTER TABLE `financevechicle`
 -- AUTO_INCREMENT for table `financecustomer`
 --
 ALTER TABLE `financecustomer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financedocprefix`
 --
 ALTER TABLE `financedocprefix`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `financeemployee`
 --
 ALTER TABLE `financeemployee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financeloan`
 --
 ALTER TABLE `financeloan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financeloanpayment`
 --
 ALTER TABLE `financeloanpayment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financemaritalstatus`
@@ -546,7 +494,7 @@ ALTER TABLE `financemaritalstatus`
 -- AUTO_INCREMENT for table `financeoveralltransaction`
 --
 ALTER TABLE `financeoveralltransaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `financesettings`
@@ -570,13 +518,13 @@ ALTER TABLE `financeusergroups`
 -- AUTO_INCREMENT for table `financeusers`
 --
 ALTER TABLE `financeusers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `financevechicle`
 --
 ALTER TABLE `financevechicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
