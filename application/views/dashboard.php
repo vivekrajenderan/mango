@@ -63,7 +63,7 @@
                                     <tbody>
                                         <?php foreach ($customertransoverdue as $key => $value) { ?>
                                             <tr style="background-color:<?php echo ($value->colorcode); ?>">
-                                                <td><a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>"><?php echo (isset($value->cusname)) ? $value->cusname : ""; ?></a></td>
+                                                <td><a href="<?php echo base_url('loan/payment/' . $value->ecodeid); ?>"><?php echo (isset($value->cusname)) ? $value->cusname : ""; ?></a></td>
                                                 <td><?php echo (isset($value->cusmobileno)) ? $value->cusmobileno : "-"; ?></td>
                                                 <td><?php echo (isset($value->vechilenumber)) ? $value->vechilenumber : ""; ?></td>
                                                 <td><?php echo (isset($value->loanreferenceno)) ? $value->loanreferenceno : ""; ?></td>

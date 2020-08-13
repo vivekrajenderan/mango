@@ -14,7 +14,7 @@ class Loan extends CI_Controller {
     }
 
     public function index() {
-        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE and loanstatus!=\'cleared\') as extendduedate', 'loanstatus', 'fk_vechicle_id', 'fk_vechicle_vechileinsurenseduedate','totalemiamount');
+        $params['select'] = array('id', 'status', 'loanreferenceno', 'requestdate', 'originalloanamount', 'approveddate', 'fk_customer_id', 'fk_customer_cusname', 'fk_employee_id', 'fk_employee_empname', 'fk_vechicle_id', 'fk_vechicle_vechilenumber', 'emiamount', 'lastduedate', 'nextduedate', '(nextduedate<CURRENT_DATE and loanstatus!=\'cleared\') as extendduedate', 'loanstatus', 'fk_vechicle_id', 'fk_vechicle_vechileinsurenseduedate', 'totalemiamount');
         $data['list'] = $this->dbmodel->getGridAll('loan', $params);
         $this->load->view('includes/header');
         $this->load->view('loan/list', $data);
@@ -24,34 +24,34 @@ class Loan extends CI_Controller {
     public function add($id = NULL) {
         $data['list'] = array();
         $data['customerlist'] = array();
-        $redirectTo='add';
+        $redirectTo = 'add';
         if (!empty($id)) {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
             if (count($data_list) > 0) {
-                $redirectTo=($data_list[0]->loanstatus == strtolower($this->config->item('loanstatus')['approved']) || $data_list[0]->loanstatus == strtolower($this->config->item('loanstatus')['cleared']))?'view':'add';
+                $redirectTo = ($data_list[0]->loanstatus == strtolower($this->config->item('loanstatus')['approved']) || $data_list[0]->loanstatus == strtolower($this->config->item('loanstatus')['cleared'])) ? 'view' : 'add';
                 $data_list[0]->vechileinsurenseduedate = (isset($data_list[0]->vechileinsurenseduedate) && !empty($data_list[0]->vechileinsurenseduedate)) ? cdatedbton($data_list[0]->vechileinsurenseduedate) : '';
                 $data_list[0]->requestdate = (isset($data_list[0]->requestdate) && !empty($data_list[0]->requestdate)) ? cdatedbton($data_list[0]->requestdate) : '';
                 $data_list[0]->vechileinsurensestartdate = (isset($data_list[0]->vechileinsurensestartdate) && !empty($data_list[0]->vechileinsurensestartdate)) ? cdatedbton($data_list[0]->vechileinsurensestartdate) : '';
                 $data['list'] = $data_list[0];
                 $customer_list = $this->dbmodel->getAll('customer', array('id' => $data_list[0]->fk_customer_id));
                 if (count($customer_list) > 0) {
-                    $customer_list[0]->cusdob = (isset($customer_list[0]->cusdob) && !empty($customer_list[0]->cusdob)) ? cdatedbton($customer_list[0]->cusdob) :'';
+                    $customer_list[0]->cusdob = (isset($customer_list[0]->cusdob) && !empty($customer_list[0]->cusdob)) ? cdatedbton($customer_list[0]->cusdob) : '';
                     $data['customerlist'] = $customer_list[0];
                 }
             }
         }
         $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
-        $data['document_charge']=$settings_list[0]->document_charge;
+        $data['document_charge'] = $settings_list[0]->document_charge;
         $data['loanperiodfrequency'] = $this->config->item('loanperiodfrequency');
         $data['genderlist'] = $this->config->item('gender');
         $data['regioncolor'] = $this->config->item('regioncolor');
-        
+
 
         $condition_array['emp_type'] = 'agent';
         $condition_array['status'] = '1';
         $data['employee'] = $this->dbmodel->getAll('employee', $condition_array, array('id' => 'id', 'empname' => 'empname', 'salary' => 'salary'));
         $this->load->view('includes/header');
-        $this->load->view('loan/'.$redirectTo, $data);
+        $this->load->view('loan/' . $redirectTo, $data);
         $this->load->view('includes/footer', array('jsfile' => array_merge($this->config->item('jsfile')['datatable'], $this->config->item('jsfile')['validation'], $this->config->item('jsfile')['datepicker'], $this->config->item('jsfile')['loan'])));
     }
 
@@ -92,7 +92,7 @@ class Loan extends CI_Controller {
                 $customerlist = array();
                 if (isset($loanlist[0]->fk_customer_id) && !empty($loanlist[0]->fk_customer_id)) {
                     $customerlist = $this->dbmodel->getAll('customer', array('id' => $loanlist[0]->fk_customer_id));
-                }                
+                }
                 // Profile 
                 if (isset($_FILES['profile']['name']) && (!empty($_FILES['profile']['name']))) {
                     $upload_image = do_upload_image('profile', UPLOADPATH . 'profile/');
@@ -146,20 +146,20 @@ class Loan extends CI_Controller {
                     'aadhardocument' => trim($file_name),
                     'profile' => trim($profile_file_name),
                     'updatedby' => $this->session->userdata('log_id'),
-                    'mdate'=>time()
+                    'mdate' => time()
                 );
                 $customer_id = '';
                 if (isset($loanlist[0]->fk_customer_id) && !empty($loanlist[0]->fk_customer_id)) {
                     $this->dbmodel->update('customer', $customersetdata, array('id' => $loanlist[0]->fk_customer_id));
-                    $customer_id=$loanlist[0]->fk_customer_id;
+                    $customer_id = $loanlist[0]->fk_customer_id;
                 } else {
-                    $customersetdata['cdate']= $customersetdata['mdate'];
+                    $customersetdata['cdate'] = $customersetdata['mdate'];
                     $customersetdata['createdby'] = $customersetdata['updatedby'];
                     $customersetdata['cusreferenceno'] = getRefId(array('doctype' => 'customer'));
-                    $customer_id = $this->dbmodel->insert('customer', $customersetdata);                    
+                    $customer_id = $this->dbmodel->insert('customer', $customersetdata);
                 }
 
-                
+
                 //Loan                
                 //Rc Document
                 if (!empty($customer_id)) {
@@ -203,15 +203,12 @@ class Loan extends CI_Controller {
                     $setdata = array(
                         'fk_customer_id' => $customer_id,
                         'fk_employee_id' => (isset($_POST['fk_employee_id']) && !empty($_POST['fk_employee_id'])) ? trim($_POST['fk_employee_id']) : "",
-
                         'originalloanamount' => (isset($_POST['originalloanamount']) && !empty($_POST['originalloanamount'])) ? trim($_POST['originalloanamount']) : "0",
                         'totalemiamount' => (isset($_POST['totalemiamount']) && !empty($_POST['totalemiamount'])) ? trim($_POST['totalemiamount']) : "0",
                         'emiamount' => (isset($_POST['emiamount']) && !empty($_POST['emiamount'])) ? trim($_POST['emiamount']) : "0",
                         'loanperiod' => (isset($_POST['loanperiod']) && !empty($_POST['loanperiod'])) ? trim($_POST['loanperiod']) : "",
-
                         'commission' => (isset($_POST['commission']) && !empty($_POST['commission'])) ? trim($_POST['commission']) : 0,
                         'document_charge' => (isset($_POST['document_charge']) && !empty($_POST['document_charge'])) ? trim($_POST['document_charge']) : 0,
-
                         'security1name' => (isset($_POST['security1name']) && !empty($_POST['security1name'])) ? trim($_POST['security1name']) : "",
                         'security1aadhar' => (isset($_POST['security1aadhar']) && !empty($_POST['security1aadhar'])) ? trim($_POST['security1aadhar']) : "",
                         'security1mobileno' => (isset($_POST['security1mobileno']) && !empty($_POST['security1mobileno'])) ? trim($_POST['security1mobileno']) : "",
@@ -243,7 +240,7 @@ class Loan extends CI_Controller {
                     $document_charge = getFeild('document_charge', 'settings', 'id', 1);
                     $setdata['agent_charge'] = ($setdata['commission'] > 0) ? (($setdata['originalloanamount'] * $setdata['commission']) / 100) : 0;
                     if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
-                        
+
                         $saved = $this->dbmodel->update('loan', $setdata, array('id' => $_POST['loan_id']));
                         if (isset($vehiclelist[0]->id) && !empty($vehiclelist[0]->id)) {
                             $saved = $this->dbmodel->update('vechicle', $vehicledata, array('id' => $vehiclelist[0]->id));
@@ -256,7 +253,16 @@ class Loan extends CI_Controller {
                         $setdata['createdby'] = $vehicledata['createdby'] = $vehicledata['updatedby'];
                         $vehicleid = $this->dbmodel->insert('vechicle', $vehicledata);
                         $setdata['fk_vechicle_id'] = $vehicleid;
-                        $saved = $this->dbmodel->insert('loan', $setdata);
+                        $saved = $loanid = $this->dbmodel->insert('loan', $setdata);
+                        for ($i = 1; $i <= $_POST['loanperiod']; $i++) {
+                            $loandata = array('fk_customer_id' => $customer_id, 'fk_vechicle_id' => $vehicleid,
+                                'fk_loan_id' => $loanid,
+                                'billreferenceno' => getRefId(array('doctype' => 'bill')),
+                                'dateduepaid' => date('Y-m-d', strtotime("+$i month", strtotime($setdata['requestdate']))),
+                                'dateofpaid' => '0000-00-00',
+                                'status' => '0');
+                            $this->dbmodel->insert('loanpayment', $loandata);
+                        }
                     }
                     if ($saved) {
                         $this->session->set_flashdata('SucMessage', 'Loan saved Successfully');
@@ -358,6 +364,13 @@ class Loan extends CI_Controller {
             $data_list = $this->loan_model->getLoan(array('id' => $id));
             $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
             if (count($data_list) > 0) {
+                $history_list = $this->dbmodel->getAll('loanpayment', array('fk_loan_id' => $data_list[0]->id));
+                $data['history_list'] = array();
+                foreach ($history_list as $key => $value) {
+                    $data['history_list'][$key] = $value;
+                    $data['history_list'][$key]->dateduepaid = cdatedbton($value->dateduepaid);
+                    $data['history_list'][$key]->dateofpaid = ($value->dateofpaid != '0000-00-00') ? cdatedbton($value->dateofpaid) : '';
+                }
                 $data_list[0]->nextduedate = (isset($data_list[0]->nextduedate) && !empty($data_list[0]->nextduedate)) ? cdatedbton($data_list[0]->nextduedate) : '';
                 $data_list[0]->fineintrest = $settings_list[0]->fine_percentage;
                 $data_list[0]->fineamount = ($data_list[0]->emiamount * ($settings_list[0]->fine_percentage / 100));
@@ -391,6 +404,70 @@ class Loan extends CI_Controller {
     }
 
     public function makepayment() {
+//        pre($_POST);
+        if (isset($_POST['paymentid']) && !empty($_POST['paymentid'])) {
+            $condition_array['id'] = $_POST['loan_id'];
+            $data_list = $this->dbmodel->getAll('loan', $condition_array);
+            $settings_list = $this->dbmodel->getAll('settings', array('id' => 1));
+            if (count($data_list) > 0) {
+                $originalamount = $data_list[0]->originalloanamount;
+                $subamount = $fineamount = 0;                
+                foreach ($_POST['paymentid'] as $key => $value) {
+                    if ((isset($_POST['paymentstatus'][$key]) && empty($_POST['paymentstatus'][$key]))) {
+                        
+                        $subamount += (isset($_POST['subamount'][$key]) && ($_POST['subamount'][$key] > 0)) ? $_POST['subamount'][$key] : 0;
+                        $fineamount += (isset($_POST['fineamount'][$key]) && ($_POST['fineamount'][$key] > 0)) ? $_POST['fineamount'][$key] : 0;
+
+                        $loandata = array(
+                            'dateofpaid' => (isset($_POST['dateofpaid'][$key]) && ($_POST['dateofpaid'][$key] > 0)) ? cdatentodb($_POST['dateofpaid'][$key]) : '',
+                            'subamount' => (isset($_POST['subamount'][$key]) && ($_POST['subamount'][$key] > 0)) ? $_POST['subamount'][$key] : '',
+                            'fineamount' => (isset($_POST['fineamount'][$key]) && (!empty($_POST['fineamount'][$key]))) ? $_POST['fineamount'][$key] : '',
+                            'updatedby' => $this->session->userdata('log_id')
+                        );
+                        if (in_array(null, $loandata, true) || in_array('', $loandata, true)) {
+                            $loandata['status'] = '0';
+                            $loandata['subamount'] = '0.00';
+                            $loandata['fineamount'] = '0.00';
+                            $loandata['dateofpaid'] = NULL;
+                        } else {
+                            $loandata['status'] = '1';
+                            $setdata = array(
+                                'fk_customer_id' => $data_list[0]->fk_customer_id,
+                                'fk_loan_payment_id' => $value,
+                                'fk_loan_id' => $data_list[0]->id,
+                                'acctype' => "income",
+                                'transamount' => (isset($_POST['subamount'][$key]) && ($_POST['subamount'][$key] > 0)) ? $_POST['subamount'][$key] : '0.00',
+                                'refno' => $data_list[0]->loanreferenceno,
+                                'transtext' => "Loan Repayment",
+                                'updatedby' => $this->session->userdata('log_id')
+                            );
+                            $setdata['cdate'] = $setdata['mdate'] = time();
+                            $setdata['createdby'] = $this->session->userdata('log_id');
+                            $setdata['transdate'] = date('Y-m-d H:i:s');
+                            $saved = $this->dbmodel->insert('overalltransaction', $setdata);
+                            if (isset($_POST['fineamount'][$key]) && ($_POST['fineamount'][$key] > 0)) {
+                                $setdata['transamount'] = $_POST['fineamount'][$key];
+                                $setdata['transtext'] = "Fine Amount";
+                                $saved = $this->dbmodel->insert('overalltransaction', $setdata);
+                            }
+                        }                       
+                        $this->dbmodel->update('loanpayment', $loandata, array('id' => $value));
+                    }
+                }
+                if ($originalamount <= $subamount) {
+                    $this->dbmodel->update('loan', array('loanstatus' => $this->config->item('loanstatus')['cleared']), array('id' => $data_list[0]->id));
+                }
+                echo json_encode(array('status' => true));
+                $this->session->set_flashdata('SucMessage', $data_list[0]->loanreferenceno . ' Loan has been payment successfully!!!');
+            } else {
+                echo json_encode(array('status' => false, 'msg' => 'Loan has not been payment successfully'));
+            }
+        } else {
+            echo json_encode(array('status' => false, 'msg' => 'Loan has not exists'));
+        }
+    }
+
+    public function makepayment1() {
         if (isset($_POST['loan_id']) && !empty($_POST['loan_id'])) {
             $condition_array['id'] = $_POST['loan_id'];
             $data_list = $this->dbmodel->getAll('loan', $condition_array);
@@ -409,10 +486,10 @@ class Loan extends CI_Controller {
                     'dateofpaid' => date('Y-m-d'),
                     'subamount' => $_POST['subamount'],
                     'amount' => $_POST['subamount'],
-                    'preemi' => (isset($_POST['preemi']) && $_POST['preemi'] == 1)?1:0,
+                    'preemi' => (isset($_POST['preemi']) && $_POST['preemi'] == 1) ? 1 : 0,
                     'billreferenceno' => getRefId(array('doctype' => 'bill'))
                 );
-                
+
                 if (isset($_POST['fineintrestcheck']) && $_POST['fineintrestcheck'] == 1) {
                     $insertdata['fineintrest'] = $_POST['fineintrest'];
                     $insertdata['fineamount'] = ($_POST['subamount'] * ($_POST['fineintrest'] / 100));
