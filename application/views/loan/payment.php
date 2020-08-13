@@ -54,71 +54,57 @@
                                                 <p class="breakword"><?php echo (isset($list->originalloanamount) && !empty($list->originalloanamount)) ? number_format($list->originalloanamount, 2, '.', '') : ""; ?></p>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="subamount">EMI Amount <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="subamount" name="subamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="2" value="<?php echo (isset($list->emiamount)) ? number_format($list->emiamount, 2, '.', '') : ""; ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </div>                                    
+                                </div>                                
+
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4">EMI Date</label>
-                                            <div class="col-md-5">
-                                                <p class="breakword"><?php echo (isset($list->nextduedate) && !empty($list->nextduedate)) ? $list->nextduedate : ""; ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">                                        
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">Fine
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input type="checkbox" id="fineintrestcheck" name="fineintrestcheck" class="form-control col-md-7 col-xs-12" value="1">
-                                                    <label for="fineintrestcheck">&nbsp;</label>
-                                                </div>                                                
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="row fineintrestchecked">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fineintrest">Fine Interest Rate <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="fineintrest" name="fineintrest" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->fineintrest)) ? number_format($list->fineintrest, 2, '.', '') : ""; ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="fineamount">Fine Amount <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 elVal">
-                                                <input type="text" id="fineamount" name="fineamount" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($list->fineamount)) ? number_format($list->fineamount, 2, '.', '') : ""; ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">                                        
-                                        <div class="form-group">
-                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="prepay">Previous EMI
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input type="checkbox" id="preemi" name="preemi" class="form-control col-md-7 col-xs-12" value="1">
-                                                    <label for="preemi">&nbsp;</label>
-                                                </div>                                                
-                                            </div>
-                                        </div> 
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-hover ">
+                                            <thead>
+                                                <tr>                                                    
+                                                    <th> Due date</th> 
+                                                    <th> Date of paid</th> 
+                                                    <th> EMI Amount</th>                                                    
+                                                    <th> Fine Amount</th> 
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (!empty($history_list)) {
+                                                    foreach ($history_list as $key => $value) {
+                                                        ?>
+                                                    <input type="hidden" name="paymentid[]" id="paymentid" value="<?php echo (isset($value->id)) ? $value->id : ""; ?>">    
+                                                    <input type="hidden" name="paymentstatus[]" id="paymentstatus" value="<?php echo (isset($value->status) && !empty($value->status)) ? $value->status : 0; ?>">    
+                                                    <tr>                                                           
+                                                        <td><?php echo $value->dateduepaid; ?></td>
+                                                        <td>
+                                                            <div class="input-group date ui-datepicker" data-date-format="dd/mm/yyyy">
+                                                                <input id="dateofpaid" name="dateofpaid[]" class="form-control" type="text" data-required="true" value="<?php echo (isset($value->dateofpaid)) ? $value->dateofpaid : ""; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'readonly' : ''; ?>>
+                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            </div></td>
+                                                        <td>
+                                                            <div class="form-group">                                            
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                                    <input type="text" id="subamount" name="subamount[]" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="2" value="<?php echo (isset($value->subamount)) ? number_format($value->subamount, 2, '.', '') : ""; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'readonly' : ''; ?>>
+                                                                </div>
+                                                            </div>
+                                                        </td>                                                            
+                                                        <td>
+                                                            <div class="form-group">                                                                   
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 elVal">
+                                                                    <input type="text" id="fineamount" name="fineamount[]" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($value->fineamount)) ? number_format($value->fineamount, 2, '.', '') : ""; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'readonly' : ''; ?>>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                            <tr></tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -126,7 +112,7 @@
                                         <div class="form-group">
                                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                                 <a href="<?php echo base_url('loan'); ?>" class="btn btn-primary">Cancel</a>
-                                                <button type="submit" class="btn btn-success">Submit</button>
+                                                <?php if(isset($list->loanstatus) && $list->loanstatus!='cleared'){?><button type="submit" class="btn btn-success">Submit</button><?php } ?>
                                             </div>
                                         </div>
                                     </div>
