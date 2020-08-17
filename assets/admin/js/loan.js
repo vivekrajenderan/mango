@@ -273,6 +273,7 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var formData = new FormData($('#payment-form')[0]);
+            console.log(formData);
             var $form = $("#payment-form");
             $.ajax({
                 type: $form.attr('method'),
