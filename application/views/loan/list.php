@@ -66,13 +66,10 @@
                                                 <td>
                                                     <div class="btn-group">
 
-                                                        <?php if (empty($value->approveddate)) { ?><a href="javascript:void(0);" class="btn btn-secondary btn-sm approveloan" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Approve Loan"><i class="fa fa-check"></i></a><?php } else if ($value->loanstatus == 'approved') { ?>
+                                                        <?php if (empty($value->approveddate)) { ?><a href="javascript:void(0);" class="btn btn-secondary btn-sm approveloan" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Approve Loan"><i class="fa fa-check"></i></a><?php } else if ($value->loanstatus != 'pending') { ?>
                                                             <a href="<?php echo base_url('loan/payment/' . $value->ecodeid); ?>" class="btn btn-info btn-sm " title="Load Payment"><i class="fa fa-money"></i></a>
                                                         <?php } ?>
-                                                        <?php if ($value->loanstatus == 'approved' || $value->loanstatus == 'cleared') { ?>
-                                                        <a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm" title="View"><i class="fa fa-eye"></i></a>
-                                                        <?php } ?>
-                                                        <?php if (empty($value->approveddate)) { ?><a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a><?php } ?>
+                                                        <a href="<?php echo base_url('loan/add/' . $value->ecodeid); ?>" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
                                                         <?php if ($value->loanstatus != 'pending') { ?>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm makepayment" data-id="<?php echo (isset($value->ecodeid)) ? $value->ecodeid : 0; ?>" title="Make Payment"><i class="fa fa-list"></i></a>
                                                         <?php } else { ?>
