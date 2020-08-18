@@ -19,7 +19,7 @@
             table { border-collapse: collapse; }
             table td, table th { border: 1px solid black; padding: 5px; }
 
-            #header { height: 15px; width: 100%; margin: 20px 0; background: #e73838; text-align: center; color: white; font: bold 15px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 4px; padding: 8px 0px; }
+            #header { height: 15px; width: 100%; margin: 20px 0; background: #f5490b; text-align: center; color: white; font: bold 15px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 4px; padding: 8px 0px; }
 
             #address { width: 250px; float: left; }
             #customer { overflow: hidden; }
