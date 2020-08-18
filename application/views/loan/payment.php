@@ -76,6 +76,7 @@
                                                     <th> Date of paid</th> 
                                                     <th> EMI Amount</th>
                                                     <th> Fine Amount</th> 
+                                                    <th>Print</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -103,8 +104,9 @@
                                                         <td>
                                                             
                                                                     <input type="text" id="fineamount_<?php echo $value->id; ?>" name="payment[<?php echo $value->id; ?>][fineamount]" class="form-control col-md-7 col-xs-12 allownumericwithdecimal" maxlength="50" minlength="1" value="<?php echo (isset($value->fineamount)) ? number_format($value->fineamount, 2, '.', '') : ""; ?>" <?php echo (isset($value->status) && !empty($value->status)) ? 'readonly' : ''; ?>>
-                                                                
+                                                                    
                                                         </td>
+                                                        <td><?php echo (isset($value->status) && !empty($value->status)) ? "<a href='".base_url('loan/printPayment/'.$value->id)."' target='_blank'><i class='fa fa-print'></i></a>" : ''; ?></td>
 
                                                     </tr>
                                                     <?php
