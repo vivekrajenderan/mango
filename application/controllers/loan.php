@@ -267,7 +267,7 @@ class Loan extends CI_Controller
                         $vehicleid = $this->dbmodel->insert('vechicle', $vehicledata);
                         $setdata['fk_vechicle_id'] = $vehicleid;
                         $saved = $loanid = $this->dbmodel->insert('loan', $setdata);
-                        for ($i = 1; $i <= $_POST['loanperiod']; $i++) {
+                        for ($i = 0; $i < $_POST['loanperiod']; $i++) {
                             $loandata = array(
                                 'fk_customer_id' => $customer_id, 'fk_vechicle_id' => $vehicleid,
                                 'fk_loan_id' => $loanid,
